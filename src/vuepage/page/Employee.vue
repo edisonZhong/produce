@@ -41,30 +41,30 @@
                 </li>
             </ul>
         </div>
-        <!-- <ul id="footer">
-            
-                <li><a>7</a><span>统计报表</span></li>
-                <li><a>7</a><span>员工信息</span></li>
-          
-        </ul> -->
-
-        <mt-tabbar  fixed>
+        <ul id="footer">
+                <li><a>@</a><span>统计报表</span></li>
+                <li><a>@</a><span>员工信息</span></li>
+        </ul>
+        <!-- <mt-tabbar  fixed>
       <mt-tab-item id="统计报表">
-        <!-- <img slot="icon" src="../assets/logo.png"> -->
         <span>@</span>
         统计报表
       </mt-tab-item>
       <mt-tab-item id="员工信息">
-        <!-- <img slot="icon" src="../assets/logo.png"> -->
+        
         <span>@</span>
 
         员工信息
       </mt-tab-item>
-    </mt-tabbar>
+    </mt-tabbar> -->
     </div>
 </template>
 
-
+<script>
+export default {
+    
+}
+</script>
 
 <style lang="less" scoped>
 .page-tabbar {
