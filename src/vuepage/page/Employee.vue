@@ -42,8 +42,11 @@
             </ul>
         </div>
         <ul id="footer">
-                <li><a>@</a><span>统计报表</span></li>
-                <li><a>@</a><span>员工信息</span></li>
+                <!-- <li><a>@</a><span>统计报表</span></li>
+                <li><a>@</a><span>员工信息</span></li> -->
+                 <li v-for="item in tabList">
+                <a>{{item.icon}}</a><span>统计报表</span>
+            </li>
         </ul>
         <!-- <mt-tabbar  fixed>
       <mt-tab-item id="统计报表">
@@ -62,7 +65,15 @@
 
 <script>
 export default {
-    
+    name:'employee',
+    data(){
+        return{
+            tabList:[
+                {icon:'@',name:'统计报表'},
+                {icon:'@',name:'员工信息'}
+            ]
+        }
+    }
 }
 </script>
 
