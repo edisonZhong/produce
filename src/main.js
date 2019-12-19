@@ -11,8 +11,7 @@ import echarts from 'echarts'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 
-
-import allServer from './server/allServer.js'
+import report from './server/report.js'
 import utils from './jslib/utils.js'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import FastClick from 'fastclick'

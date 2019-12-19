@@ -1,66 +1,59 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// const Home =()=> import('@/vuepage/home/home.vue')
+const Index =()=> import('@/vuepage/page/Index.vue')
 const Employee =()=> import('@/vuepage/page/Employee.vue')
-
-
-// const Discuss =()=> import('@/vuepage/discuss/discuss.vue')
-// const Order =()=> import('@/vuepage/order/order.vue')
-// const My =()=> import('@/vuepage/my/my_page.vue')
+const AddEmployee=()=> import('@/vuepage/page/AddEmployee.vue')
+const SelectService=()=> import('@/vuepage/page/SelectService.vue')
 Vue.use(Router)
 
 
 export default new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   component: Home,
-    //   meta: {
-    //     // theIndex: "1",
-    //     title:'首页'
-    //   } 
-    // },
-    // {
-    //   path: '/Home',
-    //   component: Home,
-    //   meta: {
-    //     // theIndex: "1",
-    //     title:'首页'
-    //   } 
-    // },
-    
-    //  {
-    //   path: '*',
-    //   component: Home,
-    //   redirect:'/Home',
-    //   meta: {
-    //     // theIndex: "1",
-    //     title:'首页'
-    //   } 
-    // }
     {
       path:'/',
-      component:Employee,
+      component:Index,
       meta:{
-        title:''
+        theIndex: "1",
+        title:'首页'
       }
+    },
+    {
+      path: '/Index',
+      component: Index,
+      meta: {
+        theIndex: "1",
+        title:'首页',
+      } 
     },
     {
       path: '/Employee',
       component: Employee,
       meta: {
-        // theEmployee: "1",
-        title:'首页'
+        theIndex: "2",
+        title:'员工信息',
       } 
     },
-    
+    {
+      path: '/AddEmployee',
+      component: AddEmployee,
+      meta: {
+        title:'录入员工信息',
+      } 
+    },
+    {
+      path: '/SelectService',
+      component: SelectService,
+      meta: {
+        title:'选择业务区',
+      } 
+    },
      {
       path: '*',
-      component: Employee,
-      redirect:'/Employee',
+      component: Index,
+      redirect:'/Index',
       meta: {
-        // theIndex: "1",
+        theIndex: "1",
         title:'首页'
       } 
     }

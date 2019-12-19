@@ -1,29 +1,36 @@
 <template>
     <div id="page">
         <div id='header'>
-            <mt-button class="bottom-click"
-             v-for="(item,index) in btnList"  
-             v-on:click="addClass(index)" 
-             :key='index'
-             v-bind:class="{ classred:index==clickIndex}"
-            size="normal">{{item}}</mt-button>
+            <div class="header-bottom">
+                <mt-button class="bottom-click"
+                v-for="(item,index) in btnList"  
+                v-on:click="addClass(index)" 
+                :key='index'
+                v-bind:class="{ classred:index==clickIndex}"
+                size="normal">{{item}}</mt-button>
+            </div>
+            <h2 class="title">华南大区</h2>
         </div>
         <div class="img">
-                <img :src='imgUrl' alt=""/>
-            </div>
+            <img :src='imgUrl' alt=""/>
+        </div>
         <div id="main">
             <Category></Category>
         </div>
+        <TabBar></TabBar>
     </div>
 </template>
 
 <script>
 import Category from '../page/Category.vue'
+import TabBar from './TabBar.vue'
 export default {
     name:'index',
     components:{
-        Category
+        Category,
+        TabBar
     },
+    
     data(){
         return{
             clickIndex:0,
@@ -45,7 +52,7 @@ export default {
     position: relative;
     box-sizing: border-box;
     #header{
-        height: 1.5rem;
+        height: 2.14rem;
         width: 100%;
         background:rgba(67,120,190,1);
         position: absolute;
@@ -54,8 +61,24 @@ export default {
         left: 0;
         right:0;
         display: flex;
-        justify-content: space-around;
-        align-items: center;
+        flex-direction: column;
+        .title{
+            position: absolute;
+            width: 100%;
+            line-height: 0.64rem;
+            text-align: center;
+            top: 1.5rem;
+            height: 0.64rem;
+            color: #fff;
+            font-size: .32rem;
+        }
+        .header-bottom{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 1.5rem;
+            width: 100%;
+        }
         .bottom-click{
             width: 2.1rem;
             height: .72rem;
@@ -79,7 +102,7 @@ export default {
         width: 100%;
         height: 1.5rem;
         position: absolute;
-        top:1.5rem;
+        top:2.13rem;
         left: 0;
         right:0;
         img{
@@ -90,11 +113,12 @@ export default {
         // height: 100%;
         width: 100%;
         position: absolute;
-        top:1.5rem;
+        top:2.14rem;
         padding: 0 .3rem;
         box-sizing: border-box;
         overflow-x: hidden;
-        overflow-y: auto
+        overflow-y: auto;
+        bottom: .98rem;
     }
 }
 </style>

@@ -1,78 +1,66 @@
+<!--员工信息-->
 <template>
     <div id="page">
         <!-- 员工信息 -->
         <div id="header">
-            <p>序号</p>
-            <p>姓名</p>
-            <p>客户工号</p>
-            <p>入职日期</p>
+            <p style="text-align: center;width: 10%;">序号</p>
+            <p style="text-align: center;width: 30%;">姓名</p>
+            <p style="text-align: center;width: 30%;">客户工号</p>
+            <p style="text-align: center;width: 30%;">入职日期</p>
         </div>
         <div id="main">
             <ul style="height: 50px;width: 100%;">
                 <li>
-                   <p>1</p> 
-                   <p>张三</p> 
-                   <p>10000000</p> 
-                   <p>2019-10-08</p> 
+                   <p style="text-align: center;width: 10%;">1</p> 
+                   <p style="text-align: center;width: 30%;">张三</p> 
+                   <p style="text-align: center;width: 30%;">A1234567</p> 
+                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
                 </li>
                 <li>
-                   <p>1</p> 
-                   <p>张三</p> 
-                   <p>10000000</p> 
-                   <p>2019-10-08</p> 
+                   <p style="text-align: center;width: 10%;">1</p> 
+                   <p style="text-align: center;width: 30%;">张三</p> 
+                   <p style="text-align: center;width: 30%;">A1234567</p> 
+                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
                 </li>
                 <li>
-                   <p>1</p> 
-                   <p>张三</p> 
-                   <p>10000000</p> 
-                   <p>2019-10-08</p> 
+                   <p style="text-align: center;width: 10%;">1</p> 
+                   <p style="text-align: center;width: 30%;">张三</p> 
+                   <p style="text-align: center;width: 30%;">A1234567</p> 
+                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
                 </li>
                 <li>
-                   <p>1</p> 
-                   <p>张三</p> 
-                   <p>10000000</p> 
-                   <p>2019-10-08</p> 
+                   <p style="text-align: center;width: 10%;">1</p> 
+                   <p style="text-align: center;width: 30%;">张三</p> 
+                   <p style="text-align: center;width: 30%;">A1234567</p> 
+                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
                 </li>
                 <li>
-                   <p>1</p> 
-                   <p>张三</p> 
-                   <p>10000000</p> 
-                   <p>2019-10-08</p> 
+                   <p style="text-align: center;width: 10%;">1</p> 
+                   <p style="text-align: center;width: 30%;">张三</p> 
+                   <p style="text-align: center;width: 30%;">A1234567</p> 
+                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
                 </li>
             </ul>
         </div>
-        <ul id="footer">
-                <!-- <li><a>@</a><span>统计报表</span></li>
-                <li><a>@</a><span>员工信息</span></li> -->
-                 <li v-for="item in tabList">
-                <a>{{item.icon}}</a><span>统计报表</span>
-            </li>
-        </ul>
-        <!-- <mt-tabbar  fixed>
-      <mt-tab-item id="统计报表">
-        <span>@</span>
-        统计报表
-      </mt-tab-item>
-      <mt-tab-item id="员工信息">
-        
-        <span>@</span>
-
-        员工信息
-      </mt-tab-item>
-    </mt-tabbar> -->
+        <TabBar></TabBar>
+        <img style="position: fixed;right: .1rem;bottom: 1.5rem" :src="imgUrl" @click="handlePush"  alt=""/>
     </div>
 </template>
 
 <script>
+import TabBar from './TabBar'
 export default {
     name:'employee',
+    components:{TabBar},
     data(){
         return{
-            tabList:[
-                {icon:'@',name:'统计报表'},
-                {icon:'@',name:'员工信息'}
-            ]
+            imgUrl:require("@/assets/img/Group.png"),
         }
+    },
+    methods:{
+       handlePush(){
+           this.$router.push({path:'/AddEmployee'})
+       }
     }
 }
 </script>
@@ -88,6 +76,9 @@ export default {
     height: 100%;
     padding-bottom: 100px;
   }
+  .actived {
+  color:rgba(235,159,75,1) !important;
+}
 #page{
     height: 100%;
     position: relative;
@@ -123,34 +114,36 @@ export default {
                 align-items: center;
                 width: 100%;
                 height: 100%;
+                border-bottom:1px solid rgba(220,223,230,1)
             }
         }
     }
-    #footer{
-        background: rgba(248,248,248,1);
-        width: 100%;
-        position: absolute;
-        bottom:0;
-        left: 0;
-        right:0;
-        display: flex;
-        height: 50px;
-        justify-content: space-around;
-        align-items: center;
-        width: 100%;
-        li{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            height: 100%;
-            // color: #EB9F4B;
-        }
-        // li:focus
-        // { 
-        // color: #EB9F4B;
-        // }
-    }
+    // #footer{
+    //     background: rgba(248,248,248,1);
+    //     width: 100%;
+    //     position: absolute;
+    //     bottom:0;
+    //     left: 0;
+    //     right:0;
+    //     display: flex;
+    //     height: 50px;
+    //     justify-content: space-around;
+    //     align-items: center;
+    //     width: 100%;
+    //     li{
+    //         display: flex;
+    //         flex-direction: column;
+    //         justify-content: center;
+    //         align-items: center;
+    //         font-size: 11px;
+    //         height: 100%;
+    //         color:rgba(153,153,153,1);
+    //         // color: #EB9F4B;
+    //     }
+    //     // li:focus
+    //     // { 
+    //     // color: #EB9F4B;
+    //     // }
+    // }
 }
 </style> 

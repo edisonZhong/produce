@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import allServer from './server/allServer.js'
+// import allServer from './server/allServer.js'
 export default {
   data(){
        return{

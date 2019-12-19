@@ -1,13 +1,12 @@
 import {instance as axios} from '../jslib/HttpRequest'
 
 // 获取商家详情
-function getLogin(obj){
+export function reportData(obj){
+
 	return new Promise((resolve,reject)=>{
 		axios({
-			url:'login_validate.html',
-			method: 'POST',
-			data:obj
-			
+			url:'/exportReport',
+			method: 'get',
 		})
 		.then((response)=>{
             resolve(response)
@@ -17,11 +16,5 @@ function getLogin(obj){
 		})
 	})
 } 
-
-
-
-export  {
-	getLogin,
-}
 
 

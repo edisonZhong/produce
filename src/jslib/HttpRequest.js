@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    upBaseUrl = 'http://111.231.223.236:8083/ClientMember/';
+    upBaseUrl = 'http://192.168.43.173:9095/ClientMember/';
 }
 const instance = axios.create({
     // 测试环境
@@ -55,7 +55,6 @@ instance.interceptors.response.use(function (response) {
         //     query: {redirect: router.currentRoute.fullPath}
         // })
         //微信的授权登陆
-
         document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${wx.redirectUrl}&response_type=code&scope=${wx.loginStyle}&state=${wx.param}#wechat_redirect`;
     }
 
