@@ -2,19 +2,19 @@
 <template>
   <div>
     <div id="content">
-        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span></h2>
+        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
         <div id="chart_example" class="chart"></div>
     </div>
-    <div id="content">
+    <!-- <div id="content">
         <h2>一二三线员工数及占比</h2>
         <div id="persendChart" class="chart"></div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import echarts from "echarts";
-import {reportData} from '../../server/report'
+import {reportData} from '../../../server/report'
 export default {
   name: "southChart",
   data() {
@@ -55,7 +55,7 @@ export default {
           this.valueList[0].map(item=> this.totalList.push(item.total))
           this.$nextTick(()=> {
               this.loadEchart()
-              this.percentEchart()
+              // this.percentEchart()
           })
         }
       })
@@ -81,11 +81,21 @@ export default {
         boundaryGap: [0.2, 0.2],
         max: 1400,
         min: 0,
+        splitNumber:7,
+        axisLine:{
+            show:false
+        },
+        axisTick:{
+            show:false
+        },
       },
       yAxis: [
         {
           type: "category",
           data:this.nameList,
+          axisTick:{
+              show:false
+            },
         },
       ],
       series: [
@@ -99,64 +109,69 @@ export default {
                     position: 'right'
                 }
             },
+             itemStyle:{
+              normal:{
+                  color:'#EB9F4B'
+              }        
+            }
         },
       ]
       });
     },
     //员工占比
-    percentEchart() {
-        this.myChartPersend = echarts.init(document.getElementById("persendChart"));
-        this.myChartPersend.setOption({
-      tooltip: {
-        trigger: "axis"
-      },
-      xAxis: [
-        // type: "category",
-        // data: []
-        {
-            type: 'category',
-            boundaryGap: true,
-            data:['一线','二线','三线']
-        },
-      ],
-      grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-      yAxis: [
-        {
-        type: "value",
-        boundaryGap: [0.2, 0.2],
-        max: 8000,
-        min: 0,
-        },
-        {
-        type: "value",
-        boundaryGap: [0.2, 0.2],
-        max:100,
-        min: 0,
-        axisLabel: {
-                formatter: '{value} %'
-            }
-        },
-      ],
-      series: [
-        {
-          name: '',
-          type: 'bar',
-          data: [400, 300, 100, 500, 600, 700],
-        },
-        {
-          name: '',
-          position: 'right',
-          type: 'line',
-          data: [40, 30, 10, 50, 60, 70],
-        },
-      ]
-      });
-    },
+    // percentEchart() {
+    //     this.myChartPersend = echarts.init(document.getElementById("persendChart"));
+    //     this.myChartPersend.setOption({
+    //   tooltip: {
+    //     trigger: "axis"
+    //   },
+    //   xAxis: [
+    //     // type: "category",
+    //     // data: []
+    //     {
+    //         type: 'category',
+    //         boundaryGap: true,
+    //         data:['一线','二线','三线']
+    //     },
+    //   ],
+    //   grid: {
+    //     left: '3%',
+    //     right: '4%',
+    //     bottom: '3%',
+    //     containLabel: true
+    // },
+    //   yAxis: [
+    //     {
+    //     type: "value",
+    //     boundaryGap: [0.2, 0.2],
+    //     max: 8000,
+    //     min: 0,
+    //     },
+    //     {
+    //     type: "value",
+    //     boundaryGap: [0.2, 0.2],
+    //     max:100,
+    //     min: 0,
+    //     axisLabel: {
+    //             formatter: '{value} %'
+    //         }
+    //     },
+    //   ],
+    //   series: [
+    //     {
+    //       name: '',
+    //       type: 'bar',
+    //       data: [400, 300, 100, 500, 600, 700],
+    //     },
+    //     {
+    //       name: '',
+    //       position: 'right',
+    //       type: 'line',
+    //       data: [40, 30, 10, 50, 60, 70],
+    //     },
+    //   ]
+    //   });
+    // },
   }
 };
 </script>

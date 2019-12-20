@@ -1,10 +1,10 @@
 <!--统计图-->
 <template>
   <div>
-      <h2 class="title">{{this.titles[0]}}</h2>
+    <h2 class="title">{{this.titles[0]}}</h2>
     <div id="content">
-        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span></h2>
-        <div id="chart_example" class="chart"></div>
+        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
+        <div id="centerChart" class="chart"></div>
     </div>
     <!-- <div id="content">
         <h2>一二三线员工数及占比</h2>
@@ -15,9 +15,9 @@
 
 <script>
 import echarts from "echarts";
-import {reportData} from '../../server/report'
+import {reportData} from '../../../server/report'
 export default {
-  name: "eastChart",
+  name: "southChart",
   data() {
     return {
       dataName:[],
@@ -33,11 +33,11 @@ export default {
     this.getData()
   },
   mounted() {
-    let that = this;
-      window.onresize = function() {
-          this.myChart.resize()
-          this.myChartPersend.resize()
-      }
+    // let that = this;
+    //   window.onresize = function() {
+    //       this.myChart.resize()
+    //       this.myChartPersend.resize()
+    //   }
   },
   methods: {
     getData(){
@@ -50,20 +50,20 @@ export default {
               this.title.push(key)
               this.valueList.push(this.dataName[key])
           }
-          this.titles=this.title[1].split('-')
-          this.valueList[1].map(item => this.nameList.push(item.organizationName))
-          this.valueList[1].map(item=> this.totalList.push(item.total))
+          console.log(this.title[0].split('-'));
+          this.titles=this.title[2].split('-')
+          this.valueList[2].map(item => this.nameList.push(item.organizationName))
+          this.valueList[2].map(item=> this.totalList.push(item.total))
           this.$nextTick(()=> {
               this.loadEchart()
-            //   this.percentEchart()
+              // this.percentEchart()
           })
-          
         }
       })
     },
     //柱状图汇总
     loadEchart() {
-        this.myChart = echarts.init(document.getElementById("chart_example"));
+        this.myChart = echarts.init(document.getElementById("centerChart"));
         this.myChart.setOption({
       tooltip: {
         trigger: "axis"
@@ -82,17 +82,28 @@ export default {
         boundaryGap: [0.2, 0.2],
         max: 1400,
         min: 0,
+        splitNumber:7,
+        axisLine:{
+            show:false
+        },
+        axisTick:{
+            show:false
+        },
       },
       yAxis: [
         {
           type: "category",
           data:this.nameList,
+           axisTick:{
+              show:false
+            },
         },
       ],
       series: [
         {
-          name: '',
+          // name: '',
           type: 'bar',
+          barCategoryGap:'70%',
           data: this.totalList,
           label: {
                 normal: {
@@ -100,6 +111,11 @@ export default {
                     position: 'right'
                 }
             },
+             itemStyle:{
+              normal:{
+                  color:'#EB9F4B'
+              }        
+            }
         },
       ]
       });
@@ -188,13 +204,13 @@ export default {
       line-height: 1.04rem
   }
 }
-.title{
-    color:rgba(51,51,51,1);
-    font-size: .32rem;
-    line-height: .64rem;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 0.2rem;
-    font-weight: 600;
+.title {
+  color: rgba(51, 51, 51, 1);
+  font-size: 0.32rem;
+  line-height: 0.64rem;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 0.2rem;
+  font-weight: 600;
 }
 </style>

@@ -1,17 +1,14 @@
 <!--录入员工信息-->
 <template>
     <div id="page">
-        <!-- <mt-cell title="姓名" is-link>
-            <input/>
-        </mt-cell> -->
         <div id='main'>
-            <mt-field label="姓名" placeholder="请填写" v-model="username"></mt-field>
-            <mt-field label="客户工号" placeholder="请填写" v-model="username"></mt-field>
-            <mt-field label="所属业务区" placeholder="请填写" v-model="username" @focus.native.capture="handleService"></mt-field>
-            <mt-field label="入职日期" placeholder="请选择" v-model="username" @focus.native.capture="openPicker"></mt-field>
-            <mt-field label="劳动合同牌照" placeholder="请选择" v-model="username"></mt-field>
-            <mt-field label="服务客户名称" placeholder="请填写" v-model="username"></mt-field>
-            <mt-field label="岗位属性" placeholder="请选择" v-model="username"></mt-field>
+            <mt-field label="姓名" placeholder="请填写" v-model="employeeName"></mt-field>
+            <mt-field label="客户工号" placeholder="请填写" v-model="customerEmployeeNo"></mt-field>
+            <mt-field label="所属业务区" placeholder="请填写" v-model="organizationalId" @focus.native.capture="handleService"></mt-field>
+            <mt-field label="入职日期" placeholder="请选择" v-model="entryAt" @focus.native.capture="openPicker"></mt-field>
+            <mt-field label="劳动合同牌照" placeholder="请选择" v-model="positionType" @focus.native.capture="openlabour"></mt-field>
+            <mt-field label="服务客户名称" placeholder="请填写" v-model="customerId" @focus.native.capture="handleClient"></mt-field>
+            <mt-field label="岗位属性" placeholder="请选择" v-model="legalCompanyId"  @focus.native.capture="handleType"></mt-field>
         </div>
         <mt-datetime-picker
             ref="picker"
@@ -30,12 +27,19 @@
 </template>
 
 <script>
+import {addData} from '../../server/employee'
 export default {
     name:'addEmployee',
     data(){
         return{
-            username:'',
-            value:''
+            employeeName:'',//姓名
+            value:'',
+            customerEmployeeNo:'',//工号
+            organizationalId:'',//所属业务区
+            entryAt:'',//日期
+            customerId:'',
+            positionType:'',
+            legalCompanyId:''
         }
     },
     methods:{
@@ -49,15 +53,39 @@ export default {
             this.$router.push({
                 path:'/SelectService'
             })
+        },
+        handleClient(){
+            this.$router.push({
+                path:'/ClientType'
+            })
+        },
+        openlabour(){
+            this.$refs.picker.open();
+        },
+        handleType(){
+            console.log(1)
+        },
+        getAddData(){
+            addData({
+                "employeeName":this.employeeName,
+                "customerEmployeeNo":this.customerEmployeeNo,
+                "organizationalId":this.organizationalId,//所属业务id
+                "entryAt":this.entryAt,//"2019-12-20 00:00:00",
+                "customerId":this.customerId,//150,
+                "positionType":this.positionType,//"POST_STATION_02",
+                "legalCompanyId":this.legalCompanyId//5
+            }).then(e=>{
+                console.log(e);
+                if(e.data.code==200){
+                    console.log(e);
+                }
+            })
         }
     }
 }
 </script>
 
 <style lang="less" scoped>
-label {
-    text-align: right;
-}
 #page{
     height: 100%;
     position: relative;

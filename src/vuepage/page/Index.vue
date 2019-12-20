@@ -1,3 +1,4 @@
+<!--统计图 华南大区-->
 <template>
     <div id="page">
         <div id='header'>
@@ -9,65 +10,58 @@
                 v-bind:class="{ classred:index==clickIndex}"
                 size="normal">{{item}}</mt-button>
             </div>
-            <h2 class="title">华南大区</h2>
+            <h2 class="title">{{title}}</h2>
         </div>
         <div class="img">
             <img :src='imgUrl' alt=""/>
         </div>
-        <div id="main">
+        <div id="main" @scroll="handleScroll" ref="content">
             <SouthChart></SouthChart>
             <EastChart></EastChart>
+            <CenterChart></CenterChart>
+            <NorthChart></NorthChart>
         </div>
         <TabBar></TabBar>
     </div>
 </template>
 
 <script>
-import SouthChart from '../page/SouthChart.vue'
-import EastChart from '../page/EastChart.vue'
+import SouthChart from '../page/chart/SouthChart'
+import EastChart from '../page/chart/EastChart.vue'
+import CenterChart from '../page/chart/CenterChart'
+import NorthChart from '../page/chart/NorthChart'
+
 import TabBar from './TabBar.vue'
-// import {reportData} from '../../server/report'
 
 export default {
     name:'index',
     components:{
         SouthChart,
         TabBar,
-        EastChart
+        EastChart,
+        CenterChart,
+        NorthChart
     },
     
     data(){
         return{
             clickIndex:0,
             btnList:['每日','每周','每月'],
-            imgUrl:require("@/assets/img/Oval.png")
+            imgUrl:require("@/assets/img/Oval.png"),
+            title:'华南大区'
         }
     },
     methods:{ 
         addClass(index){ 
             this.clickIndex=index;
         },
-    //     getData(){
-    //   reportData({
-    //     dateType:'D'
-    //   }).then(e=>{
-    //     if(e.data.code==200){
-    //       this.dataName=e.data.data
-    //       for (var key in this.dataName) {
-    //           this.title.push(key)
-    //           this.valueList.push(this.dataName[key])
-    //       }
-    //     //   console.log(this.title[0].split('-'));
-    //       this.titles=this.title[0].split('-')//各个大区的标题
-    //       this.valueList[0].map(item => this.nameList.push(item.organizationName))
-    //       this.valueList[0].map(item=> this.totalList.push(item.total))
-    //       this.$nextTick(()=> {
-    //           this.loadEchart()
-    //           this.percentEchart()
-    //       })
-    //     }
-    //   })
-    // },
+        handleScroll(el){
+            this.scrollTop = this.$refs.content.scrollTop
+            if(this.scrollTop>300){
+                this.title='华东大区'
+            }
+            console.log(this.$refs.content.scrollTop);
+        }
     }
 }
 </script>
@@ -145,7 +139,7 @@ export default {
         overflow-x: hidden;
         overflow-y: auto;
         bottom: .98rem;
-        background: #fff
+        // background: #fff
     }
 }
 </style>

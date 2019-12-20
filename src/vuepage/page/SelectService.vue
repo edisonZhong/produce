@@ -1,12 +1,12 @@
 <!--选择业务区-->
 <template>
   <div style="position: relative;height:100%">
-    <!-- <div class="header">
-           <input placeholder="输入关键字" class="input-seach" v-model="value"/>
-           <img :src='imgUrl' alt=""/>
+    <div class="header">
+           <!-- <input placeholder="输入关键字" class="input-seach" v-model="value"/>
+           <img :src='imgUrl' alt=""/> -->
+           <mt-search v-model="value" placeholder="搜索"></mt-search>
            <p class="seach">搜索</p>
-    </div>-->
-    <mt-search v-model="value" placeholder="搜索"></mt-search>
+    </div>
     <ul
       class="main"
       v-infinite-scroll="loadMore"
@@ -58,18 +58,24 @@ export default {
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 0 .3rem;
+  box-sizing: border-box;
   li {
     height: 0.88rem;
     line-height: 0.88rem;
+    border-bottom: 1px solid rgba(220,223,230,1);
   }
 }
 .seach {
   width: 0.9rem;
-  line-height: 0.65rem;
+  line-height: 1.04rem;
   margin-left: 0.3rem;
   color: rgba(187, 192, 198, 1);
   font-size: 0.28rem;
   text-align: center;
+  position: absolute;
+    top: 0;
+    right: .2rem;
 }
 .input-seach {
   background: rgba(246, 248, 250, 1);
@@ -78,12 +84,14 @@ export default {
   border-radius: 4px;
 }
 .header {
-  padding: 0.3rem;
-  display: flex;
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
+  // padding: 0.3rem;
+  // display: flex;
+  height: 1.04rem;
   width: 100%;
+  // box-sizing: border-box;
+  // position: absolute;
+  // top: 0;
+  // width: 100%;
   img {
     position: absolute;
     top: 0.5rem;

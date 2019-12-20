@@ -10,36 +10,12 @@
         </div>
         <div id="main">
             <ul style="height: 50px;width: 100%;">
-                <li>
-                   <p style="text-align: center;width: 10%;">1</p> 
+                <!-- <li v-for="(item,index) in dataList" :key='index'>
+                   <p style="text-align: center;width: 10%;">{{item.name}}</p> 
                    <p style="text-align: center;width: 30%;">张三</p> 
                    <p style="text-align: center;width: 30%;">A1234567</p> 
                    <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li>
-                <li>
-                   <p style="text-align: center;width: 10%;">1</p> 
-                   <p style="text-align: center;width: 30%;">张三</p> 
-                   <p style="text-align: center;width: 30%;">A1234567</p> 
-                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li>
-                <li>
-                   <p style="text-align: center;width: 10%;">1</p> 
-                   <p style="text-align: center;width: 30%;">张三</p> 
-                   <p style="text-align: center;width: 30%;">A1234567</p> 
-                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li>
-                <li>
-                   <p style="text-align: center;width: 10%;">1</p> 
-                   <p style="text-align: center;width: 30%;">张三</p> 
-                   <p style="text-align: center;width: 30%;">A1234567</p> 
-                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li>
-                <li>
-                   <p style="text-align: center;width: 10%;">1</p> 
-                   <p style="text-align: center;width: 30%;">张三</p> 
-                   <p style="text-align: center;width: 30%;">A1234567</p> 
-                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li>
+                </li> -->
             </ul>
         </div>
         <TabBar></TabBar>
@@ -49,15 +25,34 @@
 
 <script>
 import TabBar from './TabBar'
+import {listData} from '../../server/employee'
 export default {
     name:'employee',
     components:{TabBar},
     data(){
         return{
+            dataList:[],
             imgUrl:require("@/assets/img/Group.png"),
+            page:{
+                limit:50,
+                page:1
+            }
         }
     },
+    created(){
+        this.getList()
+    },
     methods:{
+        getList(){
+            listData({
+                page:this.page.page,
+                limit:this.page.limit
+            }).then(e=>{
+                if(e.data.code){
+                    console.log(e);
+                }
+            })
+        },
        handlePush(){
            this.$router.push({path:'/AddEmployee'})
        }

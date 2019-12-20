@@ -5,6 +5,7 @@ const Index =()=> import('@/vuepage/page/Index.vue')
 const Employee =()=> import('@/vuepage/page/Employee.vue')
 const AddEmployee=()=> import('@/vuepage/page/AddEmployee.vue')
 const SelectService=()=> import('@/vuepage/page/SelectService.vue')
+const ClientType=()=> import('@/vuepage/page/ClientType.vue')
 Vue.use(Router)
 
 
@@ -46,6 +47,13 @@ export default new Router({
       component: SelectService,
       meta: {
         title:'选择业务区',
+      } 
+    },
+    {
+      path: '/ClientType',
+      component: ClientType,
+      meta: {
+        title:'选择客户名称',
       } 
     },
      {
