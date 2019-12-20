@@ -2,7 +2,7 @@
 <template>
   <div>
     <div id="content">
-        <h2>员工总数 <span class="number">2222</span> 人，较昨日增长 <span class="number">123</span></h2>
+        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span></h2>
         <div id="chart_example" class="chart"></div>
     </div>
     <div id="content">
@@ -16,17 +16,19 @@
 import echarts from "echarts";
 import {reportData} from '../../server/report'
 export default {
-  name: "category",
+  name: "southChart",
   data() {
     return {
-
+      dataName:[],
+      valueList:[],
+      nameList:[],
+      totalList:[],
+      nameLists:[],
+      title:[],
+      titles:[]
     };
   },
   created(){
-    this.$nextTick(()=> {
-            this.loadEchart()
-            this.percentEchart()
-        })
     this.getData()
   },
   mounted() {
@@ -37,11 +39,24 @@ export default {
     //   }
   },
   methods: {
-
     getData(){
-      reportData().then(e=>{
+      reportData({
+        dateType:'D'
+      }).then(e=>{
         if(e.data.code==200){
-          console.log(e);
+          this.dataName=e.data.data
+          for (var key in this.dataName) {
+              this.title.push(key)
+              this.valueList.push(this.dataName[key])
+          }
+          console.log(this.title[0].split('-'));
+          this.titles=this.title[0].split('-')
+          this.valueList[0].map(item => this.nameList.push(item.organizationName))
+          this.valueList[0].map(item=> this.totalList.push(item.total))
+          this.$nextTick(()=> {
+              this.loadEchart()
+              this.percentEchart()
+          })
         }
       })
     },
@@ -52,9 +67,15 @@ export default {
       tooltip: {
         trigger: "axis"
       },
-      // legend: {
-      //   data: ['2011年', '2012年']
-      // },
+      legend: {
+        // data: this.nameList
+      },
+      grid: {
+        left: '3%',
+        // right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
       xAxis: {
         type: "value",
         boundaryGap: [0.2, 0.2],
@@ -64,14 +85,20 @@ export default {
       yAxis: [
         {
           type: "category",
-          data: []
+          data:this.nameList,
         },
       ],
       series: [
         {
-          name: '2011年',
+          name: '',
           type: 'bar',
-          data: [400, 300, 100, 500, 600, 700],
+          data: this.totalList,
+          label: {
+                normal: {
+                    show: true,
+                    position: 'right'
+                }
+            },
         },
       ]
       });
@@ -89,16 +116,6 @@ export default {
         {
             type: 'category',
             boundaryGap: true,
-            // data: (function (){
-            //     var now = new Date();
-            //     var res = [];
-            //     var len = 10;
-            //     while (len--) {
-            //         res.unshift(now.toLocaleTimeString().replace(/^\D*/,''));
-            //         now = new Date(now - 2000);
-            //     }
-            //     return res;
-            // })()
             data:['一线','二线','三线']
         },
       ],
@@ -120,16 +137,20 @@ export default {
         boundaryGap: [0.2, 0.2],
         max:100,
         min: 0,
+        axisLabel: {
+                formatter: '{value} %'
+            }
         },
       ],
       series: [
         {
-          name: '2011年',
+          name: '',
           type: 'bar',
           data: [400, 300, 100, 500, 600, 700],
         },
         {
-          name: '2011年',
+          name: '',
+          position: 'right',
           type: 'line',
           data: [40, 30, 10, 50, 60, 70],
         },
@@ -144,11 +165,6 @@ export default {
 .number{
   color: rgba(235,159,75,1)
 }
-// #chart_example {
-//   width: 100%;
-//   min-height: 5rem;
-//   margin: 0 auto;
-// }
 .chart{
   width: 100%;
   min-height: 5rem;
