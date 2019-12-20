@@ -15,20 +15,25 @@
             <img :src='imgUrl' alt=""/>
         </div>
         <div id="main">
-            <Category></Category>
+            <SouthChart></SouthChart>
+            <EastChart></EastChart>
         </div>
         <TabBar></TabBar>
     </div>
 </template>
 
 <script>
-import Category from '../page/Category.vue'
+import SouthChart from '../page/SouthChart.vue'
+import EastChart from '../page/EastChart.vue'
 import TabBar from './TabBar.vue'
+// import {reportData} from '../../server/report'
+
 export default {
     name:'index',
     components:{
-        Category,
-        TabBar
+        SouthChart,
+        TabBar,
+        EastChart
     },
     
     data(){
@@ -41,8 +46,29 @@ export default {
     methods:{ 
         addClass(index){ 
             this.clickIndex=index;
-        }
-    },
+        },
+    //     getData(){
+    //   reportData({
+    //     dateType:'D'
+    //   }).then(e=>{
+    //     if(e.data.code==200){
+    //       this.dataName=e.data.data
+    //       for (var key in this.dataName) {
+    //           this.title.push(key)
+    //           this.valueList.push(this.dataName[key])
+    //       }
+    //     //   console.log(this.title[0].split('-'));
+    //       this.titles=this.title[0].split('-')//各个大区的标题
+    //       this.valueList[0].map(item => this.nameList.push(item.organizationName))
+    //       this.valueList[0].map(item=> this.totalList.push(item.total))
+    //       this.$nextTick(()=> {
+    //           this.loadEchart()
+    //           this.percentEchart()
+    //       })
+    //     }
+    //   })
+    // },
+    }
 }
 </script>
 
@@ -119,6 +145,7 @@ export default {
         overflow-x: hidden;
         overflow-y: auto;
         bottom: .98rem;
+        background: #fff
     }
 }
 </style>

@@ -10,6 +10,7 @@ import './filter/all.js'
 import echarts from 'echarts'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
+import './assets/style/my-mint.css'//修改mint默认样式
 
 import report from './server/report.js'
 import utils from './jslib/utils.js'

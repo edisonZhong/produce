@@ -1,0 +1,25 @@
+.mint-searchbar{
+    background-color: #fff;
+};
+.mint-searchbar-inner{
+     
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 2px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        height: 28px;
+        padding: 4px 6px;
+    
+    background-color:#ccc !important;
+}
+.mint-searchbar-inner .mintui-search {
+    font-size: .4rem;
+    padding-right: .2rem;
+}
