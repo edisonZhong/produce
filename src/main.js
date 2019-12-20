@@ -28,7 +28,7 @@ require('./assets/font/iconfont.css')   //标签内容填例如：&#xe61d;
 
 Vue.prototype.$utils = utils;
 Vue.prototype.$echarts = echarts
- 
+
 Vue.use(VueAwesomeSwiper)
 Vue.use(Mint);
 Vue.config.productionTip = false

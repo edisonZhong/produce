@@ -3,13 +3,13 @@
         <div id='header'>
             <div class="header-bottom">
                 <mt-button class="bottom-click"
-                v-for="(item,index) in btnList"  
-                v-on:click="addClass(index)" 
+                v-for="(item,index) in btnList"
+                v-on:click="addClass(index)"
                 :key='index'
                 v-bind:class="{ classred:index==clickIndex}"
                 size="normal">{{item}}</mt-button>
             </div>
-            <h2 class="title">华南大区</h2>
+            <h2 class="title">华南大区{{test}}</h2>
         </div>
         <div class="img">
             <img :src='imgUrl' alt=""/>
@@ -26,7 +26,7 @@
 import SouthChart from '../page/SouthChart.vue'
 import EastChart from '../page/EastChart.vue'
 import TabBar from './TabBar.vue'
-// import {reportData} from '../../server/report'
+import {getToken} from '../../server/report'
 
 export default {
     name:'index',
@@ -35,16 +35,40 @@ export default {
         TabBar,
         EastChart
     },
-    
+
     data(){
         return{
+            test:'',
             clickIndex:0,
             btnList:['每日','每周','每月'],
             imgUrl:require("@/assets/img/Oval.png")
         }
     },
-    methods:{ 
-        addClass(index){ 
+    mounted(){
+
+      console.log(this.$utils.getHashUrlParams('code'),'code');
+      // alert(this.$utils.getHashUrlParams('code'),'d')
+      // console.log(this.,'code');
+      // 获取token
+      this.getToken();
+    },
+    methods:{
+        getToken(){
+          // alert(this.$utils.getHashUrlParams('code'),'c')
+          // alert(this.$utils.getUrlParams('code'),'c')
+          // this.test = this.$utils.getUrlParams('code');
+          // return
+          getToken({
+            code:this.$utils.getUrlParams('code')
+            // code:''
+          }).then(res=>{
+            // wx.setStorageSync('park_token',res.data.data.token)
+            localStorage.setItem('park_token',res.data.data.token);
+            // window.location.reload();
+            // console.log(res,'dd');
+          })
+        },
+        addClass(index){
             this.clickIndex=index;
         },
     //     getData(){

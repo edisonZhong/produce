@@ -23,6 +23,7 @@
   mounted(){
     this.drawLine();
     this.initData();
+
   },
   methods: {
     drawLine(){
@@ -109,6 +110,6 @@
       overflow-y: auto;
     }
   }
-  
- 
+
+
 </style>

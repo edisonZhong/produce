@@ -15,6 +15,21 @@ export function reportData(obj){
 			console.log(error)
 		})
 	})
-} 
-
-
+}
+//
+// 获取token
+export function getToken(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/pushApplicationMsg/getUserChatInfo',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}
