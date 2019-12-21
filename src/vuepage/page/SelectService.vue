@@ -7,42 +7,91 @@
            <mt-search v-model="value" placeholder="搜索"></mt-search>
            <p class="seach">搜索</p>
     </div>
-    <ul
-      class="main"
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-      :loading="loading"
-      infinite-scroll-distance="10"
+  <!-- <div
+      ref="mescroll"
+      class="mescroll"
+      id='mescroll'
     >
-      <li v-for="(item,index) in list" :key="index">{{ item }}</li>
-    </ul>
+    <div>
+        <div class="main">
+          <ul id="dataList">
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+            <li class="data-li" >
+            1
+            </li>
+        </ul>
+      </div>
+    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import { Indicator } from "mint-ui";
+// import MeScroll from 'mescroll.js'
+// import 'mescroll.js/mescroll.min.css'
 export default {
   name: "selectService",
+  // components:{MeScroll},
   data() {
     return {
       imgUrl: require("@/assets/img/seach.png"),
       value: "",
       count: 0,
-      list: [1],
-      loading: false
+      list: [],
+      // mescroll:null
     };
   },
-
+ created() {
+    this.getData() 
+  },
   methods: {
-    loadMore() {
-      this.loading = true;
-      // setTimeout(() => {
-      let last = this.list[this.list.length - 1];
-      for (let i = 1; i <= 9; i++) {
-        this.list.push(last + i);
-      }
-      this.loading = false;
-      // }, 2500);
+    getData(){
+      const that = this
+      
     }
   }
 };
@@ -60,7 +109,7 @@ export default {
   overflow-y: auto;
   padding: 0 .3rem;
   box-sizing: border-box;
-  li {
+  .data-li {
     height: 0.88rem;
     line-height: 0.88rem;
     border-bottom: 1px solid rgba(220,223,230,1);
@@ -76,6 +125,12 @@ export default {
   position: absolute;
     top: 0;
     right: .2rem;
+}
+.mescroll{
+  position: fixed;
+  top:0;
+  bottom: 0;
+  height:auto;
 }
 .input-seach {
   background: rgba(246, 248, 250, 1);

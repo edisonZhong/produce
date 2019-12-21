@@ -1,7 +1,7 @@
 <!--统计图 华东大区-->
 <template>
   <div>
-    <h2 class="title">{{this.titles[0]}}华东大区</h2>
+    <h2 class="title">{{this.titles[0]}}</h2>
     <div id="content">
       <h2>
         员工总数

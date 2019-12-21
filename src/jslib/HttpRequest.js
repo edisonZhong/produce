@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    upBaseUrl = 'http://192.168.43.216:8086/';
+    upBaseUrl = 'http://192.168.43.173:9095/';
 }
 const instance = axios.create({
     // 测试环境

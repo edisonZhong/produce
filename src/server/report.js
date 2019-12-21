@@ -1,6 +1,6 @@
 import {instance as axios} from '../jslib/HttpRequest'
 
-// 获取商家详情
+// 
 export function reportData(obj){
 	return new Promise((resolve,reject)=>{
 		axios({
@@ -16,5 +16,51 @@ export function reportData(obj){
 		})
 	})
 } 
-
-
+//员工岗位属性统计图
+export function reportLine(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/selectBusinessAreaEmployeePositionTypeStatisticsChart',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+} 
+//员工入职数统计图
+export function reportEnter(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/selectBusinessDistrictAreaEntryEmployeeStatisticsChart',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+} 
+//员工离职数统计图
+export function reportLive(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'exportReport/selectBusinessDistrictAreaResignationEmployeeStatisticsChart',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}

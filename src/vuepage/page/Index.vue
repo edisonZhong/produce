@@ -60,7 +60,7 @@ export default {
             if(this.scrollTop>300){
                 this.title='华东大区'
             }
-            console.log(this.$refs.content.scrollTop);
+            // console.log(this.$refs.content.scrollTop);
         }
     }
 }
@@ -122,7 +122,7 @@ export default {
         width: 100%;
         height: 1.5rem;
         position: absolute;
-        top:2.13rem;
+        top:2.12rem;
         left: 0;
         right:0;
         img{

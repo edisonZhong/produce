@@ -9,7 +9,11 @@
             <p style="text-align: center;width: 30%;">入职日期</p>
         </div>
         <div id="main">
-            <ul style="height: 50px;width: 100%;">
+            <ul style="height: 50px;width: 100%;" 
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="loading"
+            :loading="loading"
+            infinite-scroll-distance="10">
                 <!-- <li v-for="(item,index) in dataList" :key='index'>
                    <p style="text-align: center;width: 10%;">{{item.name}}</p> 
                    <p style="text-align: center;width: 30%;">张三</p> 
@@ -32,6 +36,7 @@ export default {
     data(){
         return{
             dataList:[],
+            loading:true,
             imgUrl:require("@/assets/img/Group.png"),
             page:{
                 limit:50,
@@ -55,7 +60,17 @@ export default {
         },
        handlePush(){
            this.$router.push({path:'/AddEmployee'})
-       }
+       },
+       loadMore() {
+            this.loading = true;
+            // setTimeout(() => {
+            let last = this.list[this.list.length - 1];
+            for (let i = 1; i <= 9; i++) {
+                this.list.push(last + i);
+            }
+            this.loading = false;
+            // }, 2500);
+        }
     }
 }
 </script>
