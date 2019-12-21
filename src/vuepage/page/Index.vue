@@ -58,28 +58,28 @@ export default {
     },
     mounted(){
 
-      console.log(this.$utils.getHashUrlParams('code'),'code');
+      // console.log(this.$utils.getHashUrlParams('code'),'code');
       // alert(this.$utils.getHashUrlParams('code'),'d')
       // console.log(this.,'code');
       // 获取token
-      this.getToken();
+      // this.getToken();
     },
     methods:{
-        getToken(){
-          // alert(this.$utils.getHashUrlParams('code'),'c')
-          // alert(this.$utils.getUrlParams('code'),'c')
-          // this.test = this.$utils.getUrlParams('code');
-          // return
-          getToken({
-            code:this.$utils.getUrlParams('code')
-            // code:''
-          }).then(res=>{
-            // wx.setStorageSync('park_token',res.data.data.token)
-            localStorage.setItem('park_token',res.data.data.token);
-            // window.location.reload();
-            // console.log(res,'dd');
-          })
-        },
+        // getToken(){
+        //   // alert(this.$utils.getHashUrlParams('code'),'c')
+        //   // alert(this.$utils.getUrlParams('code'),'c')
+        //   // this.test = this.$utils.getUrlParams('code');
+        //   // return
+        //   getToken({
+        //     code:this.$utils.getUrlParams('code')
+        //     // code:''
+        //   }).then(res=>{
+        //     // wx.setStorageSync('park_token',res.data.data.token)
+        //     localStorage.setItem('park_token',res.data.data.token);
+        //     // window.location.reload();
+        //     // console.log(res,'dd');
+        //   })
+        // },
         addClass(index){
             this.clickIndex=index;
         },
