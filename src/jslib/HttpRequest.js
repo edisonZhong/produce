@@ -3,6 +3,8 @@ import wx from './wechat/wechat-param'
 import router from '../router'
 import {ToastPlugin } from 'vux'
 import Vue from 'vue'
+import wxLogin from './wechat/wechat-login'
+import wxData from './wechat/wechat-param'
 
 
 Vue.prototype.$vux = ToastPlugin;
@@ -38,7 +40,7 @@ instance.interceptors.request.use(
     config => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
-            "Authorization":localStorage.getItem('park_token')||'',
+            "Authorization":localStorage.getItem('token')||'',
             "backend":'lhyg'
         }
         return config;
@@ -52,6 +54,7 @@ instance.interceptors.response.use(function (response) {
   console.log(response,'response0000');
   if(response.data.code==401){
       localStorage.clear();
+      // wxLogin(wxData);
       //账号密码登陆
       // router.replace({
       //     path: '/signin',
