@@ -10,11 +10,8 @@
                 v-bind:class="{ classred:index==clickIndex}"
                 size="normal">{{item}}</mt-button>
             </div>
-<<<<<<< HEAD
+
             <h2 class="title">{{title}}</h2>
-=======
-            <h2 class="title">华南大区{{test}}</h2>
->>>>>>> e2777bfd912275129ba6ca3dcbf6919dcd817ff7
         </div>
         <div class="img">
             <img :src='imgUrl' alt=""/>

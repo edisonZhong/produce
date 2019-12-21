@@ -15,9 +15,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    // upBaseUrl = 'http://192.168.43.173:9095/';
+    upBaseUrl = 'http://192.168.43.173:9095/';
     // upBaseUrl  =  'http://192.168.43.216:8086/';
-    upBaseUrl = 'http://wbapi.fenganghr.com/';
+    // upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -58,7 +58,7 @@ instance.interceptors.response.use(function (response) {
       //     query: {redirect: router.currentRoute.fullPath}
       // })
       //微信的授权登陆
-      document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=http://ywh5.fenganghr.com&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
+      //document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=http://ywh5.fenganghr.com&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
   }else if (response.data.code==404){
       console.log(error.response.message)
       Vue.$vux.toast.show({

@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
         console.log('微信浏览器')
         //检查是否授权登录
-        wxLogin(wxData);
+      //  wxLogin(wxData);
 
         //从微信分享进入时去除form参数
 

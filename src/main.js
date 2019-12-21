@@ -11,6 +11,7 @@ import echarts from 'echarts'
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css'
 import './assets/style/my-mint.css'//修改mint默认样式
+import Vconsole from 'vconsole'
 
 import report from './server/report.js'
 import utils from './jslib/utils.js'
@@ -33,7 +34,7 @@ Vue.use(VueAwesomeSwiper)
 Vue.use(Mint);
 Vue.config.productionTip = false
 
-
+let VConsole = new Vconsole
 import { XButton } from 'vux'
 Vue.component('x-button', XButton)
 
