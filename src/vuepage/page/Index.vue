@@ -4,13 +4,17 @@
         <div id='header'>
             <div class="header-bottom">
                 <mt-button class="bottom-click"
-                v-for="(item,index) in btnList"  
-                v-on:click="addClass(index)" 
+                v-for="(item,index) in btnList"
+                v-on:click="addClass(index)"
                 :key='index'
                 v-bind:class="{ classred:index==clickIndex}"
                 size="normal">{{item}}</mt-button>
             </div>
+<<<<<<< HEAD
             <h2 class="title">{{title}}</h2>
+=======
+            <h2 class="title">华南大区{{test}}</h2>
+>>>>>>> e2777bfd912275129ba6ca3dcbf6919dcd817ff7
         </div>
         <div class="img">
             <img :src='imgUrl' alt=""/>
@@ -33,6 +37,9 @@ import NorthChart from '../page/chart/NorthChart'
 
 import TabBar from './TabBar.vue'
 
+import {getToken} from '../../server/report'
+
+
 export default {
     name:'index',
     components:{
@@ -42,17 +49,41 @@ export default {
         CenterChart,
         NorthChart
     },
-    
+
     data(){
         return{
+            test:'',
             clickIndex:0,
             btnList:['每日','每周','每月'],
             imgUrl:require("@/assets/img/Oval.png"),
             title:'华南大区'
         }
     },
-    methods:{ 
-        addClass(index){ 
+    mounted(){
+
+      console.log(this.$utils.getHashUrlParams('code'),'code');
+      // alert(this.$utils.getHashUrlParams('code'),'d')
+      // console.log(this.,'code');
+      // 获取token
+      this.getToken();
+    },
+    methods:{
+        getToken(){
+          // alert(this.$utils.getHashUrlParams('code'),'c')
+          // alert(this.$utils.getUrlParams('code'),'c')
+          // this.test = this.$utils.getUrlParams('code');
+          // return
+          getToken({
+            code:this.$utils.getUrlParams('code')
+            // code:''
+          }).then(res=>{
+            // wx.setStorageSync('park_token',res.data.data.token)
+            localStorage.setItem('park_token',res.data.data.token);
+            // window.location.reload();
+            // console.log(res,'dd');
+          })
+        },
+        addClass(index){
             this.clickIndex=index;
         },
         handleScroll(el){

@@ -49,10 +49,17 @@ export function reportEnter(obj){
 	})
 } 
 //员工离职数统计图
-export function reportLive(obj){
+// export function reportLive(obj){
+// 	return new Promise((resolve,reject)=>{
+// 		axios({
+// 			url:'exportReport/selectBusinessDistrictAreaResignationEmployeeStatisticsChart',
+// }
+//
+// 获取token
+export function getToken(obj){
 	return new Promise((resolve,reject)=>{
 		axios({
-			url:'exportReport/selectBusinessDistrictAreaResignationEmployeeStatisticsChart',
+			url:'/pushApplicationMsg/getUserChatInfo',
 			method: 'post',
 			data:obj
 		})
