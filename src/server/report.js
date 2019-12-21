@@ -15,7 +15,7 @@ export function reportData(obj){
 			console.log(error)
 		})
 	})
-} 
+}
 //员工岗位属性统计图
 export function reportLine(obj){
 	return new Promise((resolve,reject)=>{
@@ -48,13 +48,22 @@ export function reportEnter(obj){
 		})
 	})
 } 
-//员工离职数统计图
-// export function reportLive(obj){
-// 	return new Promise((resolve,reject)=>{
-// 		axios({
-// 			url:'exportReport/selectBusinessDistrictAreaResignationEmployeeStatisticsChart',
-// }
-//
+//离职
+export function reportLive(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/exportReport/selectBusinessDistrictAreaResignationEmployeeStatisticsChart',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+} 
 // 获取token
 export function getToken(obj){
 	return new Promise((resolve,reject)=>{

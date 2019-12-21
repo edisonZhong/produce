@@ -1,6 +1,6 @@
 import {instance as axios} from '../jslib/HttpRequest'
 
-// 获取商家详情
+// 
 export function listData(obj){
 	return new Promise((resolve,reject)=>{
 		axios({

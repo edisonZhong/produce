@@ -1,20 +1,31 @@
-<!--统计图-->
+<!--统计图 华南大区-->
 <template>
   <div>
     <div id="content">
-        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
+        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
         <div id="chart_example" class="chart"></div>
+        <!-- <div id="persendChart" class="chart"></div>
+        <div id="dataChart" class="chart"></div> -->
     </div>
-    <!-- <div id="content">
-        <h2>一二三线员工数及占比</h2>
+    <div id="content">
+       
         <div id="persendChart" class="chart"></div>
-    </div> -->
+    </div>
+    <div id="content">
+       
+        <div id="dataChart" class="chart"></div>
+    </div>
+    <div id="content">
+       
+        <div id="dataChartLive" class="chart"></div>
+    </div>
+   
   </div>
 </template>
 
 <script>
 import echarts from "echarts";
-import {reportData,} from '../../../server/report'
+import {reportData,reportLine,reportEnter,reportLive} from '../../../server/report'
 export default {
   name: "southChart",
   data() {
@@ -23,14 +34,36 @@ export default {
       valueList:[],//图表数据
       titles:[],//分割的数据
        title:[],//标题
-          totalList:[],//总的数据
-          nameList:[],//图表数据
+      totalList:[],//总的数据
+      nameList:[],//图表数据
+
+      dataNameType:[],
+      valueTypeList:[],//图表数据
+      positionType:[],//总的数据
+      nameListType:[],//图表数据
+      percentList:[],
+
+      dayList:[],//每日增长
+      dayNameType:[],
+      valueDayList:[],
+      positionDay:[],//总的数据
+      nameListDay:[],//图表数据
+      percentListDay:[],
+
+      liveList:[],//每日增长
+      liveNameType:[],
+      valueLiveList:[],
+      positionLive:[],//总的数据
+      nameListLive:[],//图表数据
+      percentListLive:[]
     };
   },
   created(){
     this.getData()
     this.init()
-    // this.getLine()
+    this.getLine()
+    this.getLineDay()
+    this.getLineLive()
   },
   methods: {
     init() {
@@ -53,33 +86,65 @@ export default {
               this.valueList.push(this.dataName[key])
           }
           this.titles=this.title[0].split('-')
-          this.valueList[0].map(item => this.nameList.push(item.organizationName))
-          this.valueList[0].map(item=> this.totalList.push(item.total))
+          this.valueList[1].map(item => this.nameList.push(item.organizationName))
+          this.valueList[1].map(item=> this.totalList.push(item.total))
           this.$nextTick(()=> {
               this.loadEchart()
-              // this.percentEchart()
           })
         }
       })
     },
-    // getLine(){
-    //   reportLine().then(e=>{
-    //     if(e.data.code==200){
-    //       this.dataName=e.data.data
-    //       for (var key in this.dataName) {
-    //           this.title.push(key)
-    //           this.valueList.push(this.dataName[key])
-    //       }
-    //       this.titles=this.title[0].split('-')
-    //       this.valueList[0].map(item => this.nameList.push(item.organizationName))
-    //       this.valueList[0].map(item=> this.totalList.push(item.total))
-    //       this.$nextTick(()=> {
-    //           this.loadEchart()
-    //           this.percentEchart()
-    //       })
-    //     }
-    //   })
-    // },
+    getLine(){
+      reportLine().then(e=>{
+        if(e.data.code==200){
+          this.dataNameType=e.data.data
+          for (var key in this.dataNameType) {
+              this.valueTypeList.push(this.dataNameType[key])
+          }
+          this.valueTypeList[2].map(item=> this.positionType.push(item.positionType))
+          this.valueTypeList[2].map(item=> this.percentList.push(item.totalPercentage))
+          this.$nextTick(()=> {
+              this.percentEchart()
+          })
+        }
+      })
+    },
+    getLineDay(){
+      reportEnter({
+        dateType:'M'
+      }).then(e=>{
+        if(e.data.code==200){
+          this.dayList=e.data.data
+          for (var key in this.dayList) {
+              this.valueDayList.push(this.dayList[key])
+          }
+          console.log(this.valueDayList);
+          this.valueDayList[2].map(item=> this.positionDay.push(item.organizationName))
+          this.valueDayList[2].map(item=> this.percentListDay.push(item.total))
+          this.$nextTick(()=> {
+              this.dataChart()
+          })
+        }
+      })
+    },
+    getLineLive(){
+      reportEnter({
+        dateType:'M'
+      }).then(e=>{
+        if(e.data.code==200){
+          this.liveList=e.data.data
+          for (var key in this.liveList) {
+              this.valueLiveList.push(this.liveList[key])
+          }
+          console.log(this.valueDayList);
+          this.valueLiveList[2].map(item=> this.positionLive.push(item.organizationName))
+          this.valueLiveList[2].map(item=> this.percentListLive.push(item.total))
+          this.$nextTick(()=> {
+              this.dataChartLive()
+          })
+        }
+      })
+    },
     //柱状图汇总
     loadEchart() {
         this.myChart = echarts.init(document.getElementById("chart_example"));
@@ -125,7 +190,6 @@ export default {
           name: '',
           type: 'bar',
           data: this.totalList,
-          // data:[200],
           label: {
                 normal: {
                     show: true,
@@ -142,77 +206,216 @@ export default {
       });
     },
     //员工占比
-//     percentEchart() {
-//         this.myChartPersend = echarts.init(document.getElementById("persendChart"));
+    percentEchart() {
+        this.myChartPersend = echarts.init(document.getElementById("persendChart"));
         
-//         window.addEventListener("resize", function() {                
-// 	this.myChartPersend.resize();           
-// })
-//         this.myChartPersend.setOption({
-//       tooltip: {
-//         trigger: "axis"
-//       },
-//       xAxis: [
-//         // type: "category",
-//         // data: []
-//         {
-//             type: 'category',
-//             boundaryGap: true,
-//             data:['一线','二线','三线'],
-//             axisLine:{
-//             show:false
-//           },
-//           axisTick:{
-//               show:false
-//           },
-//         },
-//       ],
-//       grid: {
-//         left: '3%',
-//         right: '4%',
-//         bottom: '3%',
-//         containLabel: true
-//     },
-//       yAxis: [
-//         {
-//         type: "value",
-//         boundaryGap: [0.2, 0.2],
-//         max: 8000,
-//         min: 0,
-//         splitNumber:8,
-//         axisTick:{
-//             show:false
-//         },
-//         },
-//         {
-//         type: "value",
-//         boundaryGap: [0.2, 0.2],
-//         max:80,
-//         min: 0,
-//         axisLabel: {
-//                 formatter: '{value} %'
-//             },
-//             axisTick:{
-//             show:false
-//         },
-//         },
-//       ],
-//       series: [
-//         {
-//           name: '',
-//           type: 'bar',
-//           data: [400, 300, 100, 500, 600, 700],
-//         },
-//         {
-//           name: '',
-//           position: 'right',
-//           type: 'line',
-//           yAxisIndex: 1,
-//           data: [40, 30, 10, 50, 60, 70],
-//         },
-//       ]
-//       });
-//     },
+        window.addEventListener("resize", function() {                
+          this.myChartPersend.resize();           
+        })
+        this.myChartPersend.setOption({
+        tooltip: {
+          trigger: "axis"
+        },
+        legend: {
+          data:['公司数', '增幅']
+        },
+        title: {
+          // text: '一二三线员工数及占比',
+          textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+  //               fontSize:'.32rem',
+  //               color:rgba(24,49,77,1),
+  //               textAlign: center,
+  //               fontWeight: 550,
+              },
+  //             subtextStyle: {//副标题文本样式{"color": "#aaa"}
+  //                 fontFamily: 'Arial, Verdana, sans...',
+  //                 fontSize: 12,
+  //                 fontStyle: 'normal',
+  //                 fontWeight: 'normal',
+  //             },
+        },
+      xAxis: [
+        {
+            type: 'category',
+            boundaryGap: true,
+            boundaryGap: [0.2, 0.2],
+            data:this.positionType,
+            axisLine:{
+            show:false
+          },
+          axisTick:{
+              show:false
+          },
+        },
+      ],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      yAxis: [
+        {
+        type: "value",
+        boundaryGap: [0.2, 0.2],
+        max: 8000,
+        min: 0,
+        splitNumber:8,
+          axisTick:{
+              show:false
+          },
+        },
+        {
+        type: "value",
+        // boundaryGap: [0.2, 0.2],
+        max:100,
+        min: 0,
+        // splitNumber:10,
+        splitLine: {
+            show: false 
+        },
+        axisLabel: {
+                formatter: '{value} %'
+            },
+            axisTick:{
+            show:false
+        },
+        },
+      ],
+      series: [
+        {
+          name: '公司数',
+          type: 'bar',
+          data: [400, 300, 100, 500, 600, 700],
+        },
+        {
+          name: '增幅',
+          position: 'right',
+          type: 'line',
+          yAxisIndex: 1,
+          data: this.percentList,
+        },
+      ]
+      });
+    },
+     dataChart() {
+        this.myChart = echarts.init(document.getElementById("dataChart"));
+        this.myChart.setOption({
+      tooltip: {
+        trigger: "axis"
+      },
+      legend: {
+        // data: this.nameList
+      },
+      grid: {
+        left: '3%',
+        // right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: "value",
+        // boundaryGap: [0.2, 0.2],
+        max: 1400,
+        min: 0,
+        splitNumber:7,
+        axisLine:{
+            show:false
+        },
+        axisTick:{
+            show:false
+        },
+      },
+      yAxis: [
+        {
+          type: "category",
+          boundaryGap: [0.2, 0.2],
+          data:this.positionDay,
+          scale: true,
+          axisTick:{
+              show:false
+            },
+        },
+      ],
+      series: [
+        {
+          name: '',
+          type: 'bar',
+          data: this.percentListDay,
+          label: {
+                normal: {
+                    show: true,
+                    position: 'right'
+                }
+            },
+             itemStyle:{
+              normal:{
+                  color:'#EB9F4B'
+              }        
+            }
+        },
+      ]
+      });
+    },
+    dataChartLive() {
+        this.myChart = echarts.init(document.getElementById("dataChartLive"));
+        this.myChart.setOption({
+      tooltip: {
+        trigger: "axis"
+      },
+      legend: {
+        // data: this.nameList
+      },
+      grid: {
+        left: '3%',
+        // right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: "value",
+        // boundaryGap: [0.2, 0.2],
+        max: 1400,
+        min: 0,
+        splitNumber:7,
+        axisLine:{
+            show:false
+        },
+        axisTick:{
+            show:false
+        },
+      },
+      yAxis: [
+        {
+          type: "category",
+          boundaryGap: [0.2, 0.2],
+          data:this.positionLive,
+          scale: true,
+          axisTick:{
+              show:false
+            },
+        },
+      ],
+      series: [
+        {
+          name: '',
+          type: 'bar',
+          data: this.percentListLive,
+          label: {
+                normal: {
+                    show: true,
+                    position: 'right'
+                }
+            },
+             itemStyle:{
+              normal:{
+                  color:'#EB9F4B'
+              }        
+            }
+        },
+      ]
+      });
+    },
   }
 };
 </script>

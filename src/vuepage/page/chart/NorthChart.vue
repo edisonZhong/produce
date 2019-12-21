@@ -3,7 +3,7 @@
   <div>
      <h2 class="title">{{this.titles[0]}}</h2>
     <div id="content">
-        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，较昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
+        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
         <div id="northChart" class="chart"></div>
     </div>
     <!-- <div id="content">
@@ -79,7 +79,6 @@ export default {
       },
       xAxis: {
         type: "value",
-        boundaryGap: [0.2, 0.2],
         max: 1400,
         min: 0,
         splitNumber:7,
@@ -92,6 +91,7 @@ export default {
       },
       yAxis: [
         {
+          boundaryGap: [0.2, 0.2],
           type: "category",
           data:this.nameList,
           axisTick:{

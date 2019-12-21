@@ -3,23 +3,32 @@
     <div id="page">
         <!-- 员工信息 -->
         <div id="header">
-            <p style="text-align: center;width: 10%;">序号</p>
-            <p style="text-align: center;width: 30%;">姓名</p>
-            <p style="text-align: center;width: 30%;">客户工号</p>
-            <p style="text-align: center;width: 30%;">入职日期</p>
+            
+            <div class="h-top">
+                <mt-search v-model="value" placeholder="搜索"></mt-search>
+                <p class="seach">搜索</p>
+            </div>
+            <div class="h-bottom">
+                <p class="number-list">序号</p>
+                <p class="data-list" >姓名</p>
+                <p class="data-list">客户工号</p>
+                <p class="data-list">入职日期</p>
+            </div>
+            <img :src="imgCut" alt=""/>
         </div>
         <div id="main">
-            <ul style="height: 50px;width: 100%;" 
+            <!-- <ul style="height: 50px;width: 100%;" 
             v-infinite-scroll="loadMore"
             infinite-scroll-disabled="loading"
             :loading="loading"
-            infinite-scroll-distance="10">
-                <!-- <li v-for="(item,index) in dataList" :key='index'>
-                   <p style="text-align: center;width: 10%;">{{item.name}}</p> 
-                   <p style="text-align: center;width: 30%;">张三</p> 
-                   <p style="text-align: center;width: 30%;">A1234567</p> 
-                   <p style="text-align: center;width: 30%;">2019/04/25</p> 
-                </li> -->
+            infinite-scroll-distance="10"> -->
+            <ul style="height: 50px;width: 100%;">
+                <li>
+                    <p class="number-list"> 1</p>
+                    <p class="data-list">1</p>
+                    <p class="data-list">1</p>
+                    <p class="data-list">1</p>
+                </li>
             </ul>
         </div>
         <TabBar></TabBar>
@@ -36,41 +45,44 @@ export default {
     data(){
         return{
             dataList:[],
+            value:'',
             loading:true,
             imgUrl:require("@/assets/img/Group.png"),
-            page:{
-                limit:50,
-                page:1
-            }
+            page: {
+                page: 1,
+                size: 50,
+                total: 0
+            },
+            imgCut:require("@/assets/img/cutOff.png")
         }
     },
     created(){
-        this.getList()
+        // this.getList()
     },
     methods:{
-        getList(){
-            listData({
-                page:this.page.page,
-                limit:this.page.limit
-            }).then(e=>{
-                if(e.data.code){
-                    console.log(e);
-                }
-            })
-        },
+        // getList(){
+        //     listData({
+        //         page:this.page.page,
+        //         limit:this.page.size
+        //     }).then(e=>{
+        //         if(e.data.code==200){
+        //             console.log(e);
+        //         }
+        //     })
+        // },
        handlePush(){
            this.$router.push({path:'/AddEmployee'})
        },
-       loadMore() {
-            this.loading = true;
-            // setTimeout(() => {
-            let last = this.list[this.list.length - 1];
-            for (let i = 1; i <= 9; i++) {
-                this.list.push(last + i);
-            }
-            this.loading = false;
-            // }, 2500);
-        }
+    //    loadMore() {
+    //         this.loading = true;
+    //         // setTimeout(() => {
+    //         let last = this.list[this.list.length - 1];
+    //         for (let i = 1; i <= 9; i++) {
+    //             this.list.push(last + i);
+    //         }
+    //         this.loading = false;
+    //         // }, 2500);
+    //     }
     }
 }
 </script>
@@ -80,14 +92,16 @@ export default {
     overflow: hidden;
     height: 100vh;
   }
- 
-  .page-wrap {
-    overflow: auto;
-    height: 100%;
-    padding-bottom: 100px;
-  }
-  .actived {
-  color:rgba(235,159,75,1) !important;
+.page-wrap {
+overflow: auto;
+height: 100%;
+padding-bottom: 100px;
+}
+.number-list{
+    text-align: center;width: 13%;
+}
+.data-list{
+    text-align: center;width: 29%;
 }
 #page{
     height: 100%;
@@ -95,23 +109,59 @@ export default {
     box-sizing: border-box;
     #header{
 	    width: 100%;
-        height: 50px;
+        height: 2.48rem;
         background: #fff;
         position: absolute;
         top:0;
-        bottom:50px;
+        bottom:1rem;
         left: 0;
         right:0;
         display: flex;
-        justify-content: space-around;
-        align-items: center;
-        font-size:12px;
-        box-shadow: .22rem .22rem .22rem rgba(0, 0, 0, .1);
+        flex-direction: column;
+        font-size:.24rem;
+        .img-cut{
+            position: absolute;
+            top: 2.04rem;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: .44rem;
+        }
+        // box-shadow: .22rem .22rem .22rem rgba(0, 0, 0, .1);
+        .h-top{
+             height: 1.04rem;
+             width: 100%;
+             img{
+                position: absolute;
+                top: 0.5rem;
+                padding: 0 0.3rem;
+             }
+             .seach {
+                width: 0.9rem;
+                line-height: 1.04rem;
+                margin-left: 0.3rem;
+                color: rgba(187, 192, 198, 1);
+                font-size: 0.28rem;
+                text-align: center;
+                position: absolute;
+                top: 0;
+                right: .2rem;
+            }
+        }
+        .h-bottom{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 1rem;
+            padding-left: .15rem;
+            box-sizing: border-box;
+        }
     }
     #main{
         position: absolute;
-        top:60px;
-        bottom: 50px;
+        top:2.04rem;
+        bottom: 1rem;
         overflow-x:hidden;
         overflow-y: auto;
         width: 100%;
@@ -128,32 +178,5 @@ export default {
             }
         }
     }
-    // #footer{
-    //     background: rgba(248,248,248,1);
-    //     width: 100%;
-    //     position: absolute;
-    //     bottom:0;
-    //     left: 0;
-    //     right:0;
-    //     display: flex;
-    //     height: 50px;
-    //     justify-content: space-around;
-    //     align-items: center;
-    //     width: 100%;
-    //     li{
-    //         display: flex;
-    //         flex-direction: column;
-    //         justify-content: center;
-    //         align-items: center;
-    //         font-size: 11px;
-    //         height: 100%;
-    //         color:rgba(153,153,153,1);
-    //         // color: #EB9F4B;
-    //     }
-    //     // li:focus
-    //     // { 
-    //     // color: #EB9F4B;
-    //     // }
-    // }
 }
 </style> 

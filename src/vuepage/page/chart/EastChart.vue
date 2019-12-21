@@ -5,7 +5,7 @@
     <div id="content">
       <h2>
         员工总数
-        <span class="number">{{this.titles[1]}}</span> 人，较昨日增长
+        <span class="number">{{this.titles[1]}}</span> 人，昨日增长
         <span class="number">{{this.titles[2]}}</span>人
       </h2>
       <div id="EastChart" class="chart"></div>
@@ -84,7 +84,6 @@ export default {
         },
         xAxis: {
           type: "value",
-          boundaryGap: [0.2, 0.2],
           max: 1400,
           min: 0,
           splitNumber:7,
@@ -99,6 +98,7 @@ export default {
           {
             type: "category",
             data: this.nameList,
+            boundaryGap: [0.2, 0.2],
             axisTick:{
               show:false
             },
@@ -108,7 +108,7 @@ export default {
           {
             // name: "",
             type: "bar",
-            barCategoryGap:'70%',
+            // barCategoryGap:'70%',
             data: this.totalList,
             label: {
               normal: {

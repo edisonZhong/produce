@@ -7,7 +7,7 @@
            <mt-search v-model="value" placeholder="搜索"></mt-search>
            <p class="seach">搜索</p>
     </div>
-  <!-- <div
+  <div
       ref="mescroll"
       class="mescroll"
       id='mescroll'
@@ -66,32 +66,78 @@
         </ul>
       </div>
     </div>
-    </div> -->
+    </div>
+
+     <!-- <mescroll-vue ref="mescroll" :up="mescrollUp" @init="mescrollInit">
+			     
+			</mescroll-vue> -->
   </div>
 </template>
 
 <script>
-// import MeScroll from 'mescroll.js'
-// import 'mescroll.js/mescroll.min.css'
+import Mescroll  from 'mescroll.js'
+import 'mescroll.js/mescroll.min.css'
 export default {
   name: "selectService",
-  // components:{MeScroll},
+  components:{Mescroll },
   data() {
     return {
       imgUrl: require("@/assets/img/seach.png"),
       value: "",
       count: 0,
       list: [],
-      // mescroll:null
+      mescroll:null,
+			// mescrollDown:{}, //下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
+      mescrollUp: { // 上拉加载的配置.
+        callback: this.getData, 
+      },
+      dataList: [] // 列表数据
     };
   },
  created() {
     this.getData() 
   },
+  mounted(){
+    this.mescroll=new Mescroll(this.$refs.mescroll,{
+      // down:{
+      //   callback:this.downCallback
+      // },
+      up:{
+        user:true,
+        callback:this.getData(),
+        noMoreSize:5,
+        htmlNodata:'<p class="upwarp-nodata">暂无更多数据---</p>'
+      },
+      empty:{
+        warpId:'mescroll',
+        tip:'暂无相关数据哦~~~'
+      }
+    })
+    up:{
+      user:true;
+
+    }
+  },
   methods: {
-    getData(){
+    getData(page){
       const that = this
-      
+      // dataList({}).then(e=>{
+      //   console.log(e);
+      //   var datas=e.data.data
+      //   if(datas.code==1){
+      //       this.dataList=e.data.data
+      //       if(page.page==1){
+      //         that.dataList=[]
+      //       }
+      //       var data=e.data.data
+      //       if(data&&data.length>0){
+      //         that.dataList=that.dataList.concat(data)
+      //       }
+      //   }
+      //   that.$nextTick(()=>{
+      //     that.mescroll.endSuccess(data.length)
+      //   })
+      // })
     }
   }
 };
