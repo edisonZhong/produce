@@ -17,11 +17,12 @@
             <img :src='imgUrl' alt=""/>
         </div>
         <div id="main" @scroll="handleScroll" ref="content">
-            <SouthChart></SouthChart>
-            <EastChart></EastChart>
-            <CenterChart></CenterChart>
-            <NorthChart></NorthChart>
+            <SouthChart id='2'></SouthChart>
+            <EastChart id='3'></EastChart>
+            <CenterChart id='4'></CenterChart>
+            <NorthChart id='5'></NorthChart>
         </div>
+        <p>到底啦~~~~</p>
         <TabBar></TabBar>
     </div>
 </template>
@@ -65,6 +66,9 @@ export default {
       // this.getToken();
     },
     methods:{
+        // recordScrollPosition(e) {
+        // this.$store.dispatch("setListTop",e.target.scrollTop);//实时存入到vuex中
+        // },
         // getToken(){
         //   // alert(this.$utils.getHashUrlParams('code'),'c')
         //   // alert(this.$utils.getUrlParams('code'),'c')
@@ -85,10 +89,8 @@ export default {
         },
         handleScroll(el){
             this.scrollTop = this.$refs.content.scrollTop
-            if(this.scrollTop>300){
-                this.title='华东大区'
-            }
-            // console.log(this.$refs.content.scrollTop);
+           
+            console.log(this.$refs.content.scrollTop)
         }
     }
 }

@@ -8,15 +8,15 @@
         <div id="dataChart" class="chart"></div> -->
     </div>
     <div id="content">
-       
+        <h2>一二三线员工数及占比</h2>
         <div id="persendChart" class="chart"></div>
     </div>
     <div id="content">
-       
+      <h2>昨日入职员工{{}}人</h2>
         <div id="dataChart" class="chart"></div>
     </div>
     <div id="content">
-       
+      <h2>昨日入职员工{{}}人</h2>
         <div id="dataChartLive" class="chart"></div>
     </div>
    
