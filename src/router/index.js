@@ -6,6 +6,7 @@ const Employee =()=> import('@/vuepage/page/Employee.vue')
 const AddEmployee=()=> import('@/vuepage/page/AddEmployee.vue')
 const SelectService=()=> import('@/vuepage/page/SelectService.vue')
 const ClientType=()=> import('@/vuepage/page/ClientType.vue')
+
 Vue.use(Router)
 
 
@@ -40,6 +41,7 @@ export default new Router({
       component: AddEmployee,
       meta: {
         title:'录入员工信息',
+        // keepAlive:true
       } 
     },
     {
@@ -47,6 +49,7 @@ export default new Router({
       component: SelectService,
       meta: {
         title:'选择业务区',
+
       } 
     },
     {
