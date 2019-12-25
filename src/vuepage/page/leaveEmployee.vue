@@ -3,26 +3,28 @@
   <div id="page">
     <div id='main'>
       <router-link to="/choiceEmployee">
-        <mt-field label="离职员工" :placeholder="employeeName" v-model="employeeName" disabled>
+        <div class="jian">
+        <mt-field class="line" label="离职员工" :placeholder="employeeName" v-model="employeeName" disabled>
           <img src="@/assets/img/right.png" height="12px" width="8px">
         </mt-field>
+        </div>
       </router-link>
       <mt-field label="所属业务区" placeholder="系统自动带出" v-model="employeeArea" disabled/>
       <mt-field label="客户工号" placeholder="系统自动带出" v-model="customerEmployeeNo" disabled/>
       <mt-field label="入职日期" placeholder="系统自动带出" v-model="organizationalId" disabled/>
-      <div @click="openPicker(0)">
+      <div class="line" @click="openPicker(0)">
         <mt-field label="离职日期" placeholder="请选择" disabled v-model="entryAt"/>
       </div>
       <mt-field label="离职原因" placeholder="请填写" v-model="positionType"/>
-      <div @click="openPicker(1)">
+      <div class="line" @click="openPicker(1)">
         <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1"/>
       </div>
-      <div @click="openPicker(2)">
+      <div class="line" @click="openPicker(2)">
         <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled/>
       </div>
       <div class="footer">
-        <mt-button class="bottom-save" @click="handleSave(1)">保存</mt-button>
-        <mt-button style="width:4rem;height:.88rem" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
+        <mt-button style="margin-left:.3rem" class="bottom-save" @click="handleSave(1)">保存</mt-button>
+        <mt-button style="width:4rem;height:.88rem;margin-right: .5rem;" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
       </div>
     </div>
     <mt-datetime-picker
@@ -119,6 +121,8 @@
       },
       getUserData: function () {
         const userid = this.$route.params.id, _this = this;
+        alert('123');
+        if(userid==='id'){return;}
         Indicator.open({
           text: '加载中...',
           //文字
@@ -126,6 +130,7 @@
           //样式
         });
         getEmployeeById(userid).then(e => {
+          Indicator.close();
           let {employeeName, organizationName, customerEmployeeNo, entryAt, socialSecurityStartAt} = e.data.data;
           entryAt = _this.$utils.date(entryAt, '4');
           socialSecurityStartAt = socialSecurityStartAt == null ? '' : _this.$utils.date(socialSecurityStartAt, '5');
@@ -135,7 +140,6 @@
             _this.customerEmployeeNo = customerEmployeeNo;
             _this.organizationalId = entryAt;
             _this.entryAt1 = socialSecurityStartAt;
-            Indicator.close();
           }
         });
       },
@@ -192,7 +196,15 @@
   a {
     color: black;
   }
-
+  .mint-cell-value{
+    flex: 0 0 73%!important;
+  }
+  .mint-cell-wrapper{
+    padding-right: 0px;
+  }
+  .mint-cell:last-child{
+    background-image: none;
+  }
   #page {
     height: 100%;
     position: relative;
@@ -209,8 +221,15 @@
       // border-bottom: 1px solid #ccc;
       overflow-x: hidden;
       overflow-y: auto
+
     }
   }
+#main >a{
+    border-bottom: 1px solid #d9d9d9;
+}
+.line{
+  border-bottom: 1px solid #d9d9d9;
+}
 
   .bottom-save {
     height: .88rem;
@@ -229,4 +248,5 @@
     height: 1.58rem;
     background: #fff
   }
+
 </style>
