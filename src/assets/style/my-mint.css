@@ -1,51 +1,79 @@
-.mint-searchbar{
-    background-color: #fff;
-    margin-right: 1rem;
-};
-.mintui-search {
-    font-size: 14px !important;
-    padding-right: .2rem !important;
-}
-.mint-search{
-    width: 100%;
-    height:1.04rem
-}
 .mint-searchbar {
-    height: 1.04rem;
+  background-color: #fff;
+  margin-right: 1rem;
 }
+
+.mint-field-other {
+  top: 0;
+  right: 0;
+  position: relative;
+}
+
+.mintui-search {
+  font-size: 14px !important;
+  padding-right: .2rem !important;
+}
+
+.mint-search {
+  width: 100%;
+  height: 1.04rem
+}
+
+.mint-searchbar {
+  height: 1.04rem;
+}
+<<<<<<< HEAD
+
+.mint-searchbar-inner {
+  background: rgba(246, 248, 250, 1);
+=======
 .mint-searchbar-inner{
     background:rgba(246,248,250,1);
     height: .56rem;
+>>>>>>> 9899ff8abf4bc647956b1e187b5c3d42177acc10
 }
+
 .mintui-search {
-    font-size: .33rem !important;
-    padding-right: .15rem !important;
+  font-size: .33rem !important;
+  padding-right: .15rem !important;
 }
+
 .mint-field-core {
-    text-align: right;
-    padding-right: .2rem;
+  text-align: right;
+  padding-right: .2rem;
 }
+
 .mint-field-clear {
-    display: none;
+  display: none;
 }
-.mint-searchbar-cancel{
-    display: none;
+
+.mint-searchbar-cancel {
+  display: none;
 }
+
 .mint-search-list {
-    display: none !important;
+  display: none !important;
 }
 
 .mint-field-core {
-    /* width: 3rem; */
-    text-overflow: ellipsis;
-    font-size: 14px;
-    flex: 0 0 80%;
-    padding-left: .5rem;
-    box-sizing: border-box;
-    /* padding-right: 0rem;     */
+  /* width: 3rem; */
+  text-overflow: ellipsis;
+  font-size: 14px;
+  flex: 0 0 80%;
+  padding-left: .5rem;
+  box-sizing: border-box;
+  /* padding-right: 0rem;     */
 
 }
+
 .mint-field .mint-cell-value {
+<<<<<<< HEAD
+  flex: 0 0 85%;
+  /* width: 3rem; */
+  text-overflow: ellipsis
+}
+
+=======
     flex: 0 0 87%;
     /* width: 3rem; */
     text-overflow: ellipsis
@@ -55,21 +83,39 @@
     right: .35rem;
     position: absolute;
 } */
+>>>>>>> 9899ff8abf4bc647956b1e187b5c3d42177acc10
 .mint-cell-text {
-    font-size: 14px;
+  font-size: 16px;
 }
-.mint-cell-wrapper{
-    padding: 0 .3rem;
+
+.mint-cell-wrapper {
+  padding: 0 .3rem;
+  background-image: none;
 }
+<<<<<<< HEAD
+
+.mint-field .mint-cell-value:nth-last-child(3) {
+  flex: 0 0 82%;
+}
+
+=======
+>>>>>>> 9899ff8abf4bc647956b1e187b5c3d42177acc10
 .mint-datetime-action:nth-last-child(1) {
-    text-align: right;
-    padding-right: .3rem;
-    box-sizing: border-box;
+  text-align: right;
+  padding-right: .3rem;
+  box-sizing: border-box;
 }
+
 .mint-datetime-action {
+<<<<<<< HEAD
+  text-align: left;
+  padding-left: .3rem;
+  box-sizing: border-box;
+=======
     text-align: left;
     padding-left: .3rem;
     box-sizing: border-box;
+>>>>>>> 9899ff8abf4bc647956b1e187b5c3d42177acc10
 }
 .mint-cell-wrapper {
     background-image: -webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);

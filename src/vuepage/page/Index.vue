@@ -106,7 +106,7 @@ export default {
     mounted(){
 
     },
-    created(){
+     created(){
       // 员工总数
       // await this.getData()
       // // this.init()
@@ -118,8 +118,9 @@ export default {
       // await this.getLineLive()
 
       // 获取区列表
-      this.getDistrictList();
+       this.getDistrictList();
     },
+
     methods:{
       selectName(name,no){
         this.selectedOrganizationName = name;
@@ -150,19 +151,22 @@ export default {
           console.log(res,'ress');
           // 员工总数
           // console.log();
-          // this.getData(res.data.data.totalMap)
-          // 入职
-          // 辞职
+          this.getData(res.data.data.totalMap)
           // 岗位属性员工数占比统计图
+          this.getLine(res.data.data.positionMap)
+          // 入职
+          this.getLineDay(res.data.data.entryMap)
+          // 辞职
+          this.getLineLive(res.data.data.resignationMap)
 
         })
       },
-      getLineLive(){
-        reportEnter({
-          dateType:this.dataType
-        }).then(e=>{
-          if(e.data.code==200){
-            this.liveList=e.data.data
+      getLineLive(data){
+        // reportEnter({
+        //   dateType:this.dataType
+        // }).then(e=>{
+        //   if(e.data.code==200){
+            this.liveList=data
             var valueLiveList = [];
             for (var key in this.liveList) {
                 valueLiveList.push(this.liveList[key])
@@ -189,24 +193,32 @@ export default {
             }
 
             console.log(this.boxLideLive,'lizhilizhilizhilizhilizhilizhilizhi');
-          }
-        })
+        //   }
+        // })
       },
-      getLineDay(){
-        reportEnter({
-          dateType:this.dataType
-        }).then(e=>{
-          console.log(e.data.data,'入职');
-          if(e.data.code==200){
-            this.dayList=e.data.data;
+      getLineDay(data){
+        // reportEnter({
+        //   dateType:this.dataType
+        // }).then(e=>{
+        //   console.log(e.data.data,'入职');
+        //   if(e.data.code==200){
+            this.dayList=data;
             var valueDayList = [];
+            var titleTmp = [];
             for (var key in this.dayList) {
+                titleinfo.push(key);
                 valueDayList.push(this.dayList[key])
             }
             // console.log(this.dayList,'listttttt-----+');
             var positionDay = [];
             var percentListDay = [];
+            var titleInfo = [];
             for(let i=0;i<valueDayList.length;i++){
+
+              titleInfo.push(titleTmp[i].split('-'))
+
+
+
               var a = i;
               positionDay[a] = [];
               valueDayList[i].map(item=> {
@@ -224,19 +236,20 @@ export default {
             // })
             this.boxLideDay = {
               positionDay:positionDay,
-              percentListDay:percentListDay
+              percentListDay:percentListDay,
+              titleInfo:titleInfo
             }
 
             // console.log(this.boxLideDay,'入职入职入职入职入职入职入职入职入职入职');
 
-          }
-        })
+          // }
+        // })
       },
-      getLine(){
-        reportLine().then(e=>{
-          console.log(e,'zhanbi');
-          if(e.data.code==200){
-            this.dataNameType=e.data.data
+      getLine(data){
+        // reportLine().then(e=>{
+        //   console.log(e,'zhanbi');
+        //   if(e.data.code==200){
+            this.dataNameType=data
             var valueTypeList = [];
             for (var key in this.dataNameType) {
               valueTypeList.push(this.dataNameType[key])
@@ -261,8 +274,8 @@ export default {
               positionType:positionType,
               percentList:percentList
             }
-          }
-        })
+        //   }
+        // })
       },
       getData(data){
           // reportData({
@@ -302,13 +315,14 @@ export default {
                 valueListBar[i].map(item=> totalListBar[b].push(item.total))
               }
 
-              console.log(nameListBar,totalListBar,'testing');
 
               this.boxBar = {
                 nameList:nameListBar,
                 totalList:totalListBar,
                 titlesBar:this.titlesBar
               }
+              console.log(this.boxBar,'testing');
+
             // }
           // })
         },
