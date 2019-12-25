@@ -5,7 +5,8 @@
       <mt-field label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
       <mt-field label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
       <mt-field label="所属业务区" v-model="organizationName" @focus.native.capture="handleService">
-        <img :src="imgF" style alt />
+        <!-- <img :src="imgF" style alt /> -->
+        <img src="@/assets/img/right.png" height="12px" width="8px">
       </mt-field>
       <mt-field label="入职日期" placeholder="请选择" v-model="entryAt" @focus.native.capture="openPicker"></mt-field>
       <mt-field
@@ -14,8 +15,9 @@
         v-model="legalCompanyName"
         @focus.native.capture="openlabour"
       ></mt-field>
-      <mt-field label="服务客户名称" v-model="customerName" @focus.native.capture="handleClient">
-        <img :src="imgF" style alt />
+      <mt-field label="服务客户名称" id="img-imgs" v-model="customerName" @focus.native.capture="handleClient">
+        <!-- <img :src="imgF" style="height:12px;width:8px" alt /> -->
+        <img src="@/assets/img/right.png" height="12px" width="8px">
       </mt-field>
       <mt-field
         label="岗位属性"
@@ -23,12 +25,13 @@
         v-model="positionTypeName"
         @focus.native.capture="handleType"
       ></mt-field>
+      <mt-field disabled></mt-field>
       <div class="footer">
         <mt-button class="bottom-save" @click="handleSave">保存</mt-button>
         <mt-button class="bottom-c" @click="handleSaveContinue" type="primary">保存并继续添加</mt-button>
       </div>
     </div>
-    <!-- 日历框 -->
+        <!-- 日历框 -->
     <mt-datetime-picker
       ref="picker"
       type="date"
@@ -105,9 +108,9 @@ export default {
     showPicker(e) {
       e.preventDefault(); //阻止输入法的唤醒
     },
-    persist(employeeName,customerEmployeeNo) {
-      localStorage.setItem("employeeName",JSON.stringify(employeeName)); //保存姓名
-      localStorage.setItem("customerEmployeeNo", JSON.stringify(customerEmployeeNo)); //保存客户工号
+    persist() {
+      localStorage.setItem("employeeName",JSON.stringify(this.employeeName)); //保存姓名
+      localStorage.setItem("customerEmployeeNo", JSON.stringify(this.customerEmployeeNo)); //保存客户工号
     },
     //弹出日历选择
     openPicker(value1) {
@@ -120,7 +123,7 @@ export default {
       this.$refs.picker.open();
     },
     handleConfirm(value1) {
-        localStorage.setItem("entryAt", JSON.stringify(entryAt)) //保存日期
+        localStorage.setItem("entryAt", JSON.stringify(this.$utils.date(value1))) //保存日期
       this.entryAt = this.$utils.date(value1);
     },
     //跳转到选择业务区页面
@@ -252,6 +255,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+#img-imgs .mint-cell-value{
+  flex:  0 0 82% !important
+}
 #page {
   height: 100%;
   position: relative;

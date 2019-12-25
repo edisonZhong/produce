@@ -13,7 +13,8 @@ function checkLogin(wx) {
 
         if (aCode) {
             //获取token操作
-          console.log(aCode);
+          console.log(aCode,'code');
+          // return
           getToken({
             code:aCode
           }).then(e=>{

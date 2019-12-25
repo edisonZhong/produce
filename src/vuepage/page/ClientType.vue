@@ -7,8 +7,8 @@
     </div>
    <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 50px;width: 100%;">
-            <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerType)">
-            {{item.customerType}}
+            <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerName)">
+            {{item.customerName}}
           </li>
         </ul>
     </mescroll-vue>
@@ -91,8 +91,8 @@ export default {
         }
       });
     },
-    handleLink(id,customerType){
-      localStorage.setItem("customerType", JSON.stringify(customerType))
+    handleLink(id,customerName){
+      localStorage.setItem("customerName", JSON.stringify(customerName))
       localStorage.setItem("customerId", JSON.stringify(id))
       this.$router.push({
         path:'/AddEmployee',
