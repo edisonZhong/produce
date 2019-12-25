@@ -15,6 +15,7 @@
 }
 .mint-searchbar-inner{
     background:rgba(246,248,250,1);
+    height: .56rem;
 }
 .mintui-search {
     font-size: .33rem !important;
@@ -45,21 +46,21 @@
 
 }
 .mint-field .mint-cell-value {
-    flex: 0 0 85%;
+    flex: 0 0 87%;
     /* width: 3rem; */
     text-overflow: ellipsis
 }
+/* .mint-field-other {
+    top: 0;
+    right: .35rem;
+    position: absolute;
+} */
 .mint-cell-text {
     font-size: 14px;
 }
 .mint-cell-wrapper{
     padding: 0 .3rem;
 }
-
-.mint-field .mint-cell-value:nth-last-child(3) {
-    flex: 0 0 82%;
-}
-
 .mint-datetime-action:nth-last-child(1) {
     text-align: right;
     padding-right: .3rem;
