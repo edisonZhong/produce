@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <transition leave-active-class='fadeOut animated' enter-active-class='fadeIn animated'>
-      <router-view/>
+      <!-- <keep-alive> -->
+        <router-view></router-view>
+      <!-- </keep-alive> -->
     </transition>
   </div>
 </template>

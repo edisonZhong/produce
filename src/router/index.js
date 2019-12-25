@@ -27,7 +27,7 @@ export default new Router({
       meta: {
         theIndex: "1",
         title:'首页',
-      } 
+      }
     },
     {
       path: '/Employee',
@@ -35,14 +35,15 @@ export default new Router({
       meta: {
         theIndex: "2",
         title:'员工信息',
-      } 
+      }
     },
     {
       path: '/AddEmployee',
       component: AddEmployee,
       meta: {
         title:'录入员工信息',
-      } 
+        // keepAlive:true
+      }
     },
      {
       path: '/leaveEmployee/:id',
@@ -50,28 +51,29 @@ export default new Router({
       component: leaveEmployee,
       meta: {
         title:'录入离职员工信息',
-      } 
+      }
     },
     {
       path: '/choiceEmployee',
       component: choiceEmployee,
       meta: {
         title:'选择客户名称',
-      } 
+      }
     },
     {
       path: '/SelectService',
       component: SelectService,
       meta: {
         title:'选择业务区',
-      } 
+
+      }
     },
     {
       path: '/ClientType',
       component: ClientType,
       meta: {
         title:'选择客户名称',
-      } 
+      }
     },
      {
       path: '*',
@@ -80,7 +82,7 @@ export default new Router({
       meta: {
         theIndex: "1",
         title:'首页'
-      } 
+      }
     }
   ]
 })

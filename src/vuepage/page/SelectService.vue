@@ -2,81 +2,27 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-           <!-- <input placeholder="输入关键字" class="input-seach" v-model="value"/>
-           <img :src='imgUrl' alt=""/> -->
-           <mt-search v-model="value" placeholder="搜索"></mt-search>
-           <p class="seach">搜索</p>
-    </div>
-  <div
-      ref="mescroll"
-      class="mescroll"
-      id='mescroll'
-    >
-    <div>
-        <div class="main">
-          <ul id="dataList">
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-            <li class="data-li" >
-            1
-            </li>
-        </ul>
-      </div>
-    </div>
+      <mt-search v-model="value" placeholder="搜索"></mt-search>
+      <p class="seach" @click="handleSeach">搜索</p>
     </div>
 
-     <!-- <mescroll-vue ref="mescroll" :up="mescrollUp" @init="mescrollInit">
-			     
-			</mescroll-vue> -->
+    
+      <div id="main" ref="mescroll" class="mescroll">
+        <div>
+            <ul style="height: 50px;width: 100%;">
+                <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.organizationName)">
+                {{item.organizationName}}
+              </li>
+            </ul>
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Mescroll  from 'mescroll.js'
 import 'mescroll.js/mescroll.min.css'
+import { selectService } from "../../server/employee";
 export default {
   name: "selectService",
   components:{Mescroll },
@@ -85,17 +31,16 @@ export default {
       imgUrl: require("@/assets/img/seach.png"),
       value: "",
       count: 0,
-      list: [],
       mescroll:null,
-			// mescrollDown:{}, //下拉刷新的配置. (如果下拉刷新和上拉加载处理的逻辑是一样的,则mescrollDown可不用写了)
-      mescrollUp: { // 上拉加载的配置.
-        callback: this.getData, 
+      page: {
+        num: 1,
+        size: 50,
+        total: 0
       },
       dataList: [] // 列表数据
     };
   },
  created() {
-    this.getData() 
   },
   mounted(){
     this.mescroll=new Mescroll(this.$refs.mescroll,{
@@ -104,50 +49,70 @@ export default {
       // },
       up:{
         user:true,
-        callback:this.getData(),
+        callback:this.getList,
         noMoreSize:5,
         htmlNodata:'<p class="upwarp-nodata">暂无更多数据---</p>'
       },
-      empty:{
-        warpId:'mescroll',
-        tip:'暂无相关数据哦~~~'
-      }
+      empty: {
+      warpId: "mescroll", //
+      icon: "./static/mescroll/mescroll-empty.png", //
+      tip: "暂无相关数据~" //提示
+    }
     })
     up:{
       user:true;
-
     }
   },
   methods: {
-    getData(page){
-      const that = this
-      // dataList({}).then(e=>{
-      //   console.log(e);
-      //   var datas=e.data.data
-      //   if(datas.code==1){
-      //       this.dataList=e.data.data
-      //       if(page.page==1){
-      //         that.dataList=[]
-      //       }
-      //       var data=e.data.data
-      //       if(data&&data.length>0){
-      //         that.dataList=that.dataList.concat(data)
-      //       }
-      //   }
-      //   that.$nextTick(()=>{
-      //     that.mescroll.endSuccess(data.length)
-      //   })
-      // })
+   getList(page) {
+    const that = this
+      selectService({
+        page: this.page.num,
+        limit: this.page.size,
+        organizationName:this.value
+      }).then(e => {
+        if (e.data.code == 200) {
+          if (this.page.num == 1) {
+            that.dataList = [];
+          }
+          var datas = e.data.data;
+          var data = datas.list;
+          if (data && data.length > 0) {
+            that.dataList = that.dataList.concat(data);
+          }
+        }
+        that.$nextTick(() => {
+          that.mescroll.endByPage(data.length, e.data.data.total)
+        });
+      });
+    },
+    handleSeach(){
+      this.page.page = 1;
+      this.getList();
+    },
+    handleLink(id,organizationName){
+      console.log(organizationName);
+      localStorage.setItem('id',id);
+      localStorage.setItem('organizationName',organizationName);
+
+      // sessionStorage.setItem('id',id);
+      this.$router.push({
+        path:'/AddEmployee',
+        query:{
+          id:id,
+          name:organizationName
+        }
+      })
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
-.main {
+#main {
   width: 100%;
   position: absolute;
-  top: 1.04rem;
+  top: 1rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -155,15 +120,19 @@ export default {
   overflow-y: auto;
   padding: 0 .3rem;
   box-sizing: border-box;
-  .data-li {
-    height: 0.88rem;
-    line-height: 0.88rem;
-    border-bottom: 1px solid rgba(220,223,230,1);
-  }
+
+ ul {
+      li {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid rgba(220, 223, 230, 1);
+      }
+    }
 }
 .seach {
   width: 0.9rem;
-  line-height: 1.04rem;
   margin-left: 0.3rem;
   color: rgba(187, 192, 198, 1);
   font-size: 0.28rem;
@@ -171,6 +140,8 @@ export default {
   position: absolute;
     top: 0;
     right: .2rem;
+    background: #fff;
+    line-height: 1.2rem;
 }
 .mescroll{
   position: fixed;
@@ -185,14 +156,12 @@ export default {
   border-radius: 4px;
 }
 .header {
-  // padding: 0.3rem;
-  // display: flex;
   height: 1.04rem;
   width: 100%;
-  // box-sizing: border-box;
-  // position: absolute;
-  // top: 0;
-  // width: 100%;
+  position: fixed;
+  z-index: 10;
+  padding: .1rem;
+    box-sizing: border-box;
   img {
     position: absolute;
     top: 0.5rem;
