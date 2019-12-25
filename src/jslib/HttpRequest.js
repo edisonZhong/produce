@@ -13,13 +13,15 @@ Vue.prototype.$vux = ToastPlugin;
 let upBaseUrl = '';
 if (process.env.NODE_ENV === 'production') {
 //线上
-    upBaseUrl = 'http://wbapi.fenganghr.com/';
+    // upBaseUrl = 'http://wbapi.fenganghr.com/';
+    upBaseUrl = 'http://preywapi.fenganghr.com/';
+
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    // upBaseUrl = 'http://192.168.43.216:9095/';
-    // upBaseUrl  =  'http://192.168.43.173:9095/';
-    upBaseUrl = 'http://wbapi.fenganghr.com/';
+    upBaseUrl = 'http://preywapi.fenganghr.com/';
+    // upBaseUrl  =  'http://192.168.0.16:9095/';
+    // upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -41,7 +43,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             // "Authorization":localStorage.getItem('token')||'',
-            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZ3J1YW4iLCJjcmVhdGVkIjoxNTc3MjUzMzMxNDEwLCJleHAiOjQyMzUxNzcyNTMzMzF9.mhQV8FoV8UOjxaGJD5h9EdveewhtdduI-GFyii0O7D5Kf6HJPX2G7kgAKGcGBuSbkfWCvJtIGPclfb0nJN_wAw',
+            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVueWlob25nMiIsImNyZWF0ZWQiOjE1NzcyNTI2MDQwMzMsImV4cCI6NDIzNTE3NzI1MjYwNH0.t8jFQoRDF4gbQev_sbV3bPg2ztI4nQmGBSgRid7FpDskcM8SOm4FiODwuqxfV7Vmx5HKzaHdZ4w0BY29Zrv7Vw',
             "backend":'lhyg'
         }
         return config;
@@ -62,7 +64,7 @@ instance.interceptors.response.use(function (response) {
       //     query: {redirect: router.currentRoute.fullPath}
       // })
       //微信的授权登陆
-      //document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=http://ywh5.fenganghr.com&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
+      // document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=http://ywh5.fenganghr.com&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
   }else if (response.data.code==404){
       console.log(error.response.message)
       Vue.$vux.toast.show({

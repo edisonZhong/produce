@@ -1,7 +1,7 @@
 <!--统计图 华南大区-->
 <template>
   <div>
-    <div class='businessArea'>{{title}}</div>
+    <!-- <div class='businessArea'>{{title}}</div> -->
 
     <div>
       <div id="content">
