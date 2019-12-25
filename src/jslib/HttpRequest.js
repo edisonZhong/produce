@@ -41,7 +41,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             // "Authorization":localStorage.getItem('token')||'',
-            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVueWlob25nMiIsImNyZWF0ZWQiOjE1NzcxNjM2OTcxNzUsImV4cCI6NDIzNTE3NzE2MzY5N30._pf3mCXgCuXcqUJ0TEs84zCJZnoAsKRwXuacyaNzC23h-evWfguBtO4qoNQxJuD7emA5-RFHtg02fhTrSmaD6A',
+            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ3dXNoaXdlbiIsImNyZWF0ZWQiOjE1NzcyNDExMDU2ODMsImV4cCI6NDIzNTE3NzI0MTEwNX0.Y715IglelTNPzGayWGS8xa7aa24-UuMIBPOQtmke_A_jNyTX3krTf66ZyU6jcbat3x___6tvUmrAMCPrlZZX8g',
             "backend":'lhyg'
         }
         return config;
