@@ -15,6 +15,7 @@
 }
 .mint-searchbar-inner{
     background:rgba(246,248,250,1);
+    height: .56rem;
 }
 .mintui-search {
     font-size: .33rem !important;
