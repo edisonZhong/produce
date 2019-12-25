@@ -28,10 +28,12 @@
 		</mescroll-vue>
     <TabBar></TabBar>
     <div style="position: fixed;right: .1rem;bottom: 2rem">
-      <div v-if='imgFlag'>
+      <transition name="mybox">
+        <div v-if='imgFlag'>
           <img style="position: absolute;right: .7rem;top: -1rem;" :src="enterUrl" @click="handlePushEnter" alt="">
-         <img style="position: absolute;right: 1.1rem;bottom: -.3rem;" :src="liveUrl" @click="handleLive" alt="">
+          <img style="position: absolute;right: 1.1rem;bottom: -.3rem;" :src="liveUrl" @click="handleLive" alt="">
         </div>
+      </transition>
         <img :src="flag?removeUrl:imgUrl" @click="handleImg" alt=""/>
     </div>
   </div>
@@ -148,6 +150,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
+.mybox-enter,.mybox-leave-to{
+    opacity: 0;
+}
+.mybox-enter-to,.mybox-leave{
+    opacity: 1;
+}
+.mybox-enter-active,.mybox-leave-active{
+    transition: all 2s;
+}
 .page-tabbar {
   overflow: hidden;
   height: 100vh;
