@@ -160,14 +160,13 @@
             "socialSecurityEndAt": this.entryAt2,//150,
           }).then(e => {
             console.log(e);
-            debugger;
             if (e.data.code == 200) {
               MessageBox({
                 title: '提示',
-                message: '保存成功',
+                message: "离职信息登记成功",
               });
               if(type){
-                _this.$router.push({ path:'/'});
+                _this.$router.go(-1);
               }
             } else (e.data.code == 200)
             {
