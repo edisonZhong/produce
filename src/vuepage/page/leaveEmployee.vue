@@ -121,7 +121,7 @@
       },
       getUserData: function () {
         const userid = this.$route.params.id, _this = this;
-        alert('123');
+
         if(userid==='id'){return;}
         Indicator.open({
           text: '加载中...',
