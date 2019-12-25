@@ -107,7 +107,7 @@ export function getAllEmployee(obj) {
   return new Promise((resolve, reject) => {
     axios({
       url: 'employee/getAllEmployeeInMobile',
-      method: 'get',
+      method: 'post',
       data: obj,
     }).then((response) => {
       resolve(response);
