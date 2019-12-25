@@ -3,7 +3,7 @@
   <div style="position: relative;height:100%">
     <div class="header">
            <mt-search v-model="value" placeholder="搜索"></mt-search>
-           <p class="seach">搜索</p>
+           <p class="seach" @click="handleSeach">搜索</p>
     </div>
    <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 50px;width: 100%;">
@@ -45,7 +45,7 @@ export default {
           },
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
       },
-      page: {
+      pages: {
         page: 1,
         size: 50,
         total: 0

@@ -71,3 +71,10 @@
     padding-left: .3rem;
     box-sizing: border-box;
 }
+.mint-cell-wrapper {
+    background-image: -webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);
+    background-image: linear-gradient(180deg, #fff, #fff 50%, transparent 50%);
+}
+/* .inputs input::-webkit-input-placeholder{
+    color:#0076FF;
+} */

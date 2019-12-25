@@ -2,30 +2,29 @@
 <template>
   <div id="page">
     <div id="main">
-      <mt-field label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
-      <mt-field label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
-      <mt-field label="所属业务区" v-model="organizationName" @focus.native.capture="handleService">
+      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
+      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
+      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="所属业务区" v-model="organizationName" @focus.native.capture="handleService">
         <!-- <img :src="imgF" style alt /> -->
         <img src="@/assets/img/right.png" height="12px" width="8px">
       </mt-field>
-      <mt-field label="入职日期" placeholder="请选择" v-model="entryAt" @focus.native.capture="openPicker"></mt-field>
-      <mt-field
+      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="入职日期" placeholder="请选择" v-model="entryAt" @focus.native.capture="openPicker"></mt-field>
+      <mt-field style="border-bottom: 1px solid #d9d9d9;"
         label="劳动合同牌照"
         placeholder="请选择"
         v-model="legalCompanyName"
         @focus.native.capture="openlabour"
       ></mt-field>
-      <mt-field label="服务客户名称" id="img-imgs" v-model="customerName" @focus.native.capture="handleClient">
+      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="服务客户名称" id="img-imgs" v-model="customerName" @focus.native.capture="handleClient">
         <!-- <img :src="imgF" style="height:12px;width:8px" alt /> -->
         <img src="@/assets/img/right.png" height="12px" width="8px">
       </mt-field>
-      <mt-field
+      <mt-field style="border-bottom: 1px solid #d9d9d9;"
         label="岗位属性"
         placeholder="请选择"
         v-model="positionTypeName"
         @focus.native.capture="handleType"
       ></mt-field>
-      <mt-field disabled></mt-field>
       <div class="footer">
         <mt-button class="bottom-save" @click="handleSave">保存</mt-button>
         <mt-button class="bottom-c" @click="handleSaveContinue" type="primary">保存并继续添加</mt-button>
@@ -231,15 +230,19 @@ export default {
         legalCompanyId: this.legalCompanyId //劳动合同id
       }).then(e => {
         if (e.data.code == 200) {
-            localStorage.clear();//清空所有缓存
+            // localStorage.clear();//清空所有缓存
           //继续填写清空表格数据
-            this.employeeName = ""
-            this.customerEmployeeNo = ""
-            this.organizationName = ""
-            this.entryAt = ""
-            this.customerName = ""
-            this.positionTypeName = ""
-            this.legalCompanyName = ""
+            // this.employeeName = ""
+            // this.customerEmployeeNo = ""
+            // this.organizationName = ""
+            // this.entryAt = ""
+            // this.customerName = ""
+            // this.positionTypeName = ""
+            // this.legalCompanyName = ""
+            // this.$messagebox({
+            //     message: "保存成功",
+            //     showCancelButton: true
+            //   });
         } else if (e.data.code != 200) {
           this.$messagebox({
             message: e.data.message,
@@ -310,5 +313,8 @@ export default {
   align-items: center;
   border-bottom: 1px solid rgba(220, 223, 230, 1);
   padding-left: 0.2rem;
+}
+.mint-cell-wrapper{
+  border:.002rem solid #d9d9d9d9
 }
 </style>
