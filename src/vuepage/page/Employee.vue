@@ -54,7 +54,7 @@ export default {
        mescrollUp: { // 上拉加载的配置.
           callback: this.getList,
           htmlNodata: '<p class="upwarp-nodata">到底啦~~~</p>',
-          noMoreSize: 5, 
+          noMoreSize: 5,
           page: {
             num: 0,
             size: 50,
