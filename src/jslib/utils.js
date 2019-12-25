@@ -120,7 +120,7 @@ export default{
             return y + ''+m +''+  d;
         }
         else {
-            return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
+            return y + '-' + m + '-' + d ;
         }
     },
 	  //		获取url中的参数（url中有#）
