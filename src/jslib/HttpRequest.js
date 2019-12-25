@@ -17,9 +17,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    // upBaseUrl = 'http://192.168.43.173:9095/';
-    // upBaseUrl  =  'http://192.168.43.216:8086/';
-    upBaseUrl = 'http://wbapi.fenganghr.com/';
+    upBaseUrl = 'http://preywapi.fenganghr.com/';
+    // upBaseUrl  =  'http://192.168.43.173:9095/';
+    // upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -52,7 +52,7 @@ instance.interceptors.request.use(
 
 );
 instance.interceptors.response.use(function (response) {
-  console.log(response,'response0000');
+  // console.log(response,'response0000');
   if(response.data.code==401){
       localStorage.clear();
       // wxLogin(wxData);

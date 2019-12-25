@@ -61,8 +61,8 @@ export default {
             total: 0
           },
           empty: {
-          warpId: "main", 
-          icon: "./static/mescroll/mescroll-empty.png", 
+          warpId: "main",
+          icon: "./static/mescroll/mescroll-empty.png",
           tip: "暂无相关数据~" //提示
           },
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
@@ -84,13 +84,13 @@ export default {
     };
   },
   created() {
-   
+
   },
   mounted() {
   },
   methods: {
      mescrollInit (mescroll) {
-      this.mescroll = mescroll  
+      this.mescroll = mescroll
     },
     handleSeach(){
        let searchList = []
@@ -141,7 +141,7 @@ export default {
       this.$router.push({ path: "/AddEmployee" });
     },
     handleLive(){
-      this.$router.push({ path: "/LiveEmpoyee" });
+      this.$router.push({ path: "/leaveEmployee/id" });
     },
   }
 };
@@ -248,4 +248,4 @@ export default {
     }
   }
 }
-</style> 
+</style>

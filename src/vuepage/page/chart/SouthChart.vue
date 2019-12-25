@@ -1,25 +1,28 @@
 <!--统计图 华南大区-->
 <template>
   <div>
-    <div id="content">
-        <h2>员工总数 <span class="number">{{this.titles[1]}}</span> 人，昨日增长 <span class="number">{{this.titles[2]}}</span>人</h2>
-        <div id="chart_example" class="chart"></div>
-        <!-- <div id="persendChart" class="chart"></div>
-        <div id="dataChart" class="chart"></div> -->
+    <div class='businessArea'>{{title}}</div>
+
+    <div>
+      <div id="content">
+          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar[index_][1]}}</span> 人，昨日增长 <span class="number">{{this.boxBar.titlesBar[index_][2]}}</span>人</h2>
+          <div :id="'chart_example'+index_" class="chart"></div>
+      </div>
+      <div id="content">
+          <h2>一二三线员工数及占比</h2>
+          <div :id="'persendChart'+index_" class="chart"></div>
+      </div>
+      <div id="content">
+        <h2>昨日入职员工{{}}人</h2>
+          <div :id="'dataChart'+index_" class="chart"></div>
+      </div>
+     <div id="content">
+        <h2>昨日离职员工{{}}人</h2>
+          <div :id="'dataChartLive'+index_" class="chart"></div>
+      </div>
     </div>
-    <div id="content">
-        <h2>一二三线员工数及占比</h2>
-        <div id="persendChart" class="chart"></div>
-    </div>
-    <div id="content">
-      <h2>昨日入职员工{{}}人</h2>
-        <div id="dataChart" class="chart"></div>
-    </div>
-    <div id="content">
-      <h2>昨日入职员工{{}}人</h2>
-        <div id="dataChartLive" class="chart"></div>
-    </div>
-   
+
+
   </div>
 </template>
 
@@ -28,12 +31,22 @@ import echarts from "echarts";
 import {reportData,reportLine,reportEnter,reportLive} from '../../../server/report'
 export default {
   name: "southChart",
+  props:[
+    'index_',
+    'title',
+    'boxBar',
+    'boxIncrese',
+    'boxLideDay',
+    'boxLideLive',
+  ],
+
   data() {
     return {
+      dataType:'D',
+
       dataName:[],//总的数据
       valueList:[],//图表数据
       titles:[],//分割的数据
-       title:[],//标题
       totalList:[],//总的数据
       nameList:[],//图表数据
 
@@ -58,44 +71,48 @@ export default {
       percentListLive:[]
     };
   },
-  created(){
-    this.getData()
-    this.init()
-    this.getLine()
-    this.getLineDay()
-    this.getLineLive()
+  async created(){
+    console.log(this.boxBar,'dddddddd000000----');
+
+    // this.getData()
+    // // this.init()
+    //
+    // this.getLine()
+    // // 入职
+    // this.getLineDay()
+
+
+    // 员工总数
+    await this.$nextTick(()=> {
+        this.loadEchart()
+    })
+    // 占比
+    await this.$nextTick(()=> {
+        this.percentEchart()
+    })
+    // 入职
+    await this.$nextTick(()=> {
+        this.dataChart()
+    })
+    // 离职
+    await this.$nextTick(()=> {
+        this.dataChartLive()
+    })
   },
   methods: {
     init() {
         const self = this;//因为箭头函数会改变this指向，指向windows。所以先把this保存
         setTimeout(() => {
           window.onresize = function() {
-              self.chart = echarts.init(document.getElementById("chart_example"));
+              self.chart = echarts.init(document.getElementById("chart_example"+this.index_));
               self.chart.resize();
           }
         },20)
     },
-    getData(){
-      reportData({
-        dateType:'D'
-      }).then(e=>{
-        if(e.data.code==200){
-          this.dataName=e.data.data
-          for (var key in this.dataName) {
-              this.title.push(key)
-              this.valueList.push(this.dataName[key])
-          }
-          this.titles=this.title[0].split('-')
-          this.valueList[1].map(item => this.nameList.push(item.organizationName))
-          this.valueList[1].map(item=> this.totalList.push(item.total))
-          this.$nextTick(()=> {
-              this.loadEchart()
-          })
-        }
-      })
-    },
     getLine(){
-      reportLine().then(e=>{
+      reportLine({
+        dataType:this.dataType
+      }).then(e=>{
         if(e.data.code==200){
           this.dataNameType=e.data.data
           for (var key in this.dataNameType) {
@@ -111,7 +128,7 @@ export default {
     },
     getLineDay(){
       reportEnter({
-        dateType:'M'
+        dateType:this.dataType
       }).then(e=>{
         if(e.data.code==200){
           this.dayList=e.data.data
@@ -129,7 +146,7 @@ export default {
     },
     getLineLive(){
       reportEnter({
-        dateType:'M'
+        dateType:this.dataType
       }).then(e=>{
         if(e.data.code==200){
           this.liveList=e.data.data
@@ -147,72 +164,91 @@ export default {
     },
     //柱状图汇总
     loadEchart() {
-        this.myChart = echarts.init(document.getElementById("chart_example"));
-        this.myChart.setOption({
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        // data: this.nameList
-      },
-      grid: {
-        left: '3%',
-        // right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        type: "value",
-        // boundaryGap: [0.2, 0.2],
-        max: 1400,
-        min: 0,
-        splitNumber:7,
-        axisLine:{
-            show:false
-        },
-        axisTick:{
-            show:false
-        },
-      },
-      yAxis: [
-        {
-          type: "category",
-          boundaryGap: [0.2, 0.2],
-          data:this.nameList,
-          scale: true,
-          axisTick:{
-              show:false
+        let that = this;
+        echarts.init(document.getElementById("chart_example"+this.index_)).resize({height:parseInt(this.boxBar.nameList[this.index_].length/2)*localStorage.getItem('font')+'px'});
+        // this.myChart = echarts.init(document.getElementById("chart_example"));
+        echarts.init(document.getElementById("chart_example"+this.index_)).setOption({
+          tooltip: {
+            trigger: "axis"
+          },
+          legend: {
+            // data: this.nameList
+          },
+          grid: {
+            left: '3%',
+            // right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: "value",
+            // boundaryGap: [0.2, 0.2],
+            max: Math.max(...this.boxBar.totalList[this.index_]),
+            min: Math.min(...this.boxBar.totalList[this.index_]),
+            axisLine:{
+                show:false
             },
-        },
-      ],
-      series: [
-        {
-          name: '',
-          type: 'bar',
-          data: this.totalList,
-          label: {
-                normal: {
-                    show: true,
-                    position: 'right'
+            axisTick:{
+                show:false
+            },
+          }],
+          yAxis: [
+            {
+              type: "category",
+              // boundaryGap:false,//和max,min关联使用
+              boundaryGap:[0, 0.01],
+              data:this.boxBar.nameList[this.index_],
+              // min:function (value) {
+              //   // if (value.max < Math.max(...that.boxBar.totalList[that.index_])){
+              //   //     value.max = Math.max(...that.boxBar.totalList[that.index_]);
+              //   // } else {
+              //   //     value.max = value.max;
+              //   // }
+              //   return Math.min(...that.boxBar.totalList[that.index_]);
+              // },
+              axisLabel:{
+                fontSize:parseInt(0.2*localStorage.getItem('font'))
+              }
+            },
+          ],
+        series: [
+          {
+            name: '',
+            type: 'bar',
+            data: this.boxBar.totalList[this.index_],
+            barWidth:5,
+            label: {
+                  normal: {
+                      show: true,
+                      position: 'right'
+                  }
+              },
+               itemStyle:{
+                normal:{
+                    // color:'#EB9F4B'
+                    color: function (params) {
+                      var colorList = [
+                          '#ff7e50', '#ff7e50', '#ff7e50', '#34cf34',
+                          '#6497ef', '#85802b', '#D7504B', '#C6E579',
+                          '#F4E001', '#F0805A', '#26C0C0'
+                      ];
+                      return colorList[params.dataIndex]
+                  }
                 }
-            },
-             itemStyle:{
-              normal:{
-                  color:'#EB9F4B'
-              }        
-            }
-        },
-      ]
+              },
+
+          },
+        ]
       });
     },
     //员工占比
     percentEchart() {
-        this.myChartPersend = echarts.init(document.getElementById("persendChart"));
-        
-        window.addEventListener("resize", function() {                
-          this.myChartPersend.resize();           
+        // this.myChartPersend = echarts.init(document.getElementById("persendChart"));
+
+        window.addEventListener("resize", function() {
+          this.myChartPersend.resize();
         })
-        this.myChartPersend.setOption({
+        echarts.init(document.getElementById("persendChart"+this.index_)).setOption({
         tooltip: {
           trigger: "axis"
         },
@@ -239,7 +275,7 @@ export default {
             type: 'category',
             boundaryGap: true,
             boundaryGap: [0.2, 0.2],
-            data:this.positionType,
+            data:this.boxIncrese.positionType[this.index_],
             axisLine:{
             show:false
           },
@@ -272,7 +308,7 @@ export default {
         min: 0,
         // splitNumber:10,
         splitLine: {
-            show: false 
+            show: false
         },
         axisLabel: {
                 formatter: '{value} %'
@@ -293,128 +329,140 @@ export default {
           position: 'right',
           type: 'line',
           yAxisIndex: 1,
-          data: this.percentList,
+          data: this.boxIncrese.percentList[this.index_],
         },
       ]
       });
     },
      dataChart() {
-        this.myChart = echarts.init(document.getElementById("dataChart"));
-        this.myChart.setOption({
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        // data: this.nameList
-      },
-      grid: {
-        left: '3%',
-        // right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        type: "value",
-        // boundaryGap: [0.2, 0.2],
-        max: 1400,
-        min: 0,
-        splitNumber:7,
-        axisLine:{
-            show:false
-        },
-        axisTick:{
-            show:false
-        },
-      },
-      yAxis: [
-        {
-          type: "category",
-          boundaryGap: [0.2, 0.2],
-          data:this.positionDay,
-          scale: true,
-          axisTick:{
-              show:false
-            },
-        },
-      ],
-      series: [
-        {
-          name: '',
-          type: 'bar',
-          data: this.percentListDay,
-          label: {
-                normal: {
-                    show: true,
-                    position: 'right'
-                }
-            },
-             itemStyle:{
-              normal:{
-                  color:'#EB9F4B'
-              }        
-            }
-        },
-      ]
-      });
+       // console.log(this.boxLideDay.positionDay[this.index_],'dddddd00000099999999888888888');
+        // window.addEventListener("resize", function() {
+        //          this.myChartPersend.resize();
+        // })
+        console.log(this.index_,'dddddd12121212121212');
+        // this.myChart = echarts.init(document.getElementById("dataChart"));
+        setTimeout((res)=>{
+          echarts.init(document.getElementById("dataChart"+this.index_)).setOption({
+              tooltip: {
+                trigger: "axis"
+              },
+              legend: {
+                // data: this.nameList
+              },
+              grid: {
+                left: '3%',
+                // right: '4%',
+                bottom: '3%',
+                containLabel: true
+              },
+              xAxis: {
+                type: "value",
+                // boundaryGap: [0.2, 0.2],
+                max: 1400,
+                min: 0,
+                splitNumber:7,
+                axisLine:{
+                    show:false
+                },
+                axisTick:{
+                    show:false
+                },
+              },
+              yAxis: [
+                {
+                  type: "category",
+                  boundaryGap: [0.2, 0.2],
+                  data:this.boxLideDay.positionDay[this.index_],
+                  scale: true,
+                  axisTick:{
+                      show:false
+                    },
+                },
+              ],
+              series: [
+                {
+                  name: '',
+                  type: 'bar',
+                  data: this.boxLideDay.percentListDay[this.index_],
+                  label: {
+                        normal: {
+                            show: true,
+                            position: 'right'
+                        }
+                    },
+                     itemStyle:{
+                      normal:{
+                          color:'#EB9F4B'
+                      }
+                    }
+                },
+              ]
+          });
+        },1500)
+
     },
     dataChartLive() {
-        this.myChart = echarts.init(document.getElementById("dataChartLive"));
-        this.myChart.setOption({
-      tooltip: {
-        trigger: "axis"
-      },
-      legend: {
-        // data: this.nameList
-      },
-      grid: {
-        left: '3%',
-        // right: '4%',
-        bottom: '3%',
-        containLabel: true
-      },
-      xAxis: {
-        type: "value",
-        // boundaryGap: [0.2, 0.2],
-        max: 1400,
-        min: 0,
-        splitNumber:7,
-        axisLine:{
-            show:false
+        // this.myChart = echarts.init(document.getElementById("dataChartLive"));
+      // console.log(this.index_,'离职信息信息信息信息信息信息信息信息信息信息')
+      setTimeout((res)=>{
+        echarts.init(document.getElementById("dataChartLive"+this.index_)).setOption({
+        tooltip: {
+          trigger: "axis"
         },
-        axisTick:{
-            show:false
+        legend: {
+          // data: this.nameList
         },
-      },
-      yAxis: [
-        {
-          type: "category",
-          boundaryGap: [0.2, 0.2],
-          data:this.positionLive,
-          scale: true,
+        grid: {
+          left: '3%',
+          // right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        xAxis: {
+          type: "value",
+          // boundaryGap: [0.2, 0.2],
+          max: 1400,
+          min: 0,
+          splitNumber:7,
+          axisLine:{
+              show:false
+          },
           axisTick:{
               show:false
-            },
+          },
         },
-      ],
-      series: [
-        {
-          name: '',
-          type: 'bar',
-          data: this.percentListLive,
-          label: {
-                normal: {
-                    show: true,
-                    position: 'right'
+        yAxis: [
+          {
+            type: "category",
+            boundaryGap: [0.2, 0.2],
+            data:this.boxLideLive.positionLive[this.index_],
+            scale: true,
+            axisTick:{
+                show:false
+              },
+          },
+        ],
+        series: [
+          {
+            name: '',
+            type: 'bar',
+            data: this.boxLideLive.percentListLive[this.index_],
+            label: {
+                  normal: {
+                      show: true,
+                      position: 'right'
+                  }
+              },
+               itemStyle:{
+                normal:{
+                    color:'#EB9F4B'
                 }
-            },
-             itemStyle:{
-              normal:{
-                  color:'#EB9F4B'
-              }        
-            }
-        },
-      ]
-      });
+              }
+          },
+        ]
+        });
+      },1500)
+
     },
   }
 };
@@ -426,7 +474,7 @@ export default {
 }
 .chart{
   width: 100%;
-  min-height:4rem;
+  /* min-height:4rem; */
   margin: 0 auto;
 }
 #content {
@@ -445,5 +493,12 @@ export default {
       height:1.04rem;
       line-height: 1.04rem
   }
+}
+.businessArea{
+  text-align:center;
+  font-size:33rpx;
+  color:#333;
+  font-weight:bold;
+  margin-bottom:.3rem;
 }
 </style>

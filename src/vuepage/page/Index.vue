@@ -1,27 +1,30 @@
 <!--统计图 华南大区-->
 <template>
     <div id="page">
-        <div id='header'>
-            <div class="header-bottom">
-                <mt-button class="bottom-click"
-                v-for="(item,index) in btnList"
-                v-on:click="addClass(index)"
-                :key='index'
-                v-bind:class="{ classred:index==clickIndex}"
-                size="normal">{{item}}</mt-button>
-            </div>
+        <!-- <div v-for="(item ,index_) in title_box" :key='index_'> -->
+          <div id='header'>
+              <div class="header-bottom">
+                  <mt-button class="bottom-click"
+                  v-for="(item,index) in btnList"
+                  v-on:click="addClass(index)"
+                  :key='index'
+                  v-bind:class="{ classred:index==clickIndex}"
+                  size="normal">{{item}}</mt-button>
+              </div>
 
-            <h2 class="title">{{title}}</h2>
-        </div>
-        <div class="img">
-            <img :src='imgUrl' alt=""/>
-        </div>
-        <div id="main" @scroll="handleScroll" ref="content">
-            <SouthChart id='2'></SouthChart>
-            <EastChart id='3'></EastChart>
-            <CenterChart id='4'></CenterChart>
-            <NorthChart id='5'></NorthChart>
-        </div>
+              <h2 class="title">{{title}}</h2>
+          </div>
+          <div class="img">
+              <img :src='imgUrl' alt=""/>
+          </div>
+          <div id="main" @scroll="handleScroll" ref="content"  >
+              <SouthChart  @totalArea='totalArea'  v-for="(item ,index_) in title_box" :key='index_' :index_="index_" :title="item" :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive'></SouthChart>
+              <!-- {{item,'dddddd'}} -->
+              <!-- <EastChart id='3'></EastChart>
+              <CenterChart id='4'></CenterChart>
+              <NorthChart id='5'></NorthChart> -->
+          </div>
+        <!-- </div> -->
         <p>到底啦~~~~</p>
         <TabBar></TabBar>
     </div>
@@ -35,7 +38,7 @@ import NorthChart from '../page/chart/NorthChart'
 
 import TabBar from './TabBar.vue'
 
-import {getToken} from '../../server/report'
+import {getToken,reportData,reportLine,reportEnter} from '../../server/report'
 
 
 export default {
@@ -53,44 +56,217 @@ export default {
             test:'',
             clickIndex:0,
             btnList:['每日','每周','每月'],
+            dataType:'D',
             imgUrl:require("@/assets/img/Oval.png"),
-            title:'华南大区'
+            title:'华南大区',
+            title_box:[],
+
+            // 柱状图
+            titleBar:[],
+            valueListBar:[],
+            dataNameBar:[],
+            titlesBar:[],
+            nameListBar:[],
+            totalListBar:[],
+            boxBar:[],
+
+            //占比图
+            boxIncrese:[],
+
+            // 入职
+            boxLideDay:[],
+
+            // 离职
+            boxLideLive:[],
         }
     },
     mounted(){
 
-      // console.log(this.$utils.getHashUrlParams('code'),'code');
-      // alert(this.$utils.getHashUrlParams('code'),'d')
-      // console.log(this.,'code');
-      // 获取token
-      // this.getToken();
+    },
+    async created(){
+      // 员工总数
+      await this.getData()
+      // this.init()
+      // 占比
+      await this.getLine()
+      // 入职
+      await this.getLineDay()
+      // 离职
+      await this.getLineLive()
     },
     methods:{
-        // recordScrollPosition(e) {
-        // this.$store.dispatch("setListTop",e.target.scrollTop);//实时存入到vuex中
-        // },
-        // getToken(){
-        //   // alert(this.$utils.getHashUrlParams('code'),'c')
-        //   // alert(this.$utils.getUrlParams('code'),'c')
-        //   // this.test = this.$utils.getUrlParams('code');
-        //   // return
-        //   getToken({
-        //     code:this.$utils.getUrlParams('code')
-        //     // code:''
-        //   }).then(res=>{
-        //     // wx.setStorageSync('park_token',res.data.data.token)
-        //     localStorage.setItem('park_token',res.data.data.token);
-        //     // window.location.reload();
-        //     // console.log(res,'dd');
-        //   })
-        // },
+      getLineLive(){
+        reportEnter({
+          dateType:this.dataType
+        }).then(e=>{
+          if(e.data.code==200){
+            this.liveList=e.data.data
+            var valueLiveList = [];
+            for (var key in this.liveList) {
+                valueLiveList.push(this.liveList[key])
+            }
+            console.log(valueLiveList.length,'离职离职离职离职离职离职离职离职');
+            var positionLive = [];
+            var percentListLive = [];
+            for(let i=0;i<valueLiveList.length;i++){
+              var a =i;
+              positionLive[a]=[];
+              valueLiveList[i].map(item=> positionLive[a].push(item.organizationName))
+
+              var b =i;
+              percentListLive[b]=[];
+              valueLiveList[i].map(item=> percentListLive[b].push(item.total))
+            }
+
+            // this.$nextTick(()=> {
+            //     this.dataChartLive()
+            // })
+            this.boxLideLive = {
+              positionLive:positionLive,
+              percentListLive:percentListLive
+            }
+
+            console.log(this.boxLideLive,'lizhilizhilizhilizhilizhilizhilizhi');
+          }
+        })
+      },
+      getLineDay(){
+        reportEnter({
+          dateType:this.dataType
+        }).then(e=>{
+          console.log(e.data.data,'入职');
+          if(e.data.code==200){
+            this.dayList=e.data.data;
+            var valueDayList = [];
+            for (var key in this.dayList) {
+                valueDayList.push(this.dayList[key])
+            }
+            // console.log(this.dayList,'listttttt-----+');
+            var positionDay = [];
+            var percentListDay = [];
+            for(let i=0;i<valueDayList.length;i++){
+              var a = i;
+              positionDay[a] = [];
+              valueDayList[i].map(item=> {
+                positionDay[a].push(item.organizationName);
+                // console.log(item,'dddddddddddd');
+              })
+
+              var b = i;
+              percentListDay[b] = [];
+              valueDayList[i].map(item=> percentListDay[b].push(item.total))
+            }
+
+            // this.$nextTick(()=> {
+            //     this.dataChart()
+            // })
+            this.boxLideDay = {
+              positionDay:positionDay,
+              percentListDay:percentListDay
+            }
+
+            // console.log(this.boxLideDay,'入职入职入职入职入职入职入职入职入职入职');
+
+          }
+        })
+      },
+      getLine(){
+        reportLine().then(e=>{
+          console.log(e,'zhanbi');
+          if(e.data.code==200){
+            this.dataNameType=e.data.data
+            var valueTypeList = [];
+            for (var key in this.dataNameType) {
+              valueTypeList.push(this.dataNameType[key])
+            }
+
+            var positionType = [];
+            var percentList = [];
+            for(let i=0;i<valueTypeList.length;i++){
+              var a = i;
+              positionType[a] = [];
+              valueTypeList[i].map(item=> positionType[a].push(item.positionType))
+
+              var b = i;
+              percentList[b] = [];
+              valueTypeList[i].map(item=> percentList[b].push(item.totalPercentage))
+            }
+
+            console.log(positionType,percentList,'listtttt');
+
+
+            this.boxIncrese = {
+              positionType:positionType,
+              percentList:percentList
+            }
+          }
+        })
+      },
+      getData(){
+          reportData({
+            dateType:this.dataType
+          }).then(e=>{
+            console.log(e,'员工总数');
+            if(e.data.code==200){
+
+              this.dataNameBar=e.data.data
+              let valueListBar = [];
+              for (var key in this.dataNameBar) {
+                  this.titleBar.push(key)
+                  valueListBar.push(this.dataNameBar[key])
+              }
+
+              // 遍历出title值
+              this.totalArea(this.titleBar);
+
+              // x,y轴数据
+              var nameListBar = [];
+              let totalListBar = [];
+              for(let i=0;i<this.titleBar.length;i++){
+                // 图表标题
+                this.titlesBar.push(this.titleBar[i].split('-'))
+
+                // 图表y轴
+                var a = i;
+                nameListBar[a]=[];
+                valueListBar[i].map(item => {
+                  nameListBar[a].push(item.organizationName)
+                })
+
+
+                // 图表x轴
+                var b = i;
+                totalListBar[b]=[];
+                valueListBar[i].map(item=> totalListBar[b].push(item.total))
+              }
+
+              console.log(nameListBar,totalListBar,'testing');
+
+              this.boxBar = {
+                nameList:nameListBar,
+                totalList:totalListBar,
+                titlesBar:this.titlesBar
+              }
+            }
+          })
+        },
+        totalArea(e){
+          let arr =[];
+          for(let i=0;i<e.length;i++){
+            arr.push(e[i].split('-')[0]);
+          }
+          this.title_box = arr;
+          console.log(this.title_box.length,this.title_box,'length');
+
+
+        },
         addClass(index){
             this.clickIndex=index;
         },
         handleScroll(el){
             this.scrollTop = this.$refs.content.scrollTop
-           
-            console.log(this.$refs.content.scrollTop)
+
+            // console.log(this.$refs.content.scrollTop)
         }
     }
 }
