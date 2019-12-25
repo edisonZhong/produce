@@ -1,8 +1,8 @@
 <template>
   <ul id="footer">
-    <!-- <li :class="activeClass == index ? 'actived':''" 
-                    v-for="(item,index) in tabList" 
-                    :key="index" 
+    <!-- <li :class="activeClass == index ? 'actived':''"
+                    v-for="(item,index) in tabList"
+                    :key="index"
                     :to="item.path"
                     @click="handleTab(index,item.path)">
                 <img style="height:19px;width:22px" :src='activeClass==index?item.iconPath:item.icon'/>
@@ -59,6 +59,7 @@ export default {
   left: 0;
   right: 0;
   display: flex;
+  z-index:100;
   height: .98rem;
   justify-content: space-around;
   align-items: center;

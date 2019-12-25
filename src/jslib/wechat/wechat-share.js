@@ -6,15 +6,15 @@ function wxShare(wxData){
     setTimeout(() => {
         var theHref = window.location.href.split("#")[1];
         //线上
-        var redirectUrl = `http://${location.hostname}/#${theHref}?id=${myId}` ;
+        // var redirectUrl = `http://${location.hostname}/#${theHref}?id=${myId}` ;myid 报错，先注释
         console.log(`分享的地址:${redirectUrl}`)
         var url2 = redirectUrl ;//分享的地址
         let aUrl = window.location.href.split('#')[0];
-    
+
         var url2 = redirectUrl ;//分享的地址
         console.log(url2,'u')
         //测试项目
-        
+
             window.scrollTo(0, 0);
             // axios({
             // url: '',
@@ -54,7 +54,7 @@ function wxShare(wxData){
             //         console.log("取消分享到朋友圈返回的信息为:", res);
             //         }
             //     });
-    
+
             //     //分享给朋友
             //     wx.onMenuShareAppMessage({
             //         title: wxData.title, // 分享标题
