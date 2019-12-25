@@ -94,14 +94,12 @@ export default {
       });
     },
     handleLink(id,organizationName){
-      console.log(organizationName);
-      localStorage.setItem('id',id);
-      localStorage.setItem('organizationName',organizationName);
+      localStorage.setItem("organizationName", JSON.stringify(organizationName))
+      localStorage.setItem("id", JSON.stringify(id))
       this.$router.push({
         path:'/AddEmployee',
         query:{
           id:id,
-          name:organizationName
         }
       })
     }

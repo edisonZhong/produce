@@ -17,9 +17,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    upBaseUrl = 'http://192.168.43.216:9095/';
+    // upBaseUrl = 'http://192.168.43.216:9095/';
     // upBaseUrl  =  'http://192.168.43.173:9095/';
-    // upBaseUrl = 'http://wbapi.fenganghr.com/';
+    upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -41,7 +41,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             // "Authorization":localStorage.getItem('token')||'',
-            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGVueWlob25nMiIsImNyZWF0ZWQiOjE1NzcyNDA0MDczMTAsImV4cCI6NDIzNTE3NzI0MDQwN30.jWQLL8Ns9ltOnGD7cvPHZ9eUZYDR9Oj2dV9MAUGybQCb5skyCZgqemoKdbEYrT_9Oaf4yhIZKVajc2-FKCe9Fg',
+            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZ3J1YW4iLCJjcmVhdGVkIjoxNTc3MjUzMzMxNDEwLCJleHAiOjQyMzUxNzcyNTMzMzF9.mhQV8FoV8UOjxaGJD5h9EdveewhtdduI-GFyii0O7D5Kf6HJPX2G7kgAKGcGBuSbkfWCvJtIGPclfb0nJN_wAw',
             "backend":'lhyg'
         }
         return config;
