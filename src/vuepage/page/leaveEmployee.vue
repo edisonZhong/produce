@@ -10,10 +10,16 @@
       <mt-field label="所属业务区" placeholder="系统自动带出" v-model="employeeArea" disabled/>
       <mt-field label="客户工号" placeholder="系统自动带出" v-model="customerEmployeeNo" disabled/>
       <mt-field label="入职日期" placeholder="系统自动带出" v-model="organizationalId" disabled/>
-      <div @click="openPicker(0)"><mt-field label="离职日期" placeholder="请选择" disabled v-model="entryAt" /></div>
+      <div @click="openPicker(0)">
+        <mt-field label="离职日期" placeholder="请选择" disabled v-model="entryAt"/>
+      </div>
       <mt-field label="离职原因" placeholder="请填写" v-model="positionType"/>
-      <div @click="openPicker(1)"><mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1"/></div>
-      <div @click="openPicker(2)"><mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled /></div>
+      <div @click="openPicker(1)">
+        <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1"/>
+      </div>
+      <div @click="openPicker(2)">
+        <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled/>
+      </div>
       <div class="footer">
         <mt-button class="bottom-save" @click="handleSave(1)">保存</mt-button>
         <mt-button style="width:4rem;height:.88rem" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
@@ -33,7 +39,7 @@
 
 <script>
   import {getEmployeeById, addDepartureEmployee} from '../../server/employee'
-  import {MessageBox,Indicator} from 'mint-ui';
+  import {MessageBox, Indicator} from 'mint-ui';
 
   export default {
     name: 'addEmployee',
@@ -165,10 +171,11 @@
                 title: '提示',
                 message: "离职信息登记成功",
               });
-              if(type){
+              if (type) {
                 _this.$router.go(-1);
               }
-            } else (e.data.code == 200){
+            } else (e.data.code == 200)
+            {
               MessageBox({
                 title: '提示',
                 message: e.data.message,
