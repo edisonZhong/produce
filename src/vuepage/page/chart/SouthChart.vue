@@ -5,20 +5,20 @@
 
     <div>
       <div id="content">
-          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar[index_][1]}}</span> 人，昨日增长 <span class="number">{{this.boxBar.titlesBar[index_][2]}}</span>人</h2>
-          <div :id="'chart_example'+index_" class="chart"></div>
+          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</span> 人，昨日增长 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][2]:''}}</span>人</h2>
+          <div  id="chart_example" class="chart"></div>
       </div>
       <div id="content">
           <h2>一二三线员工数及占比</h2>
-          <div :id="'persendChart'+index_" class="chart"></div>
+          <div id="persendChart" class="chart"></div>
       </div>
       <div id="content">
-        <h2>昨日入职员工{{}}人</h2>
-          <div :id="'dataChart'+index_" class="chart"></div>
+        <!-- <h2>昨日入职员工{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[1]:''}}人</h2> -->
+          <div id="dataChart" class="chart"></div>
       </div>
      <div id="content">
         <h2>昨日离职员工{{}}人</h2>
-          <div :id="'dataChartLive'+index_" class="chart"></div>
+          <div id="dataChartLive" class="chart"></div>
       </div>
     </div>
 
@@ -71,7 +71,7 @@ export default {
       percentListLive:[]
     };
   },
-  async created(){
+   created(){
     console.log(this.boxBar,'dddddddd000000----');
 
     // this.getData()
@@ -82,22 +82,43 @@ export default {
     // this.getLineDay()
 
 
-    // 员工总数
-    await this.$nextTick(()=> {
-        this.loadEchart()
-    })
+    // setTimeout((res)=>{
+    // },2000)
+
     // 占比
-    await this.$nextTick(()=> {
-        this.percentEchart()
-    })
+    // await this.$nextTick(()=> {
+    //     // this.percentEchart()
+    // })
     // 入职
-    await this.$nextTick(()=> {
-        this.dataChart()
-    })
+    // await this.$nextTick(()=> {
+    //     // this.dataChart()
+    // })
     // 离职
-    await this.$nextTick(()=> {
-        this.dataChartLive()
-    })
+    // await this.$nextTick(()=> {
+    //     // this.dataChartLive()
+    // })
+  },
+
+  mounted(){
+    // 员工总数
+    // this.$nextTick(()=> {
+    // })
+    this.init();
+  },
+  watch:{
+    boxBar(val,old){
+      if(val){this.loadEchart()}
+    },
+    boxIncrese(val,old){
+      console.log(val,old,'ddd');
+      if(val){this.percentEchart()}
+    },
+    boxLideDay(val,old){
+      if(val){this.dataChart()}
+    },
+    boxLideLive(val,old){
+      if(val){this.dataChartLive()}
+    }
   },
   methods: {
     init() {
@@ -165,9 +186,11 @@ export default {
     //柱状图汇总
     loadEchart() {
         let that = this;
-        echarts.init(document.getElementById("chart_example"+this.index_)).resize({height:parseInt(this.boxBar.nameList[this.index_].length/2)*localStorage.getItem('font')+'px'});
+        console.log(this.boxBar,'ddd----------------');
+
+        // echarts.init(document.getElementById("chart_example")).resize({height:parseInt(this.boxBar.nameList.length/2)*localStorage.getItem('font')+'px'});
         // this.myChart = echarts.init(document.getElementById("chart_example"));
-        echarts.init(document.getElementById("chart_example"+this.index_)).setOption({
+        echarts.init(document.getElementById("chart_example")).setOption({
           tooltip: {
             trigger: "axis"
           },
@@ -183,8 +206,8 @@ export default {
           xAxis: [{
             type: "value",
             // boundaryGap: [0.2, 0.2],
-            max: Math.max(...this.boxBar.totalList[this.index_]),
-            min: Math.min(...this.boxBar.totalList[this.index_]),
+            max: Math.max(...this.boxBar.totalList[0]),
+            min: Math.min(...this.boxBar.totalList[0]),
             axisLine:{
                 show:false
             },
@@ -197,7 +220,7 @@ export default {
               type: "category",
               // boundaryGap:false,//和max,min关联使用
               boundaryGap:[0, 0.01],
-              data:this.boxBar.nameList[this.index_],
+              data:this.boxBar.nameList[0],
               // min:function (value) {
               //   // if (value.max < Math.max(...that.boxBar.totalList[that.index_])){
               //   //     value.max = Math.max(...that.boxBar.totalList[that.index_]);
@@ -215,7 +238,7 @@ export default {
           {
             name: '',
             type: 'bar',
-            data: this.boxBar.totalList[this.index_],
+            data: this.boxBar.totalList[0],
             barWidth:5,
             label: {
                   normal: {
@@ -240,15 +263,21 @@ export default {
           },
         ]
       });
+
+      // window.onresize = () => {
+      //   return (() => {
+      //     canvasChart.resize()
+      //   })()
+      // }
     },
     //员工占比
     percentEchart() {
         // this.myChartPersend = echarts.init(document.getElementById("persendChart"));
 
-        window.addEventListener("resize", function() {
-          this.myChartPersend.resize();
-        })
-        echarts.init(document.getElementById("persendChart"+this.index_)).setOption({
+        // window.addEventListener("resize", function() {
+        //   this.myChartPersend.resize();
+        // })
+        echarts.init(document.getElementById("persendChart")).setOption({
         tooltip: {
           trigger: "axis"
         },
@@ -275,7 +304,7 @@ export default {
             type: 'category',
             boundaryGap: true,
             boundaryGap: [0.2, 0.2],
-            data:this.boxIncrese.positionType[this.index_],
+            data:this.boxIncrese.positionType[0],
             axisLine:{
             show:false
           },
@@ -329,10 +358,10 @@ export default {
           position: 'right',
           type: 'line',
           yAxisIndex: 1,
-          data: this.boxIncrese.percentList[this.index_],
+          data: this.boxIncrese.percentList[0],
         },
       ]
-      });
+      })
     },
      dataChart() {
        // console.log(this.boxLideDay.positionDay[this.index_],'dddddd00000099999999888888888');
@@ -341,8 +370,8 @@ export default {
         // })
         console.log(this.index_,'dddddd12121212121212');
         // this.myChart = echarts.init(document.getElementById("dataChart"));
-        setTimeout((res)=>{
-          echarts.init(document.getElementById("dataChart"+this.index_)).setOption({
+        // setTimeout((res)=>{
+          echarts.init(document.getElementById("dataChart")).setOption({
               tooltip: {
                 trigger: "axis"
               },
@@ -372,7 +401,7 @@ export default {
                 {
                   type: "category",
                   boundaryGap: [0.2, 0.2],
-                  data:this.boxLideDay.positionDay[this.index_],
+                  data:this.boxLideDay.positionDay[0],
                   scale: true,
                   axisTick:{
                       show:false
@@ -383,7 +412,7 @@ export default {
                 {
                   name: '',
                   type: 'bar',
-                  data: this.boxLideDay.percentListDay[this.index_],
+                  data: this.boxLideDay.percentListDay[0],
                   label: {
                         normal: {
                             show: true,
@@ -398,14 +427,14 @@ export default {
                 },
               ]
           });
-        },1500)
+        // },1500)
 
     },
     dataChartLive() {
         // this.myChart = echarts.init(document.getElementById("dataChartLive"));
       // console.log(this.index_,'离职信息信息信息信息信息信息信息信息信息信息')
-      setTimeout((res)=>{
-        echarts.init(document.getElementById("dataChartLive"+this.index_)).setOption({
+      // setTimeout((res)=>{
+        echarts.init(document.getElementById("dataChartLive")).setOption({
         tooltip: {
           trigger: "axis"
         },
@@ -435,7 +464,7 @@ export default {
           {
             type: "category",
             boundaryGap: [0.2, 0.2],
-            data:this.boxLideLive.positionLive[this.index_],
+            data:this.boxLideLive.positionLive[0],
             scale: true,
             axisTick:{
                 show:false
@@ -446,7 +475,7 @@ export default {
           {
             name: '',
             type: 'bar',
-            data: this.boxLideLive.percentListLive[this.index_],
+            data: this.boxLideLive.percentListLive[0],
             label: {
                   normal: {
                       show: true,
@@ -461,7 +490,7 @@ export default {
           },
         ]
         });
-      },1500)
+      // },1500)
 
     },
   }
@@ -474,7 +503,7 @@ export default {
 }
 .chart{
   width: 100%;
-  /* min-height:4rem; */
+  min-height:4rem;
   margin: 0 auto;
 }
 #content {
