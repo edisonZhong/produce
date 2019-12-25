@@ -192,6 +192,17 @@ export default {
               }
           })
         },
+        handleDelect(companyName,companyNo){
+            this.popupVisible=false
+            this.legalCompanyId=companyNo
+            this.legalCompanyName=companyName
+            console.log(companyName);
+        },
+        handleDelectType(no,name){
+            this.popupVisibleType=false
+            this.positionType=no
+            this.positionTypeName=name
+        },
         //保存并继续
         handleSaveContinue(){
             //  this.$messagebox({
@@ -222,11 +233,11 @@ export default {
                         localStorage.removeItem("customerType")
                         this.employeeName='',
                         this.customerEmployeeNo='',
-                        this.organizationalId='',//所属业务id
-                        this.entryAt='',//this.entryAt,//this.value1?new Date(this.$utils.date(this.value1[1])).getTime()
-                        this.customerId='',//150,
-                        this.positionType='',//"POST_STATION_02",
-                        this.legalCompanyId=''//5
+                        this.name='',//
+                        this.entryAt='',//
+                        this.customerName='',//150,
+                        this.positionTypeName='',//"POST_STATION_02",
+                        this.legalCompanyName=''//5
                     }else if(e.data.code!=200){
                         this.$messagebox({
                         message: e.data.message,
@@ -237,17 +248,6 @@ export default {
             //   }
         //   })
         },
-        handleDelect(companyName,companyNo){
-            this.popupVisible=false
-            this.legalCompanyId=companyNo
-            this.legalCompanyName=companyName
-            console.log(companyName);
-        },
-        handleDelectType(no,name){
-            this.popupVisibleType=false
-            this.positionType=no
-            this.positionTypeName=name
-        }
     }
 }
 </script>
