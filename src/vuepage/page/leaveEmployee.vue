@@ -168,8 +168,7 @@
               if(type){
                 _this.$router.go(-1);
               }
-            } else (e.data.code == 200)
-            {
+            } else (e.data.code == 200){
               MessageBox({
                 title: '提示',
                 message: e.data.message,
