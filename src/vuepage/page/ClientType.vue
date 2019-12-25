@@ -5,32 +5,46 @@
            <mt-search v-model="value" placeholder="搜索"></mt-search>
            <p class="seach">搜索</p>
     </div>
-    <div id="main" ref="mescroll" class="mescroll">
-        <div>
-            <ul style="height: 50px;width: 100%;">
-                <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerType)">
-                {{item.customerType}}
-              </li>
-            </ul>
-        </div>
-    </div>
+   <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
+        <ul style="height: 50px;width: 100%;">
+            <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerType)">
+            {{item.customerType}}
+          </li>
+        </ul>
+    </mescroll-vue>
   </div>
 </template>
 
 <script>
-import Mescroll  from 'mescroll.js'
-import 'mescroll.js/mescroll.min.css'
+import MescrollVue from 'mescroll.js/mescroll.vue'
+import "mescroll.js/mescroll.min.css";
 import { Indicator } from "mint-ui";
 import { selectType } from "../../server/employee";
 export default {
   name: "client",
-  components:{Mescroll },
+  components:{MescrollVue },
   data() {
     return {
       imgUrl: require("@/assets/img/seach.png"),
       value: "",
       count: 0,
       mescroll:null,
+      mescrollUp: { // 上拉加载的配置.
+          callback: this.getList,
+          htmlNodata: '<p class="upwarp-nodata">  </p>',
+          noMoreSize: 5, 
+          page: {
+            num: 0,
+            size: 50,
+            total: 0
+          },
+          empty: {
+          warpId: "main", 
+          icon: "./static/mescroll/mescroll-empty.png", 
+          tip: "暂无相关数据~" //提示
+          },
+        htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
+      },
       page: {
         page: 1,
         size: 50,
@@ -39,62 +53,51 @@ export default {
       dataList: [] // 列表数据
     };
   },
-mounted(){
-    this.mescroll=new Mescroll(this.$refs.mescroll,{
-      // down:{
-      //   callback:this.downCallback
-      // },
-      up:{
-        user:false,
-        callback:this.getList,
-        noMoreSize:5,
-        htmlNodata:'<p class="upwarp-nodata">暂无更多数据---</p>'
-      },
-      empty:{
-        warpId:'mescroll',
-        tip:'暂无相关数据哦~~~'
-      }
-    })
-    up:{
-      user:false;
-    }
-  },
   methods: {
-    getList() {
+    mescrollInit (mescroll) {
+      this.mescroll = mescroll  
+    },
+    getList(page, mescroll) {
     const that = this
       selectType({
-        page: this.page.page,
-        limit: this.page.size,
+        page: page.num,
+        limit: page.size,
         customerName:this.value
       }).then(e => {
+        // console.log(page.num);
         if (e.data.code == 200) {
-          var datas = e.data.data;
-          if (this.page.page == 1) {
-            that.dataList = [];
-          }
-          var data = datas.list;
-          if (data && data.length > 0) {
-            that.dataList = that.dataList.concat(data);
-          }
+          var arr = e.data.data.list
+           let data = page.num == 1 ? [] : this.dataList;
+           this.dataList = this.dataList.concat(arr)
+          //  console.log(this.dataList);
+           this.$nextTick(() => {
+              this.mescroll.endSuccess(arr.length)
+            })
         }
-        that.$nextTick(() => {
-          that.mescroll.endSuccess(data.length);
-        });
       });
     },
      handleSeach(){
-      console.log(1);
-      this.page.page = 1;
-      this.getList();
+       let searchList = []
+       const that = this
+      selectType({
+        page: this.pages.page,
+        limit: this.pages.size,
+        customerName:this.value
+      }).then(e => {
+        // console.log(page.num);
+        if (e.data.code == 200) {
+          this.searchList=e.data.data.list
+          this.dataList=this.searchList
+        }
+      });
     },
     handleLink(id,customerType){
-      localStorage.setItem('customerId',id);
-      localStorage.setItem('customerType',customerType);
+      localStorage.setItem("customerType", JSON.stringify(customerType))
+      localStorage.setItem("customerId", JSON.stringify(id))
       this.$router.push({
         path:'/AddEmployee',
         query:{
           customerId:id,
-          customerType:customerType
         }
       })
     }
@@ -145,7 +148,8 @@ mounted(){
   position: fixed;
   z-index: 10;
   padding: .1rem;
-    box-sizing: border-box;
+  background: #fff;
+  box-sizing: border-box;
   img {
     position: absolute;
     top: 0.5rem;
@@ -154,5 +158,10 @@ mounted(){
 }
 .mint-indicator-wrapper {
   background: rgba(0, 0, 0, 0);
+}
+
+ .mescroll-upwarp .upwarp-nodata {
+
+    display: none;
 }
 </style>

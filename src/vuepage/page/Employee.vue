@@ -46,7 +46,6 @@ import "mescroll.js/mescroll.min.css";
 export default {
   name: "employee",
   components: { TabBar,
-  //  Mescroll 
   MescrollVue
    },
   data() {
@@ -54,22 +53,21 @@ export default {
        mescroll: null, // mescroll实例对象
        mescrollUp: { // 上拉加载的配置.
           callback: this.getList,
-          htmlNodata: '<p class="upwarp-nodata">-- END --</p>',
-          noMoreSize: 5, 
+          htmlNodata: '<p class="upwarp-nodata">到底啦~~~</p>',
+          noMoreSize: 5,
           page: {
             num: 0,
             size: 50,
             total: 0
           },
           empty: {
-          warpId: "main", 
-          icon: "./static/mescroll/mescroll-empty.png", 
+          warpId: "main",
+          icon: "./static/mescroll/mescroll-empty.png",
           tip: "暂无相关数据~" //提示
           },
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
       },
       dataList: [],
-      dataContent:[],
       imgFlag:true,
 	    flag:true,
       value: "",
@@ -79,21 +77,35 @@ export default {
       removeUrl:require("@/assets/img/remove.png"),
       imgCut: require("@/assets/img/cutOff.png"),
       imgF:require("@/assets/img/jiantou.png"),
-      page:''
+      pages:{
+        page:1,
+        size:50
+      }
     };
   },
   created() {
-   
+
   },
   mounted() {
   },
   methods: {
      mescrollInit (mescroll) {
-      this.mescroll = mescroll  
+      this.mescroll = mescroll
     },
     handleSeach(){
-       var page={num:1,size:50};
-      this.getList(page)
+       let searchList = []
+       const that = this
+      listData({
+        page: this.pages.page,
+        limit: this.pages.size,
+        searchStr:this.value
+      }).then(e => {
+        // console.log(page.num);
+        if (e.data.code == 200) {
+          this.searchList=e.data.data.list
+          this.dataList=this.searchList
+        }
+      });
     },
     getList(page, mescroll) {
     const that = this
@@ -104,10 +116,10 @@ export default {
       }).then(e => {
         // console.log(page.num);
         if (e.data.code == 200) {
-          let arr = e.data.data.list
+          var arr = e.data.data.list
            let data = page.num == 1 ? [] : this.dataList;
            this.dataList = this.dataList.concat(arr)
-           console.log(this.dataList);
+          //  console.log(this.dataList);
            this.$nextTick(() => {
               this.mescroll.endSuccess(arr.length)
             })
@@ -124,10 +136,12 @@ export default {
       this.imgFlag=!this.imgFlag
     },
     handlePushEnter(){
+      localStorage.removeItem('employeeName')
+      localStorage.removeItem('customerEmployeeNo')
       this.$router.push({ path: "/AddEmployee" });
     },
     handleLive(){
-      this.$router.push({ path: "/LiveEmpoyee" });
+      this.$router.push({ path: "/leaveEmployee/id" });
     },
   }
 };
@@ -234,4 +248,4 @@ export default {
     }
   }
 }
-</style> 
+</style>
