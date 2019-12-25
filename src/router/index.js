@@ -6,6 +6,8 @@ const Employee =()=> import('@/vuepage/page/Employee.vue')
 const AddEmployee=()=> import('@/vuepage/page/AddEmployee.vue')
 const SelectService=()=> import('@/vuepage/page/SelectService.vue')
 const ClientType=()=> import('@/vuepage/page/ClientType.vue')
+const leaveEmployee=()=> import('@/vuepage/page/leaveEmployee.vue')
+const choiceEmployee=()=> import('@/vuepage/page/choiceEmployee.vue')
 Vue.use(Router)
 
 
@@ -40,6 +42,21 @@ export default new Router({
       component: AddEmployee,
       meta: {
         title:'录入员工信息',
+      } 
+    },
+     {
+      path: '/leaveEmployee/:id',
+      props: true,
+      component: leaveEmployee,
+      meta: {
+        title:'录入离职员工信息',
+      } 
+    },
+    {
+      path: '/choiceEmployee',
+      component: choiceEmployee,
+      meta: {
+        title:'选择客户名称',
       } 
     },
     {

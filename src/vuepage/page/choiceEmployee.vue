@@ -91,6 +91,13 @@
         width: 100%;
         height: 100%;
         border-bottom: 1px solid rgba(220, 223, 230, 1);
+        a{
+            display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        }
       }
     }
   }
@@ -103,36 +110,36 @@
     <div id="header">
       <div class="h-top">
         <mt-search v-model="value" placeholder="搜索"></mt-search>
-        <p class="seach">搜索</p>
+        <p class="seach" @click="getList">搜索</p>
       </div>
       <div class="h-bottom">
-        <p class="number-list">序号</p>
-        <p class="data-list">姓名</p>
+        <p class="number-list">姓名</p>
         <p class="data-list">客户工号</p>
-        <p class="data-list">入职日期</p>
+        <p class="data-list">所属业务区</p>
       </div>
       <img :src="imgCut" alt />
     </div>
     <div id="main" ref="mescroll" class="mescroll">
       <ul style="height: 50px;width: 100%;">
         <li v-for="(item,index) in dataList" :key="index">
-          <p class="number-list">{{index?index+1:'' }}</p>
-          <p class="data-list">{{item.employeeName}}</p>
-          <p class="data-list">{{item.employeeNo}}</p>
-          <p class="data-list">{{item.entryAt}}</p>
+          <router-link :to="{path:`/leaveEmployee/${item.id}`}">
+          <p class="data-list" style="width:20%;">{{item.employeeName}}</p>
+          <p class="data-list">{{item.customerEmployeeNo}}</p>
+          <p class="data-list">{{item.organizationName}}</p>
+          </router-link>
         </li>
       </ul>
     </div>
     <TabBar></TabBar>
-    <div class="fix">
+    <!-- <div class="fix">
       <img :src="imgUrl" @click="handlePush" alt />
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import TabBar from "./TabBar";
-import { listData } from "../../server/employee";
+import { getAllEmployee } from "../../server/employee";
 
 import Mescroll from "mescroll.js";
 import "mescroll.js/mescroll.min.css";
@@ -148,13 +155,13 @@ export default {
       imgUrl: require("@/assets/img/Group.png"),
       page: {
         page: 1,
-        size: 50,
+        size: 20,
         total: 0
       },
       mescroll: null,
       mescrollUp: {
         // 上拉加载的配置.
-        callback: this.getData
+        callback: this.getList
       },
       imgCut: require("@/assets/img/cutOff.png")
     };
@@ -184,14 +191,15 @@ export default {
   },
   methods: {
     getList() {
-        console.log(111);
     const that = this
-      listData({
+      getAllEmployee({
+        status:1,
         page: this.page.page,
-        limit: this.page.size
+        limit: this.page.size,
+        searchStr:this.value
       }).then(e => {
         if (e.data.code == 200) {
-          this.dataList = e.data.list;
+          this.dataList = e.data.data.list;
           if (page.page == 1) {
             that.dataList = [];
           }
