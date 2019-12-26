@@ -2,7 +2,7 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-      <mt-search v-model="value" placeholder="搜索"></mt-search>
+      <mt-search v-model="value" placeholder="搜索" @keydown="searchTo($event)"></mt-search>
       <p class="seach" @click="handleSeach">搜索</p>
     </div>
     <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
@@ -56,6 +56,11 @@ export default {
    
   },
   methods: {
+    searchTo(){
+	 	if(event.keyCode==13){ //键盘回车的编码是13
+	           this.handleSeach();
+	    }
+	},
     mescrollInit (mescroll) {
       this.mescroll = mescroll  
     },
@@ -125,8 +130,9 @@ export default {
         display: flex;
         align-items: center;
         width: 100%;
+        font-size: 16px;
         height: 1rem;
-        border-bottom: 1px solid rgba(220, 223, 230, 1);
+        border-bottom: 0.5px solid rgba(220, 223, 230, 1);
       }
     }
 }

@@ -2,29 +2,43 @@
 <template>
   <div id="page">
     <div id="main">
-      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="所属业务区" v-model="organizationName" @focus.native.capture="handleService">
-        <!-- <img :src="imgF" style alt /> -->
-        <img src="@/assets/img/right.png" height="12px" width="8px">
-      </mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="入职日期" placeholder="请选择" v-model="entryAt" @focus.native.capture="openPicker"></mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;"
-        label="劳动合同牌照"
-        placeholder="请选择"
-        v-model="legalCompanyName"
-        @focus.native.capture="openlabour"
-      ></mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;" label="服务客户名称" id="img-imgs" v-model="customerName" @focus.native.capture="handleClient">
+      <mt-field style="border-bottom: 0.5px solid #d9d9d9;" label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
+      <mt-field style="border-bottom: 0.5px solid #d9d9d9;" label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
+      <div @click="handleService">
+          <mt-field style="border-bottom: 0.5px solid #d9d9d9;" label="所属业务区" v-model="organizationName">
+            <!-- <img :src="imgF" style alt /> -->
+            <img src="@/assets/img/right.png" height="12px" width="8px">
+          </mt-field>
+      </div>
+      <div @click="openPicker">
+        <mt-field style="border-bottom: 0.5px solid #d9d9d9;" label="入职日期" disabled placeholder="请选择" v-model="entryAt"/>
+      </div>
+      <div @click="handleLaga">
+        <mt-field style="border-bottom: 0.5px solid #d9d9d9;" type="textarea" rows="1" label="劳动合同牌照"  v-model="legalCompanyName">
+          <!-- <img :src="imgF" style alt /> -->
+          <img src="@/assets/img/right.png" height="12px" width="8px">
+        </mt-field>
+      </div>
+      <div @click="handleClient">
+        <mt-field style="border-bottom: 0.5px solid #d9d9d9;" type="textarea" rows="2" label="服务客户名称" id="img-imgs" v-model="customerName"><img src="@/assets/img/right.png" height="12px" width="8px"></mt-field>
+      </div>
+      <!-- <mt-field style="border-bottom: 1px solid #d9d9d9;" label="服务客户名称" id="img-imgs" v-model="customerName"> -->
         <!-- <img :src="imgF" style="height:12px;width:8px" alt /> -->
-        <img src="@/assets/img/right.png" height="12px" width="8px">
-      </mt-field>
-      <mt-field style="border-bottom: 1px solid #d9d9d9;"
+        <!-- <img src="@/assets/img/right.png" height="12px" width="8px"> -->
+      <!-- </mt-field> -->
+      <div @click="handleType">
+           <mt-field style="border-bottom: 1px solid #d9d9d9;"
+            label="岗位属性"
+            placeholder="请选择"
+            v-model="positionTypeName"
+          ></mt-field>
+      </div>
+      <!-- <mt-field style="border-bottom: 1px solid #d9d9d9;"
         label="岗位属性"
         placeholder="请选择"
         v-model="positionTypeName"
         @focus.native.capture="handleType"
-      ></mt-field>
+      ></mt-field> -->
       <div class="footer">
         <mt-button class="bottom-save" @click="handleSave">保存</mt-button>
         <mt-button class="bottom-c" @click="handleSaveContinue" type="primary">保存并继续添加</mt-button>
@@ -40,22 +54,6 @@
       date-format="{value} 日"
       v-model="value1"
     ></mt-datetime-picker>
-    <!-- 劳动合同牌照 -->
-    <mt-popup
-      class="sharePopup"
-      style="height: 5rem;"
-      v-model="popupVisible"
-      position="bottom"
-    >
-      <ul class="shareUl">
-        <li
-          class="label-list"
-          v-for="(item,index) in dataList"
-          :key="index"
-          @click="handleDelect(item.companyName,item.companyNo)"
-        >{{item.companyName}}</li>
-      </ul>
-    </mt-popup>
     <!-- //岗位属性 -->
     <mt-popup
       class="sharePopup"
@@ -91,8 +89,8 @@ export default {
       customerName: JSON.parse(localStorage.getItem('customerName')), //所选客户名称
       positionType:JSON.parse(localStorage.getItem('positionType')), //岗位属性id
       positionTypeName: JSON.parse(localStorage.getItem('positionTypeName')), //岗位属性名称
-      legalCompanyId: JSON.parse(localStorage.getItem('legalCompanyId')), //劳动合同牌照id
-      legalCompanyName: JSON.parse(localStorage.getItem('legalCompanyName')), //劳动合同牌照名称
+      legalCompanyId: JSON.parse(localStorage.getItem('companyNo')), //劳动合同牌照id
+      legalCompanyName: JSON.parse(localStorage.getItem('companyName')), //劳动合同牌照名称
       popupVisible: false, //劳动合同牌照的显示和隐藏
       dataList: [],
       popupVisibleType: false, //岗位属性的显示和隐藏
@@ -137,21 +135,11 @@ export default {
         path: "/ClientType"
       });
     },
-    //弹出选择劳动合同牌照
-    openlabour() {
-      this.popupVisible = true;
-      selectCart().then(e => {
-        if (e.data.code == 200) {
-          this.dataList = e.data.data;
-        }
+    //跳转到劳动合同牌照页面
+    handleLaga() {
+      this.$router.push({
+        path: "/LagalList"
       });
-    },
-    //选择劳动合同牌照
-    handleDelect(companyName, companyNo) {
-      this.popupVisible = false;
-      localStorage.setItem("legalCompanyName", JSON.stringify(companyName));//保存劳动合同牌照名称
-      localStorage.setItem("legalCompanyId", JSON.stringify(companyNo));//保存劳动合同牌照ID
-      this.legalCompanyName = JSON.parse(localStorage.getItem('legalCompanyName'));
     },
     //弹出选择岗位属性
     handleType() {
@@ -177,13 +165,13 @@ export default {
     },
     //点击保存
     handleSave() {
-      this.$messagebox({
-        message: "是否确定保存",
-        showCancelButton: true,
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      }).then(action => {
-        if (action == "confirm") {
+      // this.$messagebox({
+      //   message: "是否确定保存",
+      //   showCancelButton: true,
+      //   confirmButtonText: "确定",
+      //   cancelButtonText: "取消"
+      // }).then(action => {
+      //   if (action == "confirm") {
           addData({
             employeeName: this.employeeName,
             customerEmployeeNo: this.customerEmployeeNo,
@@ -208,8 +196,8 @@ export default {
               });
             }
           });
-        }
-      });
+        // }
+      // });
     },
     //保存并继续添加
     handleSaveContinue() {
@@ -230,15 +218,11 @@ export default {
         legalCompanyId: this.legalCompanyId //劳动合同id
       }).then(e => {
         if (e.data.code == 200) {
-            // localStorage.clear();//清空所有缓存
+           localStorage.removeItem('employeeName')
+            localStorage.removeItem('customerEmployeeNo')
           //继续填写清空表格数据
-            // this.employeeName = ""
-            // this.customerEmployeeNo = ""
-            // this.organizationName = ""
-            // this.entryAt = ""
-            // this.customerName = ""
-            // this.positionTypeName = ""
-            // this.legalCompanyName = ""
+            this.employeeName = ""
+            this.customerEmployeeNo = ""
             // this.$messagebox({
             //     message: "保存成功",
             //     showCancelButton: true
@@ -311,7 +295,7 @@ export default {
   height: 0.9rem;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid rgba(220, 223, 230, 1);
+  border-bottom: 0.5px solid rgba(220, 223, 230, 1);
   padding-left: 0.2rem;
 }
 .mint-cell-wrapper{

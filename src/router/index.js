@@ -8,6 +8,8 @@ const SelectService=()=> import('@/vuepage/page/SelectService.vue')
 const ClientType=()=> import('@/vuepage/page/ClientType.vue')
 const leaveEmployee=()=> import('@/vuepage/page/leaveEmployee.vue')
 const choiceEmployee=()=> import('@/vuepage/page/choiceEmployee.vue')
+const LagalList=()=> import('@/vuepage/page/LagalList.vue')
+
 Vue.use(Router)
 
 
@@ -41,9 +43,9 @@ export default new Router({
       path: '/AddEmployee',
       component: AddEmployee,
       meta: {
-        title:'录入员工信息',
+        title:'入职信息登记',
         // keepAlive:true
-      }
+      },
     },
      {
       path: '/leaveEmployee/:id',
@@ -64,15 +66,21 @@ export default new Router({
       path: '/SelectService',
       component: SelectService,
       meta: {
-        title:'选择业务区',
-
+        title:'选择所属业务区',
       }
     },
     {
       path: '/ClientType',
       component: ClientType,
       meta: {
-        title:'选择客户名称',
+        title:'选择服务客户名称',
+      }
+    },
+    {
+      path: '/LagalList',
+      component: LagalList,
+      meta: {
+        title:'劳动合同牌照',
       }
     },
      {

@@ -13,7 +13,7 @@
         <p class="data-list">客户工号</p>
         <p class="data-list">入职日期</p>
       </div>
-      <img :src="imgCut" alt />
+      <!-- <img :src="imgCut" alt /> -->
     </div>
 
     <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
@@ -30,11 +30,15 @@
     <div style="position: fixed;right: .1rem;bottom: 2rem">
       <transition name="mybox">
         <div v-if='imgFlag'>
-          <img style="position: absolute;right: .7rem;top: -1rem;" :src="enterUrl" @click="handlePushEnter" alt="">
-          <img style="position: absolute;right: 1.1rem;bottom: -.3rem;" :src="liveUrl" @click="handleLive" alt="">
+          <span style="width:1rem;height:1rem;border-radius: 50%;line-height:1rem;text-align: center;color:#fff;font-size:16px;
+  display: inline-block;position: absolute;background:#eb9f4b;right: 1.1rem;
+    top: -.8rem;" @click="handlePushEnter">入职</span>
+          <span style="width:1rem;height:1rem;border-radius: 50%;line-height:1rem;text-align: center;color:#fff;font-size:16px;
+  display: inline-block;position: absolute;background:#eb9f4b;right: 1.5rem;
+    bottom: -0.1rem;" @click="handleLive">离职</span>
         </div>
       </transition>
-        <img :src="flag?removeUrl:imgUrl" @click="handleImg" alt=""/>
+        <img style="width:1.5rem;" :src="flag?removeUrl:imgUrl" @click="handleImg" alt=""/>
     </div>
   </div>
 </template>
@@ -70,8 +74,8 @@ export default {
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
       },
       dataList: [],
-      imgFlag:true,
-	    flag:true,
+      imgFlag:false,
+	    flag:false,
       value: "",
       imgUrl: require("@/assets/img/Group.png"),
       enterUrl:require("@/assets/img/enter.png"),
@@ -151,31 +155,31 @@ export default {
 
 <style lang="less" scoped>
 
-.mybox-enter,.mybox-leave-to{
-    opacity: 0;
-}
-.mybox-enter-to,.mybox-leave{
-    opacity: 1;
-}
-.mybox-enter-active,.mybox-leave-active{
-    transition: all 2s;
-}
+// .mybox-enter,.mybox-leave-to{
+//     opacity: 0;
+// }
+// .mybox-enter-to,.mybox-leave{
+//     opacity: 1;
+// }
+// .mybox-enter-active,.mybox-leave-active{
+//     transition: all 2s;
+// }
 .page-tabbar {
   overflow: hidden;
   height: 100vh;
 }
-.page-wrap {
-  overflow: auto;
-  height: 100%;
-  padding-bottom: 100px;
-}
+// .page-wrap {
+//   overflow: auto;
+//   height: 100%;
+//   padding-bottom: 100px;
+// }
 .number-list {
   text-align: center;
-  width: 13%;
+  width: 7%;
 }
 .data-list {
   text-align: center;
-  width: 29%;
+  width: 31%;
 }
 #page {
   height: 100%;
@@ -213,12 +217,13 @@ export default {
         position: absolute;
         top: 0.5rem;
         padding: 0 0.3rem;
+        box-sizing: border-box
       }
       .seach {
         width: 0.9rem;
         line-height: 1.2rem;
         margin-left: 0.3rem;
-        color: rgba(187, 192, 198, 1);
+        color:#eb9f4b;
         font-size: 0.28rem;
         text-align: center;
         position: absolute;
@@ -234,6 +239,8 @@ export default {
       height: 1rem;
       padding-left: 0.15rem;
       box-sizing: border-box;
+      color: #999;
+      border-bottom: 0.5px solid rgba(220, 223, 230, 1);
     }
   }
   #main {
@@ -255,7 +262,8 @@ export default {
         align-items: center;
         width: 100%;
         height: 1rem;
-        border-bottom: 1px solid rgba(220, 223, 230, 1);
+        padding-left: .15rem;
+        border-bottom: 0.5px solid rgba(220, 223, 230, 1);
       }
     }
   }

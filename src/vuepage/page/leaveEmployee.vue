@@ -122,13 +122,13 @@
       getUserData: function () {
         const userid = this.$route.params.id, _this = this;
 
-        if(userid==='id'){return;}
-        Indicator.open({
-          text: '加载中...',
-          //文字
-          spinnerType: 'fading-circle',
-          //样式
-        });
+        // if(userid==='id'){return;}
+        // Indicator.open({
+        //   text: '加载中...',
+        //   //文字
+        //   spinnerType: 'fading-circle',
+        //   //样式
+        // });
         getEmployeeById(userid).then(e => {
           Indicator.close();
           let {employeeName, organizationName, customerEmployeeNo, entryAt, socialSecurityStartAt} = e.data.data;

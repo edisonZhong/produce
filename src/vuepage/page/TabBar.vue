@@ -12,14 +12,14 @@
       <img class="img_cover" src="../../assets/img/copys.png" v-show="$route.meta.theIndex==1" />
       <img class="img_cover" src="../../assets/img/copy.png" v-show="$route.meta.theIndex!=1" />
       <!-- <span :class="activeClass == '1' ? 'actived':''">统计</span> -->
-      <span v-show="$route.meta.theIndex==1" class="actived">统计</span>
-      <span v-show="$route.meta.theIndex!=1" >统计</span>
+      <span v-show="$route.meta.theIndex==1" class="actived">业务进展</span>
+      <span v-show="$route.meta.theIndex!=1" >业务进展</span>
     </li>
     <li @click="handleTab(1,'/Employee')">
       <img class="img_cover" src="../../assets/img/employee.png" v-show="$route.meta.theIndex==2" />
       <img class="img_cover" src="../../assets/img/employees.png" v-show="$route.meta.theIndex!=2" />
-      <span v-show="$route.meta.theIndex==2" class="actived">员工信息</span>
-      <span v-show="$route.meta.theIndex!=2" >员工信息</span>
+      <span v-show="$route.meta.theIndex==2" class="actived">员工管理</span>
+      <span v-show="$route.meta.theIndex!=2" >员工管理</span>
     </li>
   </ul>
 </template>
