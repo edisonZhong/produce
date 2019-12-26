@@ -390,7 +390,10 @@ export default {
           var that = this;
           echarts.init(document.getElementById("dataChart")).setOption({
               title:{
-                subtext:'入职员工数量最多地区:'+this.boxLideDay.positionDay[0][0]+",\n"+this.boxLideDay.positionDay[0][1]+','+this.boxLideDay.positionDay[0][2],
+                subtext:'入职员工数量最多地区:'+
+                this.boxLideDay.positionDay[0][0]+",\n"+
+                this.boxLideDay.positionDay[0][1]+','+
+                this.boxLideDay.positionDay[0][2],
                 x:'center'
               },
               tooltip: {

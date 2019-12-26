@@ -47,7 +47,6 @@ import SouthChart from '../page/chart/SouthChart'
 import EastChart from '../page/chart/EastChart.vue'
 import CenterChart from '../page/chart/CenterChart'
 import NorthChart from '../page/chart/NorthChart'
-
 import TabBar from './TabBar.vue'
 
 import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData} from '../../server/report'
@@ -144,6 +143,7 @@ export default {
         })
       },
       getChartsData(){
+        this.$Indicator.open();
         getChartsData({
           dateType:this.dataType,
           organizationNo:this.organizationNo,
@@ -159,7 +159,7 @@ export default {
           this.getLineDay(res.data.data.entryMap)
           // 辞职
           this.getLineLive(res.data.data.resignationMap)
-
+          this.$Indicator.close();
         })
       },
       getLineLive(data){
