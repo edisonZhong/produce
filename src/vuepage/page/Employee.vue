@@ -9,7 +9,7 @@
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list">姓名</p>
+        <p class="data-list" style="width:22%">姓名</p>
         <p class="data-list">客户工号</p>
         <p class="data-list">入职日期</p>
       </div>
@@ -20,7 +20,7 @@
 			<ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list">{{item.employeeName}}</p>
+          <p class="data-list" style="width:22%">{{item.employeeName}}</p>
           <p class="data-list">{{item.employeeNo}}</p>
           <p class="data-list">{{item.entryAt}}</p>
         </li>
@@ -175,12 +175,32 @@ export default {
 // }
 .number-list {
   text-align: center;
-  width: 7%;
+  width: 10%;
 }
 .data-list {
   text-align: center;
-  width: 31%;
+  width: 34%;
 }
+// .scale-1px{
+//      position:relative;
+//      border:none;
+//  } 
+// .scale-1px{
+//  position: relative;
+//  border:0;
+//  }
+// .scale-1px:after{
+//       content:'',
+//      position: absolute; 
+//      bottom:0; 
+//      background: #000; 
+//      width: 100%; 
+//      height: 1px;
+//      -webkit-transform: scaleY(0.5); 
+//      transform: scaleY(0.5); 
+//      -webkit-transform-origin: 0 0; 
+//       transform-origin: 0 0; 
+// }
 #page {
   height: 100%;
   position: relative;
@@ -239,8 +259,9 @@ export default {
       height: 1rem;
       padding-left: 0.15rem;
       box-sizing: border-box;
+      font-size: 14px;
       color: #999;
-      border-bottom: 0.5px solid rgba(220, 223, 230, 1);
+      border-bottom: 1px solid rgba(220, 223, 230, 1);
     }
   }
   #main {
@@ -256,16 +277,43 @@ export default {
     padding: .1rem;
     box-sizing: border-box;
     ul {
-      li {
+      li{
         display: flex;
         justify-content: space-around;
         align-items: center;
         width: 100%;
         height: 1rem;
-        padding-left: .15rem;
-        border-bottom: 0.5px solid rgba(220, 223, 230, 1);
+        padding-left: .15rem; 
+        border-bottom: 1px solid rgba(220, 223, 230, 1);
       }
     }
   }
+}
+/* 2倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 2.0) {
+    li::after {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+    }
+}
+/* 3倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 3.0) {
+    li::after {
+        -webkit-transform: scaleY(0.33);
+        transform: scaleY(0.33);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2.0) {
+    .h-bottom::after {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+    }
+}
+/* 3倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 3.0) {
+    .h-bottom::after {
+        -webkit-transform: scaleY(0.33);
+        transform: scaleY(0.33);
+    }
 }
 </style>
