@@ -9,18 +9,18 @@
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list">姓名</p>
+        <p class="data-list" style="width:22%">姓名</p>
         <p class="data-list">客户工号</p>
         <p class="data-list">入职日期</p>
       </div>
-      <img :src="imgCut" alt />
+      <!-- <img :src="imgCut" alt /> -->
     </div>
 
     <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
 			<ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list">{{item.employeeName}}</p>
+          <p class="data-list" style="width:22%">{{item.employeeName}}</p>
           <p class="data-list">{{item.employeeNo}}</p>
           <p class="data-list">{{item.entryAt}}</p>
         </li>
@@ -30,11 +30,15 @@
     <div style="position: fixed;right: .1rem;bottom: 2rem">
       <transition name="mybox">
         <div v-if='imgFlag'>
-          <img style="position: absolute;right: .7rem;top: -1rem;" :src="enterUrl" @click="handlePushEnter" alt="">
-          <img style="position: absolute;right: 1.1rem;bottom: -.3rem;" :src="liveUrl" @click="handleLive" alt="">
+          <span style="width:1rem;height:1rem;border-radius: 50%;line-height:1rem;text-align: center;color:#fff;font-size:16px;
+  display: inline-block;position: absolute;background:#eb9f4b;right: 1.1rem;
+    top: -.8rem;" @click="handlePushEnter">入职</span>
+          <span style="width:1rem;height:1rem;border-radius: 50%;line-height:1rem;text-align: center;color:#fff;font-size:16px;
+  display: inline-block;position: absolute;background:#eb9f4b;right: 1.5rem;
+    bottom: -0.1rem;" @click="handleLive">离职</span>
         </div>
       </transition>
-        <img :src="flag?removeUrl:imgUrl" @click="handleImg" alt=""/>
+        <img style="width:1.5rem;" :src="flag?removeUrl:imgUrl" @click="handleImg" alt=""/>
     </div>
   </div>
 </template>
@@ -70,8 +74,8 @@ export default {
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
       },
       dataList: [],
-      imgFlag:true,
-	    flag:true,
+      imgFlag:false,
+	    flag:false,
       value: "",
       imgUrl: require("@/assets/img/Group.png"),
       enterUrl:require("@/assets/img/enter.png"),
@@ -151,32 +155,52 @@ export default {
 
 <style lang="less" scoped>
 
-.mybox-enter,.mybox-leave-to{
-    opacity: 0;
-}
-.mybox-enter-to,.mybox-leave{
-    opacity: 1;
-}
-.mybox-enter-active,.mybox-leave-active{
-    transition: all 2s;
-}
+// .mybox-enter,.mybox-leave-to{
+//     opacity: 0;
+// }
+// .mybox-enter-to,.mybox-leave{
+//     opacity: 1;
+// }
+// .mybox-enter-active,.mybox-leave-active{
+//     transition: all 2s;
+// }
 .page-tabbar {
   overflow: hidden;
   height: 100vh;
 }
-.page-wrap {
-  overflow: auto;
-  height: 100%;
-  padding-bottom: 100px;
-}
+// .page-wrap {
+//   overflow: auto;
+//   height: 100%;
+//   padding-bottom: 100px;
+// }
 .number-list {
   text-align: center;
-  width: 13%;
+  width: 10%;
 }
 .data-list {
   text-align: center;
-  width: 29%;
+  width: 34%;
 }
+// .scale-1px{
+//      position:relative;
+//      border:none;
+//  } 
+// .scale-1px{
+//  position: relative;
+//  border:0;
+//  }
+// .scale-1px:after{
+//       content:'',
+//      position: absolute; 
+//      bottom:0; 
+//      background: #000; 
+//      width: 100%; 
+//      height: 1px;
+//      -webkit-transform: scaleY(0.5); 
+//      transform: scaleY(0.5); 
+//      -webkit-transform-origin: 0 0; 
+//       transform-origin: 0 0; 
+// }
 #page {
   height: 100%;
   position: relative;
@@ -213,12 +237,13 @@ export default {
         position: absolute;
         top: 0.5rem;
         padding: 0 0.3rem;
+        box-sizing: border-box
       }
       .seach {
         width: 0.9rem;
         line-height: 1.2rem;
         margin-left: 0.3rem;
-        color: rgba(187, 192, 198, 1);
+        color:#eb9f4b;
         font-size: 0.28rem;
         text-align: center;
         position: absolute;
@@ -234,6 +259,9 @@ export default {
       height: 1rem;
       padding-left: 0.15rem;
       box-sizing: border-box;
+      font-size: 14px;
+      color: #999;
+      border-bottom: 1px solid rgba(220, 223, 230, 1);
     }
   }
   #main {
@@ -249,15 +277,43 @@ export default {
     padding: .1rem;
     box-sizing: border-box;
     ul {
-      li {
+      li{
         display: flex;
         justify-content: space-around;
         align-items: center;
         width: 100%;
         height: 1rem;
+        padding-left: .15rem; 
         border-bottom: 1px solid rgba(220, 223, 230, 1);
       }
     }
   }
+}
+/* 2倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 2.0) {
+    li::after {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+    }
+}
+/* 3倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 3.0) {
+    li::after {
+        -webkit-transform: scaleY(0.33);
+        transform: scaleY(0.33);
+    }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2.0) {
+    .h-bottom::after {
+        -webkit-transform: scaleY(0.5);
+        transform: scaleY(0.5);
+    }
+}
+/* 3倍屏 */
+@media only screen and (-webkit-min-device-pixel-ratio: 3.0) {
+    .h-bottom::after {
+        -webkit-transform: scaleY(0.33);
+        transform: scaleY(0.33);
+    }
 }
 </style>

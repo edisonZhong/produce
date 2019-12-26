@@ -1,4 +1,4 @@
-<!--选择服务客户名称-->
+<!--选择劳动合同牌照-->
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
@@ -7,9 +7,12 @@
     </div>
    <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 50px;width: 100%;">
-            <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerName)">
-            {{item.customerName}}
-          </li>
+            <li
+          class="label-list"
+          v-for="(item,index) in dataList"
+          :key="index"
+          @click="handleLink(item.companyNo,item.companyName)"
+        >{{item.companyName}}</li>
         </ul>
     </mescroll-vue>
   </div>
@@ -19,7 +22,8 @@
 import MescrollVue from 'mescroll.js/mescroll.vue'
 import "mescroll.js/mescroll.min.css";
 import { Indicator } from "mint-ui";
-import { selectType } from "../../server/employee";
+import { selectCart } from "../../server/employee";
+import { log } from 'util';
 export default {
   name: "client",
   components:{MescrollVue },
@@ -59,14 +63,14 @@ export default {
     },
     getList(page, mescroll) {
     const that = this
-      selectType({
+      selectCart({
         page: page.num,
         limit: page.size,
         customerName:this.value
       }).then(e => {
         // console.log(page.num);
         if (e.data.code == 200) {
-          var arr = e.data.data.list
+          var arr = e.data.data
            let data = page.num == 1 ? [] : this.dataList;
            this.dataList = this.dataList.concat(arr)
           //  console.log(this.dataList);
@@ -79,26 +83,24 @@ export default {
      handleSeach(){
        let searchList = []
        const that = this
-      selectType({
+      selectCart({
         page: this.pages.page,
         limit: this.pages.size,
         customerName:this.value
       }).then(e => {
         // console.log(page.num);
         if (e.data.code == 200) {
-          this.searchList=e.data.data.list
+          this.searchList=e.data.data
           this.dataList=this.searchList
         }
       });
     },
-    handleLink(id,customerName){
-      localStorage.setItem("customerName", JSON.stringify(customerName))
-      localStorage.setItem("customerId", JSON.stringify(id))
+    handleLink(companyNo,companyName){
+      console.log(111);
+      localStorage.setItem("companyNo", JSON.stringify(companyNo))
+      localStorage.setItem("companyName", JSON.stringify(companyName))
       this.$router.push({
         path:'/AddEmployee',
-        query:{
-          customerId:id,
-        }
       })
     }
   }
@@ -121,7 +123,7 @@ export default {
     height: 0.88rem;
     line-height: 0.88rem;
     font-size: 16px;
-    border-bottom: 0.5px solid rgba(220,223,230,1);
+    border-bottom: 1px solid rgba(220,223,230,1);
   }
 }
 .seach {

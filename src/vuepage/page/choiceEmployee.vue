@@ -72,6 +72,7 @@
           position: absolute;
           top: 0;
           right: 0.2rem;
+          font-size: 16px;
         }
       }
 
@@ -83,6 +84,7 @@
         height: 1rem;
         padding-left: 0.15rem;
         box-sizing: border-box;
+        font-size:14px;
       }
     }
 
@@ -98,7 +100,7 @@
       margin-bottom: 1rem;
       padding: .1rem;
       box-sizing: border-box;
-
+      font-size:16px;
       ul {
         li {
           display: flex;
