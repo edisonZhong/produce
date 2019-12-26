@@ -13,11 +13,12 @@
           <div id="persendChart" class="chart"></div>
       </div>
       <div id="content">
-        <!-- <h2>昨日入职员工{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[1]:''}}人</h2> -->
+        <h2>昨日入职员工{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}人</h2>
           <div id="dataChart" class="chart"></div>
       </div>
      <div id="content">
-        <h2>昨日离职员工{{}}人</h2>
+          <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">昨日离职员工{{this.boxLideLive.valueInfo[0][1]}}人</h2>
+          <h2 v-else>昨日离职员工0人</h2>
           <div id="dataChartLive" class="chart"></div>
       </div>
     </div>
@@ -103,20 +104,23 @@ export default {
     // 员工总数
     // this.$nextTick(()=> {
     // })
-    this.init();
+    // this.init();
   },
   watch:{
     boxBar(val,old){
+      console.log(val,old,'ddd');
+
       if(val){this.loadEchart()}
     },
     boxIncrese(val,old){
-      console.log(val,old,'ddd');
       if(val){this.percentEchart()}
     },
     boxLideDay(val,old){
+
       if(val){this.dataChart()}
     },
     boxLideLive(val,old){
+
       if(val){this.dataChartLive()}
     }
   },
@@ -125,7 +129,7 @@ export default {
         const self = this;//因为箭头函数会改变this指向，指向windows。所以先把this保存
         setTimeout(() => {
           window.onresize = function() {
-              self.chart = echarts.init(document.getElementById("chart_example"+this.index_));
+              self.chart = echarts.init(document.getElementById("chart_example"));
               self.chart.resize();
           }
         },20)
@@ -230,7 +234,7 @@ export default {
               //   return Math.min(...that.boxBar.totalList[that.index_]);
               // },
               axisLabel:{
-                fontSize:parseInt(0.2*localStorage.getItem('font'))
+                fontSize:parseInt(0.3*localStorage.getItem('font'))
               }
             },
           ],
@@ -239,7 +243,7 @@ export default {
             name: '',
             type: 'bar',
             data: this.boxBar.totalList[0],
-            barWidth:5,
+            barWidth:8,
             label: {
                   normal: {
                       show: true,
@@ -251,9 +255,9 @@ export default {
                     // color:'#EB9F4B'
                     color: function (params) {
                       var colorList = [
-                          '#ff7e50', '#ff7e50', '#ff7e50', '#34cf34',
-                          '#6497ef', '#85802b', '#D7504B', '#C6E579',
-                          '#F4E001', '#F0805A', '#26C0C0'
+                          '#ff7e50', '#ff7e50', '#ff7e50', '#4378BE',
+                          '#4378BE', '#4378BE', '#4378BE', '#4378BE',
+                          '#4378BE', '#4378BE', '#4378BE'
                       ];
                       return colorList[params.dataIndex]
                   }
@@ -263,7 +267,7 @@ export default {
           },
         ]
       });
-
+      window.addEventListener('resize', function () {echarts.init(document.getElementById("chart_example")).resize()})
       // window.onresize = () => {
       //   return (() => {
       //     canvasChart.resize()
@@ -277,12 +281,13 @@ export default {
         // window.addEventListener("resize", function() {
         //   this.myChartPersend.resize();
         // })
+        console.log(this.boxIncrese,'boxIncrese');
         echarts.init(document.getElementById("persendChart")).setOption({
         tooltip: {
           trigger: "axis"
         },
         legend: {
-          data:['公司数', '增幅']
+          data:['员工数', '占比']
         },
         title: {
           // text: '一二三线员工数及占比',
@@ -291,7 +296,10 @@ export default {
   //               color:rgba(24,49,77,1),
   //               textAlign: center,
   //               fontWeight: 550,
-              },
+            width:'20',
+            height:'20'
+
+           },
   //             subtextStyle: {//副标题文本样式{"color": "#aaa"}
   //                 fontFamily: 'Arial, Verdana, sans...',
   //                 fontSize: 12,
@@ -299,13 +307,16 @@ export default {
   //                 fontWeight: 'normal',
   //             },
         },
+        legend:{
+          backgroundColor:'#fff'
+        },
       xAxis: [
         {
-            type: 'category',
-            boundaryGap: true,
-            boundaryGap: [0.2, 0.2],
-            data:this.boxIncrese.positionType[0],
-            axisLine:{
+          type: 'category',
+          boundaryGap: true,
+          boundaryGap: [0.2, 0.2],
+          data:this.boxIncrese.positionType[0],
+          axisLine:{
             show:false
           },
           axisTick:{
@@ -321,44 +332,60 @@ export default {
       },
       yAxis: [
         {
-        type: "value",
-        boundaryGap: [0.2, 0.2],
-        max: 8000,
-        min: 0,
-        splitNumber:8,
-          axisTick:{
-              show:false
-          },
+          type: "value",
+          max: Math.max(...this.boxIncrese.percentList[0]),
+          min: Math.min(...this.boxIncrese.percentList[0]),
+            axisTick:{
+                show:false
+            },
         },
         {
-        type: "value",
-        // boundaryGap: [0.2, 0.2],
-        max:100,
-        min: 0,
-        // splitNumber:10,
-        splitLine: {
-            show: false
-        },
-        axisLabel: {
-                formatter: '{value} %'
-            },
-            axisTick:{
-            show:false
-        },
+          type: "value",
+          max:Math.max(...this.boxIncrese.percentList[0]),
+          min: Math.min(...this.boxIncrese.percentList[0]),
+          splitLine: {
+              show: false
+          },
+          axisLabel: {
+              formatter: '{value}%'
+          },
+          axisTick:{
+              show:false
+          }
         },
       ],
       series: [
         {
-          name: '公司数',
+          name: '员工数',
           type: 'bar',
-          data: [400, 300, 100, 500, 600, 700],
+          barWidth:18,
+          data: this.boxIncrese.percentList[0],
+          itemStyle:{
+            normal:{
+               color: function (params) {
+                   var colorList = [
+                     '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
+                     '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
+                     '#ff7e50'
+                   ];
+                   return colorList[params.dataIndex]
+               }
+             }
+         }
         },
         {
-          name: '增幅',
-          position: 'right',
+          name: '占比',
           type: 'line',
-          yAxisIndex: 1,
+          symbol:'none', //这句就是去掉点的
+          // smooth:true, //折线平滑
           data: this.boxIncrese.percentList[0],
+          itemStyle:{
+           normal:{
+             lineStyle:{
+                color:'#ff7e50'
+             }
+           }
+         }
         },
       ]
       })

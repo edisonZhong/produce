@@ -125,6 +125,7 @@ export default {
       selectName(name,no){
         this.selectedOrganizationName = name;
         this.organizationNo = no;
+        this.getChartsData();
         this.sheetVisible = false;
       },
       selectDistrict(){
@@ -168,13 +169,20 @@ export default {
         //   if(e.data.code==200){
             this.liveList=data
             var valueLiveList = [];
+            var valueTmp = [];
             for (var key in this.liveList) {
+                valueTmp.push(key)
                 valueLiveList.push(this.liveList[key])
             }
             console.log(valueLiveList.length,'离职离职离职离职离职离职离职离职');
             var positionLive = [];
             var percentListLive = [];
+            var valueInfo = [];
             for(let i=0;i<valueLiveList.length;i++){
+              valueInfo.push(valueTmp[i].split('-'))
+
+
+
               var a =i;
               positionLive[a]=[];
               valueLiveList[i].map(item=> positionLive[a].push(item.organizationName))
@@ -189,7 +197,8 @@ export default {
             // })
             this.boxLideLive = {
               positionLive:positionLive,
-              percentListLive:percentListLive
+              percentListLive:percentListLive,
+              valueInfo:valueInfo
             }
 
             console.log(this.boxLideLive,'lizhilizhilizhilizhilizhilizhilizhi');
@@ -206,7 +215,7 @@ export default {
             var valueDayList = [];
             var titleTmp = [];
             for (var key in this.dayList) {
-                titleinfo.push(key);
+                titleTmp.push(key);
                 valueDayList.push(this.dayList[key])
             }
             // console.log(this.dayList,'listttttt-----+');
@@ -240,7 +249,7 @@ export default {
               titleInfo:titleInfo
             }
 
-            // console.log(this.boxLideDay,'入职入职入职入职入职入职入职入职入职入职');
+            console.log(this.boxLideDay,'入职入职入职入职入职入职入职入职入职入职');
 
           // }
         // })
@@ -283,14 +292,16 @@ export default {
           // }).then(e=>{
           //   console.log(e,'员工总数');
             // if(e.data.code==200){
-
+              console.log(data,'dataaaa');
               this.dataNameBar=data;
-              let valueListBar = [];
+              var valueListBar = [];
+              this.titleBar = [];
+              this.titlesBar = [];
               for (var key in this.dataNameBar) {
                   this.titleBar.push(key)
                   valueListBar.push(this.dataNameBar[key])
               }
-
+              console.log(valueListBar,this.titleBar,'valueListBarrrrrrr');
               // 遍历出title值
               // this.totalArea(this.titleBar);
 
@@ -304,9 +315,8 @@ export default {
                 // 图表y轴
                 var a = i;
                 nameListBar[a]=[];
-                valueListBar[i].map(item => {
-                  nameListBar[a].push(item.organizationName)
-                })
+                console.log(valueListBar[i],'iiiiiiiiiiii]]]]]]]]');
+                valueListBar[i].map(item => nameListBar[a].push(item.organizationName))
 
 
                 // 图表x轴
@@ -337,11 +347,19 @@ export default {
 
         },
         addClass(index){
+            if(index==0){
+              this.dataType = 'D'
+            }else if(index==1){
+              this.dataType = 'W'
+            }else if (index==2) {
+              this.dataType = 'M'
+            }
             this.clickIndex=index;
+            this.getChartsData()
+
         },
         handleScroll(el){
             this.scrollTop = this.$refs.content.scrollTop
-
             // console.log(this.$refs.content.scrollTop)
         }
     }
@@ -430,7 +448,7 @@ export default {
   position:absolute;
   left:0;
   right:0;
-  top:2.3rem;
+  top:2.1rem;
   bottom:0;
   background-color:rgba(0,0,0,.5);
 }
@@ -440,7 +458,7 @@ export default {
   position: absolute;
     left: 0;
     right: 0;
-    top: 2.3rem;
+    top: 2.1rem;
 }
 .districtList>div{
   height:.92rem;
