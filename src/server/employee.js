@@ -55,8 +55,9 @@ export function selectService(obj) {
 export function selectCart(obj) {
   return new Promise((resolve, reject) => {
     axios({
-      url: 'legalCompany/queryLegalTree',
-      method: 'get',
+      url: 'legalCompany/selLaborContractLicense',
+      method: 'post',
+      data: obj
     })
       .then((response) => {
         resolve(response)

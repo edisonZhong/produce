@@ -360,7 +360,9 @@ export default {
             normal:{
                color: function (params) {
                    var colorList = [
-                     '#4378BE','#4378BE', '#4378BE'
+                     '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
+                     '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
+                     '#ff7e50'
                    ];
                    return colorList[params.dataIndex]
                }

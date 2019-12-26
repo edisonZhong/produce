@@ -2,10 +2,10 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-           <mt-search v-model="value" placeholder="搜索"></mt-search>
+           <mt-search v-model="value" placeholder="搜索" @keyup.native.enter="search(value)"></mt-search>
            <p class="seach" @click="handleSeach">搜索</p>
     </div>
-   <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
+   <mescroll-vue id="main" ref="mescroll" :down='mescrollDown' :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 50px;width: 100%;">
             <li v-for="(item,index) in dataList" :key="index" @click="handleLink(item.id,item.customerName)">
             {{item.customerName}}
@@ -29,6 +29,12 @@ export default {
       value: "",
       count: 0,
       mescroll:null,
+       mescrollDown:{ //下拉刷新
+        callback:this.downCallBack,
+        clearEmptyId:"main",
+						isBoth: false, 
+						isBounce: true, 
+         },
       mescrollUp: { // 上拉加载的配置.
           callback: this.getList,
           htmlNodata: '<p class="upwarp-nodata">  </p>',
@@ -54,9 +60,17 @@ export default {
     };
   },
   methods: {
+    search(){
+      this.handleSeach()
+    },
     mescrollInit (mescroll) {
       this.mescroll = mescroll  
     },
+    downCallBack(mescroll){
+          setTimeout(function(){
+					mescroll.endSuccess()
+				},1500);
+  },
     getList(page, mescroll) {
     const that = this
       selectType({
@@ -64,12 +78,10 @@ export default {
         limit: page.size,
         customerName:this.value
       }).then(e => {
-        // console.log(page.num);
         if (e.data.code == 200) {
           var arr = e.data.data.list
            let data = page.num == 1 ? [] : this.dataList;
            this.dataList = this.dataList.concat(arr)
-          //  console.log(this.dataList);
            this.$nextTick(() => {
               this.mescroll.endSuccess(arr.length)
             })
@@ -84,7 +96,6 @@ export default {
         limit: this.pages.size,
         customerName:this.value
       }).then(e => {
-        // console.log(page.num);
         if (e.data.code == 200) {
           this.searchList=e.data.data.list
           this.dataList=this.searchList
@@ -162,7 +173,6 @@ export default {
 }
 
  .mescroll-upwarp .upwarp-nodata {
-
     display: none;
 }
 </style>

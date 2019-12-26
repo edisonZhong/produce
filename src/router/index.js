@@ -46,6 +46,13 @@ export default new Router({
         title:'入职信息登记',
         // keepAlive:true
       },
+      children:[
+        // {
+        //   path: '/SelectService',
+        //   component: SelectService,
+        //   name:'SelectService'
+        // },
+      ]
     },
      {
       path: '/leaveEmployee/:id',
