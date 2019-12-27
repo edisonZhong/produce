@@ -5,7 +5,7 @@
 
     <div>
       <div id="content">
-          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</span> 人，昨日增长 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][2]:''}}</span>人</h2>
+          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</span></span>人</h2>
           <div  id="chart_example" class="chart"></div>
       </div>
       <div id="content">
@@ -202,6 +202,13 @@ export default {
         echarts.init(document.getElementById("chart_example")).setOption({
           tooltip: {
             trigger: "axis"
+          },
+          title:{
+            subtext:'员工数最多地区:'+
+            this.boxBar.nameList[0][0]+",\n"+
+            this.boxBar.nameList[0][1]+','+
+            this.boxBar.nameList[0][2],
+            x:'center'
           },
           legend: {
             // data: this.nameList
@@ -428,7 +435,7 @@ export default {
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        bottom: '15%',
         containLabel: true
       },
       yAxis: [
@@ -453,14 +460,15 @@ export default {
           data: this.allBox.value[0],
           itemStyle:{
             normal:{
-               color: function (params) {
-                   var colorList = [
-                     '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
-                     '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
-                     '#ff7e50'
-                   ];
-                   return colorList[params.dataIndex]
-               }
+               // color: function (params) {
+               //     var colorList = [
+               //       '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
+               //       '#4378BE', '#4378BE', '#4378BE','#4378BE', '#ff7e50',
+               //       '#ff7e50'
+               //     ];
+               //     return colorList[params.dataIndex]
+               // }
+               color:"#ff7e50"
              }
          }
         }
@@ -470,12 +478,16 @@ export default {
     },
      dataChart() {
           var that = this;
+          var one  = this.boxLideDay.positionDay[0][0]?this.boxLideDay.positionDay[0][0]+',':'';
+          var two  = this.boxLideDay.positionDay[0][1]?this.boxLideDay.positionDay[0][1]+',':'';
+          var three  = this.boxLideDay.positionDay[0][2]?this.boxLideDay.positionDay[0][2]:'';
+
+          // this.boxLideDay.positionDay[0][0]+",\n"+
+          // this.boxLideDay.positionDay[0][1]+','+
+          // this.boxLideDay.positionDay[0][2],
           echarts.init(document.getElementById("dataChart")).setOption({
               title:{
-                subtext:'入职员工数量最多地区:'+
-                this.boxLideDay.positionDay[0][0]+",\n"+
-                this.boxLideDay.positionDay[0][1]+','+
-                this.boxLideDay.positionDay[0][2],
+                subtext:'入职员工数量最多地区:'+one+two+three,
                 x:'center'
               },
               tooltip: {
@@ -540,13 +552,17 @@ export default {
         this.init('dataChart',this.boxLideDay.percentListDay[0].length);
     },
     dataChartLive() {
+        var one = this.boxLideLive.positionLive[0][0]?this.boxLideLive.positionLive[0][0]+',':'';
+        var two = this.boxLideLive.positionLive[0][1]?this.boxLideLive.positionLive[0][1]+',':'';
+        var three = this.boxLideLive.positionLive[0][2]?this.boxLideLive.positionLive[0][2]:'';
+
         var that = this;
         echarts.init(document.getElementById("dataChartLive")).setOption({
         tooltip: {
           trigger: "axis"
         },
         title:{
-          subtext:'离职员工数量最多地区:'+this.boxLideLive.positionLive[0][0]+","+this.boxLideLive.positionLive[0][1]+','+this.boxLideLive.positionLive[0][2],
+          subtext:'离职员工数量最多地区:'+one+two+three,
           x:'center'
         },
         legend: {
