@@ -143,7 +143,8 @@ export default {
   overflow-y: auto;
   padding: 0 0.3rem;
   box-sizing: border-box;
-
+  position: absolute;
+    top: 1.04rem;
   ul {
     li {
       display: flex;

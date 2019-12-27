@@ -6,13 +6,11 @@
            <p class="seach" @click="handleSeach">搜索</p>
     </div>
    <mescroll-vue id="main" ref="mescroll" :down='mescrollDown' :up="mescrollUp" @init="mescrollInit">
-        <ul style="height: 50px;width: 100%;">
-            <li
-          class="label-list"
-          v-for="(item,index) in dataList"
-          :key="index"
-          @click="handleLink(item.companyNo,item.companyName)"
-        >{{item.companyName}}</li>
+        <ul style="height: 100%;width: 100%;">
+            <!-- <li class="label-list" v-for="(item,index) in dataList" :key="index"
+              @click="handleLink(item.companyNo,item.companyName)"
+            >{{item.companyName}}</li> -->
+            <li class="label-list" v-for="(item,index) in dataList" :key="index" @click="handleLink(item.companyNo,item.companyName)">{{item.companyName}}</li>
         </ul>
     </mescroll-vue>
   </div>
@@ -37,9 +35,11 @@ export default {
         callback:this.downCallBack,
         clearEmptyId:"main",
 						isBoth: false, 
-						isBounce: true, 
+            isBounce: true,
+             
          },
       mescrollUp: { // 上拉加载的配置.
+          click: true,
           callback: this.getList,
           htmlNodata: '<p class="upwarp-nodata">  </p>',
           noMoreSize: 5, 
@@ -110,12 +110,11 @@ export default {
       });
     },
     handleLink(companyNo,companyName){
-      console.log(111);
-      localStorage.setItem("companyNo", JSON.stringify(companyNo))
-      localStorage.setItem("companyName", JSON.stringify(companyName))
       this.$router.push({
         path:'/AddEmployee',
       })
+      localStorage.setItem("companyNo", JSON.stringify(companyNo))
+      localStorage.setItem("companyName", JSON.stringify(companyName))
     }
   }
 };

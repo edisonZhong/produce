@@ -130,3 +130,11 @@
   background-repeat: no-repeat;
   background-position: bottom;
 }
+
+.mescroll-upwarp {
+  min-height: 30px;
+  padding: 15px 0;
+  text-align: center;
+  visibility: hidden;
+  display: none !important;
+}
