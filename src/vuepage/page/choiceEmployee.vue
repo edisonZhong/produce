@@ -3,6 +3,7 @@
     overflow: hidden;
     height: 100vh;
   }
+
   /*li::after{*/
   /*  width:0!important;*/
   /*  height: 0!important;*/
@@ -30,7 +31,7 @@
 
     #header {
       width: 100%;
-      height: 2.08rem;
+      height: 2.2rem;
       background: #fff;
       position: fixed;
       top: 0;
@@ -44,6 +45,7 @@
       font-size: 0.24rem;
       padding: .1rem;
       box-sizing: border-box;
+
       .img-cut {
         position: absolute;
         top: 2.04rem;
@@ -57,6 +59,7 @@
       .h-top {
         height: 1.04rem;
         width: 100%;
+        border-bottom: 1px solid #f2f2f2;
 
         img {
           position: absolute;
@@ -83,17 +86,17 @@
         justify-content: space-around;
         align-items: center;
         width: 100%;
-        height: 1rem;
+        height: 2rem;
         // padding-left: 0.15rem;
         box-sizing: border-box;
-        font-size:14px;
-        border-bottom:1px solid #dcdfe6;
+        font-size: 14px;
+        border-bottom: 1px solid #dcdfe6;
       }
     }
 
     #main {
       position: absolute;
-      top: 2.15rem;
+      top: 2.1rem;
       bottom: 1rem;
       overflow-x: hidden;
       overflow-y: auto;
@@ -101,9 +104,10 @@
       left: 0;
       right: 0;
       margin-bottom: 1rem;
-      padding: .1rem;
+      padding: 0 0.1rem 0.1rem;
       box-sizing: border-box;
-      font-size:16px;
+      font-size: 16px;
+
       ul {
         li {
           display: flex;
@@ -112,6 +116,7 @@
           width: 100%;
           height: 1rem;
           border-bottom: 1px solid rgba(220, 223, 230, 1);
+
           a {
             display: flex;
             justify-content: space-around;
@@ -130,7 +135,7 @@
     <!-- 员工信息 -->
     <div id="header">
       <div class="h-top">
-        <mt-search v-model="value" placeholder="搜索"></mt-search>
+        <mt-search v-model="value" placeholder="姓名/客户工号" ref="search" @keyup.native.enter="search(value)"/>
         <p class="seach" @click="search">搜索</p>
       </div>
       <div class="h-bottom" style="color:#999999;">
@@ -203,13 +208,11 @@
     created() {
       // this.getList();
     },
-    mounted() {
-    },
     methods: {
       mescrollInit(mescroll) {
         this.mescroll = mescroll
       },
-      getList(page) {
+      getList(page, isSearch) {
         const that = this;
         getAllEmployee({
           status: 1,
@@ -217,17 +220,21 @@
           limit: page.size,
           searchStr: this.value
         }).then(e => {
-          let {message,code,data:{list}} = e.data;
+          let {message, code, data: {list}} = e.data;
           if (code === 200) {
-              that.dataList = [...that.dataList,...list];
+            if (isSearch) {
+              that.dataList = list;
+            } else {
+              that.dataList = [...that.dataList, ...list];
+            }
           }
           this.$nextTick(() => {
             this.mescroll.endSuccess(list.length)
           })
         });
       },
-      search:function(){
-        this.getList(this.page);
+      search: function () {
+        this.getList(this.page, 'search');
       },
       handlePush() {
         this.$router.push({path: "/AddEmployee"});

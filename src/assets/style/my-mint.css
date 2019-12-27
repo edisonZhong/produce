@@ -106,7 +106,7 @@
   font-size: 16px;
 }
 .mint-cell{
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid #dcdfe6;
 }
 .mint-cell-wrapper::after{
   width: 100%;
