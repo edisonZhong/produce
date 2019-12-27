@@ -38,6 +38,9 @@ let VConsole = new Vconsole
 import { XButton } from 'vux'
 Vue.component('x-button', XButton)
 
+import { Indicator } from 'mint-ui';
+Vue.prototype.$Indicator = Indicator;
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
