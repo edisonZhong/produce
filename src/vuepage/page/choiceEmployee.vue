@@ -15,12 +15,12 @@
 
   .number-list {
     text-align: center;
-    width: 13%;
+    width: 33%;
   }
 
   .data-list {
     text-align: center;
-    width: 29%;
+    width: 33%;
   }
 
   #page {
@@ -30,7 +30,7 @@
 
     #header {
       width: 100%;
-      height: 2.48rem;
+      height: 2.08rem;
       background: #fff;
       position: fixed;
       top: 0;
@@ -44,7 +44,6 @@
       font-size: 0.24rem;
       padding: .1rem;
       box-sizing: border-box;
-
       .img-cut {
         position: absolute;
         top: 2.04rem;
@@ -69,7 +68,7 @@
           width: 0.9rem;
           line-height: 1.2rem;
           margin-left: 0.3rem;
-          color: rgba(187, 192, 198, 1);
+          color: #eb9f4b;
           font-size: 0.28rem;
           text-align: center;
           position: absolute;
@@ -85,9 +84,10 @@
         align-items: center;
         width: 100%;
         height: 1rem;
-        padding-left: 0.15rem;
+        // padding-left: 0.15rem;
         box-sizing: border-box;
         font-size:14px;
+        border-bottom:1px solid #dcdfe6;
       }
     }
 
@@ -112,7 +112,6 @@
           width: 100%;
           height: 1rem;
           border-bottom: 1px solid rgba(220, 223, 230, 1);
-
           a {
             display: flex;
             justify-content: space-around;
@@ -134,18 +133,18 @@
         <mt-search v-model="value" placeholder="搜索"></mt-search>
         <p class="seach" @click="search">搜索</p>
       </div>
-      <div class="h-bottom">
+      <div class="h-bottom" style="color:#999999;">
         <p class="number-list">姓名</p>
         <p class="data-list">客户工号</p>
         <p class="data-list">所属业务区</p>
       </div>
-      <img :src="imgCut" alt/>
+      <!-- <img :src="imgCut" alt/> -->
     </div>
     <mescroll-vue id="main" ref="mescroll" :up="mescrollUp" @init="mescrollInit">
-      <ul style="height: 50px;width: 100%;">
-        <li v-for="(item,index) in dataList" :key="index">
+      <ul style="height:100%;width: 100%;">
+        <li style="color: rgba(38,39,40,1);" v-for="(item,index) in dataList" :key="index">
           <router-link :to="{path:`/leaveEmployee/${item.id}`}">
-            <p class="data-list" style="width:20%;">{{item.employeeName}}</p>
+            <p class="data-list">{{item.employeeName}}</p>
             <p class="data-list">{{item.customerEmployeeNo}}</p>
             <p class="data-list">{{item.organizationName}}</p>
           </router-link>

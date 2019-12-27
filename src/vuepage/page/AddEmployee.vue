@@ -10,16 +10,15 @@
       </div>
         <div @click="handleService">
           <mt-field label="所属业务区" v-model="organizationName">
-              <img src="@/assets/img/right.png" height="12px" width="8px">
+              <!-- <img src="@/assets/img/right.png" height="12px" width="8px"> -->
             </mt-field>
         </div>
-        <!-- <router-view/> -->
       <div @click="openPicker">
         <mt-field label="入职日期" disabled placeholder="请选择" v-model="entryAt"/>
       </div>
       <div @click="handleLaga">
         <mt-field type="textarea" rows="2" label="劳动合同牌照"  v-model="legalCompanyName">
-          <img src="@/assets/img/right.png" height="12px" width="8px">
+          <!-- <img src="@/assets/img/right.png" height="12px" width="8px"> -->
         </mt-field>
       </div>
       <div @click="handleClient">

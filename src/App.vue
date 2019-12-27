@@ -1,35 +1,37 @@
 <template>
   <div id="app">
     <!-- <transition leave-active-class='fadeOut animated' enter-active-class='fadeIn animated'> -->
-    <!-- <keep-alive> -->
-    <router-view></router-view>
-    <!-- </keep-alive> -->
+      <!-- <keep-alive> -->
+        <router-view ></router-view>
+      <!-- </keep-alive> -->
     <!-- </transition> -->
   </div>
 </template>
 
 <script>
-  // import allServer from './server/allServer.js'
-  export default {
-    data() {
-      return {}
-    },
-    created() {
+// import allServer from './server/allServer.js'
+export default {
+  data(){
+       return{
 
-    }
+       }
+   },
+   created(){
+
   }
+}
 
 </script>
 
 <style lang="less">
   @import '~vux/src/styles/reset.less';
 
-  #app {
-    height: 100%;
-  }
+#app{
+  height: 100%;
+}
   .h-top{
     .seach{
-      color:#26a2ff;
+      color:#26a2ff!important;
     }
   }
   .mint-msgbox {
@@ -44,4 +46,5 @@
       font-size: 16px;
     }
   }
+
 </style>
