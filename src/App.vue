@@ -17,7 +17,7 @@ export default {
        }
    },
    created(){
-    
+
   }
 }
 
@@ -29,4 +29,22 @@ export default {
 #app{
   height: 100%;
 }
+  .h-top{
+    .seach{
+      color:#26a2ff!important;
+    }
+  }
+  .mint-msgbox {
+    width: 70% !important;
+    border-radius: 10px;
+
+    .mint-msgbox-message {
+      font-size: 14px;
+    }
+
+    .mint-msgbox-confirm {
+      font-size: 16px;
+    }
+  }
+
 </style>

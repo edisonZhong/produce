@@ -4,9 +4,9 @@
     <div id='main'>
       <router-link to="/choiceEmployee">
         <div class="jian">
-        <mt-field class="line" label="离职员工" :placeholder="employeeName" v-model="employeeName" disabled>
-          <img src="@/assets/img/right.png" height="12px" width="8px">
-        </mt-field>
+          <mt-field class="line" label="离职员工" :placeholder="employeeName" v-model="employeeName" disabled>
+            <img src="@/assets/img/right.png" height="12px" width="8px">
+          </mt-field>
         </div>
       </router-link>
       <mt-field label="所属业务区" placeholder="系统自动带出" v-model="employeeArea" disabled/>
@@ -122,14 +122,7 @@
       },
       getUserData: function () {
         const userid = this.$route.params.id, _this = this;
-
-        // if(userid==='id'){return;}
-        // Indicator.open({
-        //   text: '加载中...',
-        //   //文字
-        //   spinnerType: 'fading-circle',
-        //   //样式
-        // });
+        Indicator.open();
         getEmployeeById(userid).then(e => {
           Indicator.close();
           let {employeeName, organizationName, customerEmployeeNo, entryAt, socialSecurityStartAt} = e.data.data;
@@ -140,7 +133,7 @@
             _this.employeeArea = organizationName;
             _this.customerEmployeeNo = customerEmployeeNo;
             _this.organizationalId = entryAt;
-            _this.entryAt1 = socialSecurityStartAt;
+            _this.entryAt1 = socialSecurityStartAt || ' ';
           }
         });
       },
@@ -155,57 +148,83 @@
       handleType() {
         console.log(1)
       },
-      handleSave(type) {
+      handleSave: function (type) {
         const userid = this.$route.params.id, _this = this;
-        if (this.entryAt === '', this.positionType === '') {
+        let {organizationalId, entryAt, entryAt1, entryAt2} = this;
+        organizationalId = new Date(organizationalId);
+        entryAt = new Date(entryAt);
+        entryAt1 = new Date(entryAt1);
+        entryAt2 = new Date(entryAt2);
+        if (userid === 'id') {
+          MessageBox({
+            title: '提示',
+            message: '请先选择离职员工',
+          });
+          return;
+        }
+        if (this.positionType === '' || this.entryAt === '') {
           MessageBox({
             title: '提示',
             message: '请填写完信息',
           });
-        } else {
-          addDepartureEmployee({
-            "employee_id": userid,
-            "resignationAt": this.entryAt,
-            "resignationReason": this.positionType,//所属业务id
-            "socialSecurityStartAt": this.entryAt1,
-            "socialSecurityEndAt": this.entryAt2,//150,
-          }).then(e => {
-            console.log(e);
-            if (e.data.code == 200) {
-              MessageBox({
-                title: '提示',
-                message: "离职信息登记成功",
-              });
-              if (type) {
-                _this.$router.go(-1);
-              }
-            } else (e.data.code == 200)
-            {
-              MessageBox({
-                title: '提示',
-                message: e.data.message,
-              });
-            }
-          })
+          return;
         }
+        if (entryAt < organizationalId) {
+          MessageBox({
+            title: '提示',
+            message: '离职日期不能小于入职日期!',
+          });
+          return;
+        }
+        if (entryAt2 < entryAt1) {
+          MessageBox({
+            title: '提示',
+            message: '结束缴纳日期不能小于开始缴纳日期!',
+          });
+          return;
+        }
+        addDepartureEmployee({
+          "employee_id": userid,
+          "resignationAt": this.entryAt,
+          "resignationReason": this.positionType,//所属业务id
+          "socialSecurityStartAt": this.entryAt1,
+          "socialSecurityEndAt": this.entryAt2,//150,
+        }).then(e => {
+          if (e.data.code === 200) {
+            type ? (_this.$router.push('/Employee'), MessageBox({
+              title: '提示',
+              message: "离职信息登记完成",
+            })) : (_this.$router.push('/leaveEmployee/id'), _this.$router.go(0));
+          } else {
+            MessageBox({
+              title: '提示',
+              message: e.data.message,
+            });
+          }
+        })
       }
     }
   }
 </script>
 
 <style lang="less" scoped>
+
   a {
     color: black;
   }
-  .mint-cell-value{
-    flex: 0 0 73%!important;
+
+  .mint-cell-value {
+    flex: 0 0 73% !important;
   }
-  .mint-cell-wrapper{
+
+  .mint-cell-wrapper {
     padding-right: 0px;
   }
-  .mint-cell:last-child{
+
+  .mint-cell:last-child {
     background-image: none;
   }
+
   #page {
     height: 100%;
     position: relative;
@@ -225,6 +244,7 @@
 
     }
   }
+
 #main >a{
     // border-bottom: 1px solid #d9d9d9;
 }

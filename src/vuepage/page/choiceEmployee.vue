@@ -3,7 +3,10 @@
     overflow: hidden;
     height: 100vh;
   }
-
+  li::after{
+    width:0!important;
+    height: 0!important;
+  }
   .page-wrap {
     overflow: auto;
     height: 100%;
@@ -90,7 +93,7 @@
 
     #main {
       position: absolute;
-      top: 2rem;
+      top: 2.15rem;
       bottom: 1rem;
       overflow-x: hidden;
       overflow-y: auto;
