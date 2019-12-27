@@ -17,10 +17,14 @@
       </div>
       <mt-field label="离职原因" placeholder="请填写" v-model="positionType"/>
       <div class="line" @click="openPicker(1)">
-        <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1"/>
+        <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1">
+          <img src="@/assets/img/del.png" height="15px" width="15px" @click.stop @click="clearInput('entryAt1')">
+        </mt-field>
       </div>
       <div class="line" @click="openPicker(2)">
-        <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled/>
+        <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled>
+          <img src="@/assets/img/del.png" height="15px" width="15px"  @click.stop @click="clearInput('entryAt2')">
+        </mt-field>
       </div>
       <div class="footer">
         <mt-button class="bottom-save" @click="handleSave(1)">保存</mt-button>
@@ -78,13 +82,16 @@
       this.getUserData();
     },
     methods: {
+      clearInput(input){
+        this[input] = " ";
+      },
       openPicker(value) {
         // if(this.value){
         //       this.entryAt=this.value
         //   }else{
         //       this.value=new Date()
         //   }
-        this.value=new Date()
+        this.value = new Date()
         this.nowDate = value;
         this.$refs.picker.open();
         switch (this.nowDate) {
@@ -245,35 +252,38 @@
     }
   }
 
-#main >a{
+  #main > a {
     // border-bottom: 1px solid #d9d9d9;
-}
-.line{
-  // border-bottom: 1px solid #d9d9d9;
-}
+  }
 
-.bottom-save {
-        height: 0.72rem;
-        width: 1.6rem;
-        font-size: 14px;
-        background: rgba(235, 159, 75, 1);
-        color: #fff;
-        margin-right: 0.15rem;
-        }
-        .bottom-c {
-        width: 4rem;
-        font-size: 14px;
-        height: 0.72rem;
-        margin-left: 0.15rem;
-        }
+  .line {
+    // border-bottom: 1px solid #d9d9d9;
+  }
+
+  .bottom-save {
+    height: 0.72rem;
+    width: 1.6rem;
+    font-size: 14px;
+    background: rgba(235, 159, 75, 1);
+    color: #fff;
+    margin-right: 0.15rem;
+  }
+
+  .bottom-c {
+    width: 4rem;
+    font-size: 14px;
+    height: 0.72rem;
+    margin-left: 0.15rem;
+  }
+
   .footer {
     position: absolute;
-        bottom: 0;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        height: 1.58rem;
-        background: #fff;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 1.58rem;
+    background: #fff;
   }
 
 </style>
