@@ -3,10 +3,10 @@
     overflow: hidden;
     height: 100vh;
   }
-  li::after{
-    width:0!important;
-    height: 0!important;
-  }
+  /*li::after{*/
+  /*  width:0!important;*/
+  /*  height: 0!important;*/
+  /*}*/
   .page-wrap {
     overflow: auto;
     height: 100%;
