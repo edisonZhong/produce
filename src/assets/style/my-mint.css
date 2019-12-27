@@ -9,6 +9,9 @@
   position: relative;
 }
 
+.line>.mint-cell>.mint-cell-wrapper>.mint-cell-title{
+  width: 3rem;
+}
 .mintui-search {
   font-size: 16px !important;
   padding-right: .2rem !important;

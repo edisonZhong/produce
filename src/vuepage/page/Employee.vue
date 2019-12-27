@@ -27,7 +27,7 @@
         <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
           <p class="number-list">{{index+1}}</p>
           <p class="data-list" style="width:22%">{{item.employeeName}}</p>
-          <p class="data-list">{{item.employeeNo}}</p>
+          <p class="data-list">{{item.customerEmployeeNo}}</p>
           <p class="data-list">{{item.entryAt}}</p>
         </li>
       </ul>
@@ -149,7 +149,7 @@ export default {
     handlePushEnter() {
       localStorage.removeItem("employeeName");
       localStorage.removeItem("customerEmployeeNo");
-      this.$router.push({ path: "/AddEmployee" });
+      this.$router.push({ path: "/addEmployee" });
     },
     handleLive() {
       this.$router.push({ path: "/leaveEmployee/id" });
@@ -223,11 +223,12 @@ export default {
         line-height: 1.2rem;
         margin-left: 0.3rem;
         color: #eb9f4b;
-        font-size: 0.28rem;
+        font-size: 0.32rem;
         text-align: center;
         position: absolute;
         top: 0;
         right: 0.2rem;
+        // font-size: 16px;
       }
     }
     .h-bottom {

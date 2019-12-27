@@ -2,7 +2,7 @@
   <div id="app" :key='appkey'>
     <!-- <transition leave-active-class='fadeOut animated' enter-active-class='fadeIn animated'> -->
       <!-- <keep-alive> -->
-        <router-view></router-view>
+        <router-view ></router-view>
       <!-- </keep-alive> -->
     <!-- </transition> -->
   </div>
@@ -18,11 +18,6 @@ export default {
    },
    created(){
 
-  },
-  watch:{
-    '$route':function(newu,oldu){
-      this.appkey = new Date().getTime();
-    }
   }
 }
 
@@ -34,4 +29,22 @@ export default {
 #app{
   height: 100%;
 }
+  .h-top{
+    .seach{
+      color:#26a2ff!important;
+    }
+  }
+  .mint-msgbox {
+    width: 70% !important;
+    border-radius: 10px;
+
+    .mint-msgbox-message {
+      font-size: 14px;
+    }
+
+    .mint-msgbox-confirm {
+      font-size: 16px;
+    }
+  }
+
 </style>

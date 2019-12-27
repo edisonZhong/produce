@@ -132,7 +132,11 @@ export default {
   methods: {
     init(domNode,barLength) {
       let chartName = echarts.init(document.getElementById(domNode));
-      this.autoHeight =barLength * 35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+      if(domNode=='chart_growth'){
+        this.autoHeight =35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+      }else{
+        this.autoHeight =barLength * 35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+      }
       chartName.getDom().style.height = this.autoHeight + "px";
       // chartName.getDom().childNodes[0].style.height = this.autoHeight + "px";
       // chartName.getDom().childNodes[0].childNodes[0].setAttribute("height",this.autoHeight);
@@ -431,8 +435,9 @@ export default {
         {
           type: "value",
           inverse: false,
-          // max: Math.max(...this.allBox.value[0]),
-          // min: Math.min(...this.allBox.value[0]),
+          minInterval: 1,
+          max: Math.max(...this.allBox.value[0]),
+          min: Math.min(...this.allBox.value[0]),
             axisTick:{
               show:false
             },
