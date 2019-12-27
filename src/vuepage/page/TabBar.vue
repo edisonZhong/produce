@@ -42,7 +42,8 @@ export default {
         console.log(val);
     //   console.log(index);
       // this.activeClass = index;  // 把当前点击元素的index，赋值给activeClass
-      this.$router.replace(path);
+      this.$router.push({path:path});
+      // this.$router.push({path:path})
     }
   }
 };
