@@ -9,6 +9,10 @@
           <div  id="chart_example" class="chart"></div>
       </div>
       <div id="content">
+          <h2>员工数增长情况</h2>
+          <div  id="chart_growth" class="chart"></div>
+      </div>
+      <div id="content">
           <h2>一二三线员工数及占比</h2>
           <div id="persendChart" class="chart"></div>
       </div>
@@ -39,6 +43,7 @@ export default {
     'boxIncrese',
     'boxLideDay',
     'boxLideLive',
+    'allBox',
   ],
 
   data() {
@@ -115,13 +120,14 @@ export default {
       if(val){this.percentEchart()}
     },
     boxLideDay(val,old){
-
       if(val){this.dataChart()}
     },
     boxLideLive(val,old){
-
       if(val){this.dataChartLive()}
-    }
+    },
+    allBox(val,old){
+      if(val){this.employeeGrowth()}
+    },
   },
   methods: {
     init(domNode,barLength) {
@@ -306,6 +312,8 @@ export default {
         {
           type: 'category',
           data:this.boxIncrese.positionType[0],
+          // data:['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21',
+          // '22','23','24','25','26','27','28','29','31','31'],
           axisLine:{
             show:false
           },
@@ -325,6 +333,8 @@ export default {
           type: "value",
           max: Math.max(...this.boxIncrese.percentList[0]),
           min: Math.min(...this.boxIncrese.percentList[0]),
+          // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
+          // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
             axisTick:{
               show:false
             },
@@ -336,6 +346,9 @@ export default {
           type: "value",
           max:Math.max(...this.boxIncrese.percentList[0]),
           min: Math.min(...this.boxIncrese.percentList[0]),
+          // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
+          // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
+
           splitLine: {
               show: false
           },
@@ -354,8 +367,9 @@ export default {
         {
           name: '员工数',
           type: 'bar',
-          barWidth:18,
+          // barWidth:18,
           data: this.boxIncrese.percentList[0],
+          // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
             normal:{
                color: function (params) {
@@ -376,6 +390,7 @@ export default {
           // smooth:true, //折线平滑
           color:'#ff7e50',
           data: this.boxIncrese.percentList[0],
+          // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
            normal:{
              lineStyle:{
@@ -387,6 +402,66 @@ export default {
       ]
       })
       this.init('persendChart',this.boxIncrese.percentList[0].length);
+    },
+    // 员工数增长情况
+    employeeGrowth() {
+        echarts.init(document.getElementById("chart_growth")).setOption({
+        tooltip: {
+          trigger: "axis"
+        },
+      xAxis: [
+        {
+          type: 'category',
+          data:this.allBox.name[0],
+          axisLine:{
+            show:false
+          },
+          axisTick:{
+              show:false
+          },
+        },
+      ],
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      yAxis: [
+        {
+          type: "value",
+          inverse: false,
+          // max: Math.max(...this.allBox.value[0]),
+          // min: Math.min(...this.allBox.value[0]),
+            axisTick:{
+              show:false
+            },
+            axisLine:{
+              show:false
+            }
+        }
+      ],
+      series: [
+        {
+          name: '员工数',
+          type: 'bar',
+          data: this.allBox.value[0],
+          itemStyle:{
+            normal:{
+               color: function (params) {
+                   var colorList = [
+                     '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
+                     '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
+                     '#ff7e50'
+                   ];
+                   return colorList[params.dataIndex]
+               }
+             }
+         }
+        }
+      ]
+      })
+      this.init('chart_growth',this.allBox.value[0].length);
     },
      dataChart() {
           var that = this;

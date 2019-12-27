@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :key='appkey'>
     <!-- <transition leave-active-class='fadeOut animated' enter-active-class='fadeIn animated'> -->
       <!-- <keep-alive> -->
         <router-view></router-view>
@@ -13,11 +13,16 @@
 export default {
   data(){
        return{
-
+         appkey:1
        }
    },
    created(){
-    
+
+  },
+  watch:{
+    '$route':function(newu,oldu){
+      this.appkey = new Date().getTime();
+    }
   }
 }
 

@@ -21,7 +21,7 @@
               <img :src='imgUrl' alt=""/>
           </div>
           <div id="main" @scroll="handleScroll" ref="content"  >
-              <SouthChart  @totalArea='totalArea'   :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive'></SouthChart>
+              <SouthChart  @totalArea='totalArea'   :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
               <!-- {{item,'dddddd'}} -->
               <!-- <EastChart id='3'></EastChart>
               <CenterChart id='4'></CenterChart>
@@ -99,6 +99,8 @@ export default {
             organizationNo:'',
             organizationType:1,
 
+            // 员工总数
+            allBox:[],
 
         }
     },
@@ -159,8 +161,45 @@ export default {
           this.getLineDay(res.data.data.entryMap)
           // 辞职
           this.getLineLive(res.data.data.resignationMap)
+          // 员工数增长情况
+          this.getGrowth(res.data.data.upMap);
+
           this.$Indicator.close();
         })
+      },
+      getGrowth(data){
+            console.log(data,'data123');
+            var valueTypeList = [];
+            for (var key in data) {
+              valueTypeList.push(data[key][0])
+            }
+            console.log(valueTypeList,'data123321');
+
+            var positionType = [];
+            var percentList = [];
+            for(let i=0;i<valueTypeList.length;i++){
+              var a = i;
+              positionType[a] = [];
+              valueTypeList[i].xDataList.map(item=>{
+                positionType[a].push(item.xData)
+              })
+
+              var b = i;
+              percentList[b] = [];
+              valueTypeList[i].xDataList.map(item=> percentList[b].push(item.total))
+            }
+            // console.log(percentList,positionType,'upppppppp0-90');
+
+
+
+            this.allBox = {
+              name:positionType,
+              value:percentList
+            }
+            console.log(this.allBox,'upppppppp0-');
+
+        //   }
+        // })
       },
       getLineLive(data){
         // reportEnter({
