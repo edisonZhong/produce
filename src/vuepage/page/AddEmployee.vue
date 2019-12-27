@@ -264,10 +264,10 @@ export default {
   height: 0.9rem;
   display: flex;
   align-items: center;
-  border-bottom: 0.5px solid rgba(220, 223, 230, 1);
+  border-bottom: 0.5px solid #f2f2f2;
   padding-left: 0.2rem;
 }
 .mint-cell-wrapper{
-  border:.002rem solid #d9d9d9d9
+  border:.002rem solid #f2f2f2
 }
 </style>
