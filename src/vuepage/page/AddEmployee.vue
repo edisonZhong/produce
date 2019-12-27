@@ -10,7 +10,7 @@
       </div>
         <div @click="handleService">
           <mt-field label="所属业务区" v-model="organizationName">
-              <!-- <img src="@/assets/img/right.png" height="12px" width="8px"> -->
+              <img src="@/assets/img/right.png" height="12px" width="8px">
             </mt-field>
         </div>
       <div @click="openPicker">
@@ -18,7 +18,7 @@
       </div>
       <div @click="handleLaga">
         <mt-field type="textarea" rows="2" label="劳动合同牌照"  v-model="legalCompanyName">
-          <!-- <img src="@/assets/img/right.png" height="12px" width="8px"> -->
+          <img src="@/assets/img/right.png" height="12px" width="8px">
         </mt-field>
       </div>
       <div @click="handleClient">
@@ -67,11 +67,13 @@
 </template>
 
 <script>
+import { Toast } from "mint-ui";
 import { addData, selectCart, positionType } from "../../server/employee";
 export default {
   name: "addEmployee",
   data() {
     return {
+      toastInstanse: null,
       value: "", //搜索内容
       employeeName: JSON.parse(localStorage.getItem('employeeName')), //姓名
       customerEmployeeNo: JSON.parse(localStorage.getItem('customerEmployeeNo')), //工号
@@ -196,6 +198,12 @@ export default {
         legalCompanyId: this.legalCompanyId //劳动合同id
       }).then(e => {
         if (e.data.code == 200) {
+          Toast({
+            message: '以保存成功',
+            position: 'middle',
+            duration: 3000
+          });
+          this.toastInstanse.close();
            localStorage.removeItem('employeeName')
             localStorage.removeItem('customerEmployeeNo')
           //继续填写清空表格数据
@@ -243,17 +251,18 @@ export default {
         width: 100%;
         height: 1.58rem;
         background: #fff;
+        font-size: 16px;
         .bottom-save {
         height: 0.72rem;
         width: 1.6rem;
-        font-size: 14px;
+        font-size: 16px;
         background: rgba(235, 159, 75, 1);
         color: #fff;
         margin-right: 0.15rem;
         }
         .bottom-c {
         width: 4rem;
-        font-size: 14px;
+        font-size: 16px;
         height: 0.72rem;
         margin-left: 0.15rem;
         }
@@ -270,4 +279,16 @@ export default {
 .mint-cell-wrapper{
   border:.002rem solid #f2f2f2
 }
+// .mint-toast {
+//     position: fixed;
+//     max-width: 80%;
+//     border-radius: 5px;
+//     background: rgba(0, 0, 0, 0.7);
+//     color: #fff;
+//     box-sizing: border-box;
+//     text-align: center;
+//     z-index: 1000;
+//     -webkit-transition: opacity .3s linear;
+//     transition: opacity .3s linear;
+// }
 </style>

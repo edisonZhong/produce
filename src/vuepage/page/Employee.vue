@@ -159,15 +159,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .mybox-enter,.mybox-leave-to{
-//     opacity: 0;
-// }
-// .mybox-enter-to,.mybox-leave{
-//     opacity: 1;
-// }
-// .mybox-enter-active,.mybox-leave-active{
-//     transition: all 2s;
-// }
 .page-tabbar {
   overflow: hidden;
   height: 100vh;
