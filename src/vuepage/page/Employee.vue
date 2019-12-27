@@ -201,6 +201,7 @@ export default {
     padding: 0.1rem;
     padding-bottom: 0;
     box-sizing: border-box;
+    background: #fff;
     .img-cut {
       position: absolute;
       top: 2.04rem;
@@ -241,10 +242,11 @@ export default {
       box-sizing: border-box;
       font-size: 14px;
       color: #999;
-      border-bottom: 1px solid rgba(220, 223, 230, 1);
+      border-bottom: 0.5px solid #f2f2f2;;
     }
   }
   #main {
+    -webkit-overflow-scrolling:touch;
     position: absolute;
     top: 2rem;
     bottom: 1rem;
@@ -253,6 +255,7 @@ export default {
     width: 100%;
     left: 0;
     right: 0;
+    height:100%;
     margin-bottom: 1rem;
     padding: 0.1rem;
     box-sizing: border-box;
@@ -264,7 +267,7 @@ export default {
         width: 100%;
         height: 1rem;
         padding-left: 0.15rem;
-        border-bottom: 1px solid rgba(220, 223, 230, 1);
+        border-bottom: 0.5px solid #f2f2f2;
       }
       .class1 {
         display: flex;
@@ -274,7 +277,7 @@ export default {
         height: 1rem;
         padding-left: 0.15rem;
         color: #999;
-        border-bottom: 1px solid rgba(220, 223, 230, 1);
+        border-bottom: 0.5px solid #f2f2f2;
       }
     }
   }
@@ -308,30 +311,30 @@ export default {
   bottom: -0.25rem;
 }
 /* 2倍屏 */
-@media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  li::after {
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-  }
-}
+// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+//   li::after {
+//     -webkit-transform: scaleY(0.5);
+//     transform: scaleY(0.5);
+//   }
+// }
 /* 3倍屏 */
-@media only screen and (-webkit-min-device-pixel-ratio: 3) {
-  li::after {
-    -webkit-transform: scaleY(0.33);
-    transform: scaleY(0.33);
-  }
-}
-@media only screen and (-webkit-min-device-pixel-ratio: 2) {
-  .h-bottom::after {
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-  }
-}
-/* 3倍屏 */
-@media only screen and (-webkit-min-device-pixel-ratio: 3) {
-  .h-bottom::after {
-    -webkit-transform: scaleY(0.33);
-    transform: scaleY(0.33);
-  }
-}
+// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
+//   li::after {
+//     -webkit-transform: scaleY(0.33);
+//     transform: scaleY(0.33);
+//   }
+// }
+// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
+//   .h-bottom::after {
+//     -webkit-transform: scaleY(0.5);
+//     transform: scaleY(0.5);
+//   }
+// }
+// /* 3倍屏 */
+// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
+//   .h-bottom::after {
+//     -webkit-transform: scaleY(0.33);
+//     transform: scaleY(0.33);
+//   }
+// }
 </style>

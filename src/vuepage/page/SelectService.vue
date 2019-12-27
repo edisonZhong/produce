@@ -12,7 +12,7 @@
       :up="mescrollUp"
       @init="mescrollInit"
     >
-      <ul style="height:100%;width:100%">
+      <ul>
         <li
           v-for="(item,index) in dataList"
           :key="index"
@@ -134,11 +134,11 @@ export default {
 <style lang="less" scoped>
 #main {
   width: 100%;
-  position: absolute;
-  top: 1rem;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  // position: absolute;
+  // top: 1rem;
+  // left: 0;
+  // right: 0;
+  // bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0 0.3rem;
