@@ -9,7 +9,6 @@ const ClientType=()=> import('@/vuepage/page/ClientType.vue')
 const leaveEmployee=()=> import('@/vuepage/page/leaveEmployee.vue')
 const choiceEmployee=()=> import('@/vuepage/page/choiceEmployee.vue')
 const LagalList=()=> import('@/vuepage/page/LagalList.vue')
-
 Vue.use(Router)
 
 
@@ -37,36 +36,36 @@ export default new Router({
       meta: {
         theIndex: "2",
         title:'员工信息',
-      }
+      },
     },
     {
       path: '/AddEmployee',
       component: AddEmployee,
       meta: {
         title:'入职信息登记',
-        // keepAlive:true
       },
-      children:[
-        // {
-        //   path: '/SelectService',
-        //   component: SelectService,
-        //   name:'SelectService'
-        // },
-      ]
+      // children: [
+      //   {
+      //     path: '/SelectService',
+      //     name: SelectService,
+      //     component: () => import('@/vuepage/page/SelectService.vue'),
+      //     meta: { title: '选择所属业务区',}
+      //   },
+      // ]
     },
      {
       path: '/leaveEmployee/:id',
       props: true,
       component: leaveEmployee,
       meta: {
-        title:'录入离职员工信息',
+        title:'离职信息登记',
       }
     },
     {
       path: '/choiceEmployee',
       component: choiceEmployee,
       meta: {
-        title:'选择客户名称',
+        title:'选择离职员工',
       }
     },
     {

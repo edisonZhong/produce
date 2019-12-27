@@ -23,8 +23,8 @@
         <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled/>
       </div>
       <div class="footer">
-        <mt-button style="margin-left:.3rem" class="bottom-save" @click="handleSave(1)">保存</mt-button>
-        <mt-button style="width:4rem;height:.88rem;margin-right: .5rem;" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
+        <mt-button class="bottom-save" @click="handleSave(1)">保存</mt-button>
+        <mt-button class="bottom-c" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
       </div>
     </div>
     <mt-datetime-picker
@@ -84,6 +84,7 @@
         //   }else{
         //       this.value=new Date()
         //   }
+        this.value=new Date()
         this.nowDate = value;
         this.$refs.picker.open();
         switch (this.nowDate) {
@@ -225,28 +226,34 @@
     }
   }
 #main >a{
-    border-bottom: 1px solid #d9d9d9;
+    // border-bottom: 1px solid #d9d9d9;
 }
 .line{
-  border-bottom: 1px solid #d9d9d9;
+  // border-bottom: 1px solid #d9d9d9;
 }
 
-  .bottom-save {
-    height: .88rem;
-    width: 1.6rem;
-    background: rgba(235, 159, 75, 1);
-    color: #fff
-  }
-
+.bottom-save {
+        height: 0.72rem;
+        width: 1.6rem;
+        font-size: 14px;
+        background: rgba(235, 159, 75, 1);
+        color: #fff;
+        margin-right: 0.15rem;
+        }
+        .bottom-c {
+        width: 4rem;
+        font-size: 14px;
+        height: 0.72rem;
+        margin-left: 0.15rem;
+        }
   .footer {
     position: absolute;
-    // bottom: .7rem;
-    bottom: 0;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    height: 1.58rem;
-    background: #fff
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 1.58rem;
+        background: #fff;
   }
 
 </style>

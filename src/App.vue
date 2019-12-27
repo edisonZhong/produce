@@ -2,7 +2,7 @@
   <div id="app">
     <!-- <transition leave-active-class='fadeOut animated' enter-active-class='fadeIn animated'> -->
       <!-- <keep-alive> -->
-        <router-view></router-view>
+        <router-view ></router-view>
       <!-- </keep-alive> -->
     <!-- </transition> -->
   </div>
