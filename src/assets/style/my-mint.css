@@ -10,7 +10,7 @@
 }
 
 .line>.mint-cell>.mint-cell-wrapper>.mint-cell-title{
-  width: 3rem;
+  width: 4.4rem;
 }
 .mintui-search {
   font-size: 16px !important;
@@ -27,10 +27,10 @@
 }
 .mint-searchbar-inner {
   /* background: rgba(246, 248, 250, 1); */
-/* .mint-searchbar-inner{ */
-    background:rgba(246,248,250,1);;
-    height: .56rem;
-    border-radius:4px;
+  /* .mint-searchbar-inner{ */
+  background:rgba(246,248,250,1);;
+  height: .56rem;
+  border-radius:4px;
 }
 
 .mintui-search {
@@ -60,7 +60,7 @@
   word-break:break-world;
   font-size: 16px;
   /* flex: 0 0 80%; */
-  padding-left: .5rem;
+  /*padding-left: .1rem;*/
   box-sizing: border-box;
   /* padding-right: 0rem;     */
 
@@ -96,8 +96,8 @@
   box-sizing: border-box;
 }
 .mint-cell-wrapper {
-    background-image: -webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);
-    background-image: linear-gradient(180deg, #fff, #fff 50%, transparent 50%);
+  background-image: -webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);
+  background-image: linear-gradient(180deg, #fff, #fff 50%, transparent 50%);
 }
 /* .inputs input::-webkit-input-placeholder{
     color:#0076FF;
@@ -105,7 +105,9 @@
 #page{
   font-size: 16px;
 }
-
+.mint-cell{
+  border-bottom: 1px solid #d9d9d9;
+}
 .mint-cell-wrapper::after{
   width: 100%;
   /* height: 1px; */
