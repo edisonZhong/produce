@@ -132,15 +132,15 @@ export default {
     height: 0.88rem;
     line-height: 0.88rem;
     font-size: 16px;
-    border-bottom: 0.5px solid rgba(220,223,230,1);
+    border-bottom: 0.5px solid #f2f2f2;;
   }
 }
 .seach {
   width: 0.9rem;
   line-height: 1.2rem;
   margin-left: 0.3rem;
-  color: rgba(187, 192, 198, 1);
-  font-size: 0.28rem;
+  color: #26a2ff !important;
+  font-size: 0.32rem;
   text-align: center;
   position: absolute;
   top: 0;

@@ -9,9 +9,9 @@
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list" style="width:22%">姓名</p>
-        <p class="data-list">客户工号</p>
-        <p class="data-list">入职日期</p>
+        <p class="data-list" style="width:22%;margin-left: .3rem">姓名</p>
+        <p class="data-list" style="width:30%;">客户工号</p>
+        <p class="data-list" style="width:38%;">入职日期</p>
       </div>
       <!-- <img :src="imgCut" alt /> -->
     </div>
@@ -26,9 +26,9 @@
       <ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list" style="width:22%">{{item.employeeName}}</p>
-          <p class="data-list">{{item.customerEmployeeNo}}</p>
-          <p class="data-list">{{item.entryAt}}</p>
+          <p class="data-list" style="width:22%;margin-left: .3rem">{{item.employeeName}}</p>
+          <p class="data-list" style="width:30%;">{{item.customerEmployeeNo}}</p>
+          <p class="data-list" style="width:38%;">{{item.entryAt}}</p>
         </li>
       </ul>
     </mescroll-vue>
@@ -63,7 +63,8 @@ export default {
         callback: this.downCallBack,
         clearEmptyId: "main",
         isBoth: false,
-        isBounce: true
+        isBounce: true,
+        inOffsetRate :1
       },
       mescrollUp: {
         // 上拉加载的配置.
@@ -164,15 +165,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-// .mybox-enter,.mybox-leave-to{
-//     opacity: 0;
-// }
-// .mybox-enter-to,.mybox-leave{
-//     opacity: 1;
-// }
-// .mybox-enter-active,.mybox-leave-active{
-//     transition: all 2s;
-// }
 .page-tabbar {
   overflow: hidden;
   height: 100vh;
@@ -182,7 +174,7 @@ export default {
   width: 10%;
 }
 .data-list {
-  text-align: center;
+  text-align: left;
   width: 34%;
 }
 #page {

@@ -151,15 +151,15 @@ export default {
       width: 100%;
       font-size: 16px;
       height: 1rem;
-      border-bottom: 0.5px solid rgba(220, 223, 230, 1);
+      border-bottom: 0.5px solid #f2f2f2;
     }
   }
 }
 .seach {
   width: 0.9rem;
   margin-left: 0.3rem;
-  color: rgba(187, 192, 198, 1);
-  font-size: 0.28rem;
+  color: #26a2ff !important;
+  font-size: 0.32rem;
   text-align: center;
   position: absolute;
   top: 0;

@@ -36,14 +36,13 @@ const instance = axios.create({
     },
 
 })
-
 instance.interceptors.request.use(
 
     config => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
-            "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3NDI1MzMzMDIzLCJleHAiOjQyMzUxNzc0MjUzMzN9.qgvgMRh16pLGt92d-ZFyfuOL_k4gORxHHKJJdViFxg8Qb985_JxP7hI-8pmogSGHSs4sBl9y0Uebz8oJj8FB5Q',
+            // "Authorization":localStorage.getItem('token')||'',
+            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZ3J1YW4yIiwiY3JlYXRlZCI6MTU3NzQyOTczNDQyMiwiZXhwIjo0MjM1MTc3NDI5NzM0fQ.ad64UxfYpZFjXabvwB_vwnohRn2k-KcfYcWA-PmhHdvP9SHTj1S2yNDl01YxK4OvtePyYJJJ7ja2csgD65-IIQ',
             "backend":'lhyg'
         }
         return config;
@@ -58,7 +57,7 @@ instance.interceptors.response.use(function (response) {
   if(response.data.code==401){
       console.log(response.data.code,'if401');
       localStorage.clear();
-      // wxLogin(wxData);
+      wxLogin(wxData);
       //账号密码登陆
       // router.replace({
       //     path: '/signin',
