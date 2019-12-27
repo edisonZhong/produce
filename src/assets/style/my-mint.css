@@ -119,3 +119,14 @@
   transform: scaleY(0.5)
 }
 
+.mint-cell {
+  border-bottom: 0.5px solid #f2f2f2;
+}
+
+.mint-cell:last-child {
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #f2f2f2 50%, transparent 50%);
+  background-image: linear-gradient(0deg, #f2f2f2, #f2f2f2 50%, transparent 50%);
+  background-size: 100% 0px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
