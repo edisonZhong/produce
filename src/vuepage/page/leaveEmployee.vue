@@ -18,15 +18,15 @@
       <mt-field label="离职原因" placeholder="请填写" v-model="positionType"/>
       <div class="line" @click="openPicker(1)">
         <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1">
-          <img src="@/assets/img/del.png" height="15px" width="15px" @click.stop @click="clearInput('entryAt1')">
+          <img src="@/assets/img/del.png" height="17px" width="17px" @click.stop @click="clearInput('entryAt1')">
         </mt-field>
       </div>
       <div class="line" @click="openPicker(2)">
         <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled>
-          <img src="@/assets/img/del.png" height="15px" width="15px"  @click.stop @click="clearInput('entryAt2')">
+          <img src="@/assets/img/del.png" height="17px" width="17px"  @click.stop @click="clearInput('entryAt2')">
         </mt-field>
       </div>
-      <div class="footer">
+      <div class="footer" v-show="hideshow">
         <mt-button class="bottom-save" @click="handleSave(1)">保存</mt-button>
         <mt-button class="bottom-c" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
       </div>
@@ -75,11 +75,32 @@
         entryAt2: '',//结束社保日期
         customerId: '',
         positionType: '',
-        nowDate: ''
+        nowDate: '',
+        docmHeight: document.documentElement.clientHeight,  //默认屏幕高度
+        showHeight: document.documentElement.clientHeight,   //实时屏幕高度
+        hideshow:true,  //显示或者隐藏footer
       }
     },
     created() {
       this.getUserData();
+    },
+    mounted() {
+      // window.onresize监听页面高度的变化
+      window.onresize = ()=>{
+        return(()=>{
+          this.showHeight = document.body.clientHeight;
+        })()
+      }
+    },
+    //监听
+    watch: {
+      showHeight: function () {
+        if (this.docmHeight > this.showHeight) {
+          this.hideshow = false
+        } else {
+          this.hideshow = true
+        }
+      }
     },
     methods: {
       clearInput(input){
@@ -172,7 +193,7 @@
         if (this.positionType === '' || this.entryAt === '') {
           MessageBox({
             title: '提示',
-            message: '请填写完信息',
+            message: '请填写完整信息',
           });
           return;
         }
@@ -194,8 +215,8 @@
           "employee_id": userid,
           "resignationAt": this.entryAt,
           "resignationReason": this.positionType,//所属业务id
-          "socialSecurityStartAt": this.entryAt1,
-          "socialSecurityEndAt": this.entryAt2,//150,
+          "socialSecurityStartAt": (this.entryAt1===' ')?'':this.entryAt1,
+          "socialSecurityEndAt":  (this.entryAt2===' ')?'':this.entryAt2,
         }).then(e => {
           if (e.data.code === 200) {
             type ? (_this.$router.push('/Employee'), MessageBox({
@@ -215,7 +236,11 @@
 </script>
 
 <style lang="less" scoped>
-
+  html,body{
+    position:relative!important;
+    height:100% !important;
+    min-height:100% !important;
+  }
   a {
     color: black;
   }
@@ -261,9 +286,9 @@
   }
 
   .bottom-save {
-    height: 0.72rem;
+    height: .8rem;
     width: 1.6rem;
-    font-size: 14px;
+    font-size: 16px;
     background: rgba(235, 159, 75, 1);
     color: #fff;
     margin-right: 0.15rem;
@@ -271,8 +296,8 @@
 
   .bottom-c {
     width: 4rem;
-    font-size: 14px;
-    height: 0.72rem;
+    font-size: 16px;
+    height: 0.8rem;
     margin-left: 0.15rem;
   }
 
