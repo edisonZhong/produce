@@ -57,7 +57,9 @@ instance.interceptors.response.use(function (response) {
   if(response.data.code==401){
       console.log(response.data.code,'if401');
       localStorage.clear();
-      wxLogin(wxData);
+      setTimeout(()=>{
+        wxLogin(wxData);
+      },200)
       //账号密码登陆
       // router.replace({
       //     path: '/signin',

@@ -4,25 +4,25 @@
     <!-- <div class='businessArea'>{{title}}</div> -->
 
     <div>
-      <div id="content">
+      <div id="content" v-if="chart_example_box">
           <h2>员工总数 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</span></span>人</h2>
           <div  id="chart_example" class="chart"></div>
       </div>
-      <div id="content">
+      <div id="content" v-if="chart_growth_box">
           <h2>员工数增长情况</h2>
           <div  id="chart_growth" class="chart"></div>
       </div>
-      <div id="content">
+      <div id="content" v-if="persendChart_box">
           <h2>一二三线员工数及占比</h2>
           <div id="persendChart" class="chart"></div>
       </div>
-      <div id="content">
-        <h2>昨日入职员工<span class="number">{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}</span>人</h2>
+      <div id="content" v-if="dataChart_box">
+        <h2>{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}新增员工<span class="number">{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}</span>人</h2>
           <div id="dataChart" class="chart"></div>
       </div>
-     <div id="content">
-          <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">昨日离职员工 <span class="number">{{this.boxLideLive.valueInfo[0][1]}}</span> 人</h2>
-          <h2 v-else>昨日离职员工 <span class="number">0</span> 人</h2>
+     <div id="content" v-if='dataChartLive_box'>
+          <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}离职员工 <span class="number">{{this.boxLideLive.valueInfo[0][1]}}</span> 人</h2>
+          <h2 v-else>{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}离职员工 <span class="number">0</span> 人</h2>
           <div id="dataChartLive" class="chart"></div>
       </div>
     </div>
@@ -44,6 +44,7 @@ export default {
     'boxLideDay',
     'boxLideLive',
     'allBox',
+    'clickIndex',
   ],
 
   data() {
@@ -74,7 +75,15 @@ export default {
       valueLiveList:[],
       positionLive:[],//总的数据
       nameListLive:[],//图表数据
-      percentListLive:[]
+      percentListLive:[],
+
+
+
+      chart_example_box:true,
+      chart_growth_box:true,
+      persendChart_box:true,
+      dataChart_box:true,
+      dataChartLive_box:true,
     };
   },
    created(){
@@ -84,7 +93,7 @@ export default {
     // // this.init()
     //
     // this.getLine()
-    // // 入职
+    // // 新增
     // this.getLineDay()
 
 
@@ -95,7 +104,7 @@ export default {
     // await this.$nextTick(()=> {
     //     // this.percentEchart()
     // })
-    // 入职
+    // 新增
     // await this.$nextTick(()=> {
     //     // this.dataChart()
     // })
@@ -113,27 +122,98 @@ export default {
   },
   watch:{
     boxBar(val,old){
-      console.log(val,old,'ddd');
-      if(val){this.loadEchart()}
+      console.log(val,'boxxxx');
+      if(val.totalList.length&&val.totalList[0].length){
+        this.chart_example_box=true;
+        setTimeout(()=>{
+          this.loadEchart()
+        },500)
+      }else{
+        this.chart_example_box=false;
+      }
     },
     boxIncrese(val,old){
-      if(val){this.percentEchart()}
+      if(val.percentList.length&&val.percentList[0].length){
+        this.persendChart_box=true;
+        setTimeout(()=>{
+          this.percentEchart()
+        },500)
+      }else{
+        this.persendChart_box=false;
+      }
     },
     boxLideDay(val,old){
-      if(val){this.dataChart()}
+      if(val.positionDay.length&&val.positionDay[0].length){
+        // this.dataChart_box=true;
+        // setTimeout(()=>{
+        //   this.dataChart()
+        // },500)
+        let z= 0;
+        for(let i=0;i<val.positionDay[0].length;i++){
+          z+=val.positionDay[0][i]
+        }
+        if(z==0){//如果将所有的值相加为0，则不显示图表
+          this.dataChart_box=false;
+        }else{
+          this.dataChart_box=true;
+          setTimeout(()=>{
+            this.dataChart()
+          },500)
+        }
+      }else{
+        this.dataChart_box=false;
+      }
     },
     boxLideLive(val,old){
-      if(val){this.dataChartLive()}
+      console.log(val,'valll');
+
+      if(val.percentListLive.length&&val.percentListLive[0].length){
+        // this.dataChartLive_box=true;
+        // setTimeout(()=>{
+        //   this.dataChartLive()
+        // },500)
+        let z= 0;
+        for(let i=0;i<val.percentListLive[0].length;i++){
+          z+=val.percentListLive[0][i]
+        }
+        if(z==0){//如果将所有的值相加为0，则不显示图表
+          this.dataChartLive_box=false;
+        }else{
+          this.dataChartLive_box=true;
+          setTimeout(()=>{
+            this.dataChartLive()
+          },500)
+        }
+      }else{
+        this.dataChartLive_box=false;
+      }
     },
     allBox(val,old){
-      if(val){this.employeeGrowth()}
+
+      if(val.value.length&&val.value[0].length){
+        let z= 0;
+        for(let i=0;i<val.value[0].length;i++){
+          z+=val.value[0][i]
+        }
+        if(z==0){//如果将所有的值相加为0，则不显示图表
+          this.chart_growth_box=false;
+        }else{
+          this.chart_growth_box=true;
+          setTimeout(()=>{
+            this.employeeGrowth()
+          },500)
+        }
+        console.log(z,'zzzzzz');
+      }else{this.chart_growth_box=false;}
     },
   },
   methods: {
     init(domNode,barLength) {
       let chartName = echarts.init(document.getElementById(domNode));
       if(domNode=='chart_growth'){
-        this.autoHeight =35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+        this.autoHeight =(barLength/2)*5 + 30; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+      }else if(domNode=='persendChart'){
+        this.autoHeight =barLength * 35 + 200; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
       }else{
         this.autoHeight =barLength * 35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
       }
@@ -199,24 +279,27 @@ export default {
     //柱状图汇总
     loadEchart() {
         let that = this;
+
+        var one = this.boxBar.nameList[0][0]?this.boxBar.nameList[0][0]+',':'';
+        var two = this.boxBar.nameList[0][1]?this.boxBar.nameList[0][1]+',':'';
+        var three = this.boxBar.nameList[0][2]?this.boxBar.nameList[0][2]:'';
+
         echarts.init(document.getElementById("chart_example")).setOption({
           tooltip: {
             trigger: "axis"
           },
           title:{
-            subtext:'员工数最多地区:'+
-            this.boxBar.nameList[0][0]+",\n"+
-            this.boxBar.nameList[0][1]+','+
-            this.boxBar.nameList[0][2],
-            x:'center'
+            subtext:'员工数最多地区:'+one+two+three,
+            x:'center',
+            top:'5%'
           },
           legend: {
             // data: this.nameList
           },
           grid: {
-            left: '3%',
-            // right: '4%',
-            bottom: '3%',
+            left: '7%',
+            right: '16%',
+            bottom: '8%',
             containLabel: true
           },
           xAxis: [{
@@ -236,12 +319,13 @@ export default {
           yAxis: [
             {
               type: "category",
-              boundaryGap:[0, 0.01],
+              // boundaryGap:[0, 0.01],
               data:this.boxBar.nameList[0],
               // data:['1','2','3','4','5','6','7','8','9','10','12','13','14','15','16','17','18','19','20','21','22','23'
               // ,'24','25','26','27','28','29','30','31','32','33'],
               axisLabel:{
-                fontSize:parseInt(0.3*localStorage.getItem('font'))
+                // fontSize:parseInt(0.3*localStorage.getItem('font'))
+                // fontSize:1
               },
               axisTick:{
                 show:false
@@ -268,7 +352,7 @@ export default {
             type: 'bar',
             data: this.boxBar.totalList[0],
             // data:[12,12,1,2,12,12,1232,12,1,2,1,2,1,2,12,1,2,12,1,2,1,2,1,2,1,2,4,34,32,5342,32,1,12],
-            // barWidth:8,
+            // barWidth:15,
             label: {
                   normal: {
                       show: true,
@@ -296,7 +380,7 @@ export default {
         if((data.length-3)>i){
           colorList.push("#4378BE")
         }else{
-          colorList.push("#ff7e50")
+          colorList.push("#eb9f4b")
         }
       }
       return colorList
@@ -314,6 +398,7 @@ export default {
           data:['员工数', '占比'],
           itemWidth:15,
           itemHeight:15,
+          top:'8%'
           // textStyle:{
           //   fontSize:10
           // }
@@ -336,7 +421,8 @@ export default {
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '3%',
+        top:'23%',
+        bottom: '8%',
         containLabel: true
       },
       yAxis: [
@@ -383,14 +469,15 @@ export default {
           // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
             normal:{
-               color: function (params) {
-                   var colorList = [
-                     '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
-                     '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
-                     '#ff7e50'
-                   ];
-                   return colorList[params.dataIndex]
-               }
+               // color: function (params) {
+               //     var colorList = [
+               //       '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
+               //       '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
+               //       '#4378BE'
+               //     ];
+               //     return colorList[params.dataIndex]
+               // }
+               color:'#4378BE'
              }
          }
         },
@@ -399,13 +486,13 @@ export default {
           type: 'line',
           symbol:'none', //这句就是去掉点的
           // smooth:true, //折线平滑
-          color:'#ff7e50',
+          color:'#eb9f4b',
           data: this.boxIncrese.percentList[0],
           // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
            normal:{
              lineStyle:{
-                color:'#ff7e50'
+                color:'#eb9f4b'
              }
            }
          }
@@ -433,9 +520,11 @@ export default {
         },
       ],
       grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '15%',
+        left: '6%',
+        right: '6%',
+        // bottom: '15%',
+        top:'11%',
+        bottom:'8%',
         containLabel: true
       },
       yAxis: [
@@ -460,15 +549,7 @@ export default {
           data: this.allBox.value[0],
           itemStyle:{
             normal:{
-               // color: function (params) {
-               //     var colorList = [
-               //       '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
-               //       '#4378BE', '#4378BE', '#4378BE','#4378BE', '#ff7e50',
-               //       '#ff7e50'
-               //     ];
-               //     return colorList[params.dataIndex]
-               // }
-               color:"#ff7e50"
+               color:"#eb9f4b"
              }
          }
         }
@@ -482,26 +563,26 @@ export default {
           var two  = this.boxLideDay.positionDay[0][1]?this.boxLideDay.positionDay[0][1]+',':'';
           var three  = this.boxLideDay.positionDay[0][2]?this.boxLideDay.positionDay[0][2]:'';
 
-          // this.boxLideDay.positionDay[0][0]+",\n"+
-          // this.boxLideDay.positionDay[0][1]+','+
-          // this.boxLideDay.positionDay[0][2],
           echarts.init(document.getElementById("dataChart")).setOption({
               title:{
-                subtext:'入职员工数量最多地区:'+one+two+three,
-                x:'center'
+                subtext:'新增员工数量最多地区:'+one+two+three,
+                x:'center',
+                top:'4%'
               },
               tooltip: {
                 trigger: "axis"
               },
               grid: {
-                left: '3%',
-                bottom: '3%',
+                left: '7%',
+                right: '16%',
+                bottom: '8%',
                 containLabel: true
               },
               xAxis: {
                 type: "value",
                 max: Math.max(...this.boxLideDay.percentListDay[0]),
-                min: Math.min(...this.boxLideDay.percentListDay[0]),
+                // min: Math.min(...this.boxLideDay.percentListDay[0]),
+                min:0,
                 axisLine:{
                     show:false
                 },
@@ -563,21 +644,24 @@ export default {
         },
         title:{
           subtext:'离职员工数量最多地区:'+one+two+three,
-          x:'center'
+          x:'center',
+          top:'4%'
+
         },
         legend: {
           // data: this.nameList
         },
         grid: {
-          left: '3%',
-          // right: '4%',
-          bottom: '3%',
+          left: '7%',
+          right: '10%',
+          bottom: '9%',
           containLabel: true
         },
         xAxis: {
           type: "value",
           max:Math.max(...this.boxLideLive.percentListLive[0]),
-          min:Math.min(...this.boxLideLive.percentListLive[0]),
+          // min:Math.min(...this.boxLideLive.percentListLive[0]),
+          min:0,
           axisLine:{
               show:false
           },
@@ -634,6 +718,7 @@ export default {
 
 <style lang="less" scoped>
 .number{
+  font-weight:bold;
   color: rgba(235,159,75,1)
 }
 .chart{
@@ -654,8 +739,8 @@ export default {
       text-align: center;
       font-weight: 550;
       // padding-top: .4rem;
-      height:1.04rem;
-      line-height: 1.04rem
+      height:.6rem;
+      line-height: 1rem
   }
 }
 .businessArea{

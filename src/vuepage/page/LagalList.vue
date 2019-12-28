@@ -30,7 +30,7 @@ export default {
       value: "",
       count: 0,
       mescroll:null,
-       mescrollDown:{ 
+       mescrollDown:{ // 下拉加载的配置.
         callback:this.downCallBack,
         clearEmptyId:"main",
 						isBoth: false, 
@@ -76,9 +76,6 @@ export default {
     handleCommentFocus(){
       this.placeholder=''
     },
-    search(){
-      this.handleSeach()
-    },
     mescrollInit (mescroll) {
       this.mescroll = mescroll  
     },
@@ -94,17 +91,19 @@ export default {
         limit: page.size,
         companyName:this.value
       }).then(e => {
-        // console.log(page.num);
         if (e.data.code == 200) {
           var arr = e.data.data
            let data = page.num == 1 ? [] : this.dataList;
            this.dataList = this.dataList.concat(arr)
-          //  console.log(this.dataList);
            this.$nextTick(() => {
               this.mescroll.endSuccess(arr.length)
             })
         }
       });
+    },
+   // 搜索列表数据
+    search(){
+      this.handleSeach()
     },
      handleSeach(){
        let searchList = []
@@ -114,7 +113,6 @@ export default {
         limit: this.pages.size,
         companyName:this.value
       }).then(e => {
-        // console.log(page.num);
         if (e.data.code == 200) {
           this.searchList=e.data.data
           this.dataList=this.searchList

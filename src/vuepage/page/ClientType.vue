@@ -62,6 +62,7 @@ export default {
       placeholder:'请输入关键字'
     };
   },
+  // 监听input
    watch: {
     value: function (newval,oldval) {
       if (this.value == "") {
@@ -73,20 +74,38 @@ export default {
     }
   },
   methods: {
+  //清空input
   handleCommentFocus(){
       this.placeholder=''
     },
+    //搜索列表
     search(){
       this.handleSeach()
     },
+     handleSeach(){
+       let searchList = []
+       const that = this
+      selectType({
+        page: this.pages.page,
+        limit: this.pages.size,
+        customerName:this.value
+      }).then(e => {
+        if (e.data.code == 200) {
+          this.searchList=e.data.data.list
+          this.dataList=this.searchList
+        }
+      });
+    },
+    //初始化上拉加载
     mescrollInit (mescroll) {
       this.mescroll = mescroll  
     },
+    //下拉刷新的回调
     downCallBack(mescroll){
-          setTimeout(function(){
-					mescroll.endSuccess()
-				},1500);
-  },
+        setTimeout(function(){
+        mescroll.endSuccess()
+      },1500);
+    },
     getList(page, mescroll) {
     const that = this
       selectType({
@@ -101,20 +120,6 @@ export default {
            this.$nextTick(() => {
               this.mescroll.endSuccess(arr.length)
             })
-        }
-      });
-    },
-     handleSeach(){
-       let searchList = []
-       const that = this
-      selectType({
-        page: this.pages.page,
-        limit: this.pages.size,
-        customerName:this.value
-      }).then(e => {
-        if (e.data.code == 200) {
-          this.searchList=e.data.data.list
-          this.dataList=this.searchList
         }
       });
     },

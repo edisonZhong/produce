@@ -60,7 +60,7 @@ export default {
       class1: "class1",
       class2: "class2",
       mescroll: null, // mescroll实例对象
-      mescrollDown: {
+      mescrollDown: {//下拉刷新的配置
         callback: this.downCallBack,
         clearEmptyId: "main",
         isBoth: false,
@@ -117,6 +117,7 @@ export default {
     }
   },
   methods: {
+    //清空input
     handleCommentFocus(){
       this.placeholder=''
     },    
