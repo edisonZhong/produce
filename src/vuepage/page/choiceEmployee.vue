@@ -95,7 +95,7 @@
 
     #main {
       position: absolute;
-      top: 2.23rem;
+      top: 2.14rem;
       bottom: 1rem;
       overflow-x: hidden;
       overflow-y: auto;
