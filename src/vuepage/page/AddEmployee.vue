@@ -104,9 +104,7 @@ export default {
       placeholderFocus:'请填写'
     };
   },
-  created() {
-    // console.log(this.legalCompanyName.length);
-  },
+  created() {},
   methods: {
     //获取焦点
     handleCommentFocus(){

@@ -34,7 +34,7 @@
       </ul>
     </mescroll-vue>
     <TabBar></TabBar>
-    <div style="position: fixed;right: 0.3rem;bottom: 2rem;">
+    <div style="position: fixed;right: 0.3rem;bottom: 2rem;z-index: 10;">
       <!-- <transition name="mybox"> -->
         <div v-if="imgFlag">
           <span class="enter-img" @click="handlePushEnter">入职</span>
@@ -169,6 +169,7 @@ export default {
     },
     //点击按钮入职/离职的显示和隐藏
     handleImg() {
+      console.log(1);
       this.flag = !this.flag;
       this.imgFlag = !this.imgFlag;
     },
@@ -176,7 +177,7 @@ export default {
     handlePushEnter() {
       localStorage.removeItem("employeeName");
       localStorage.removeItem("customerEmployeeNo");
-      this.$router.push({ path: "/addEmployee" });
+      this.$router.push({ path: "/AddEmployee" });
     },
     //跳转到离职页面
     handleLive() {
@@ -205,7 +206,7 @@ export default {
   box-sizing: border-box;
   #header {
     width: 100%;
-    height: 2.04rem;
+    height: 2.1rem;
     background: #fff;
     position: fixed;
     top: 0;
@@ -220,16 +221,8 @@ export default {
     padding: 0.1rem;
     padding-bottom: 0;
     box-sizing: border-box;
-    .img-cut {
-      position: absolute;
-      top: 2.04rem;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 0.44rem;
-    }
     .h-top {
-      height: 1.4rem;
+      height: 1.1rem;
       width: 100%;
       border-bottom: 0.5px solid #f2f2f2;
       img {
@@ -267,7 +260,7 @@ export default {
   #main {
     -webkit-overflow-scrolling:touch;
     position: absolute;
-    top: 2.04rem;
+    top: 2.1rem;
     bottom: 1rem;
     overflow-x: hidden;
     overflow-y: auto;

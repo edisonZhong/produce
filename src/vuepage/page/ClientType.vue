@@ -141,7 +141,7 @@ export default {
 #main {
   width: 100%;
   position: absolute;
-  top: 1.04rem;
+  top: 1.1rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -164,10 +164,10 @@ export default {
 }
 .mint-search {
     width: 100%;
-    height: 1.04rem;
+    height: 1.1rem;
 }
 .header {
-  height: 1.04rem;
+  height: 1.1rem;
   width: 100%;
   position: fixed;
   z-index: 10;
@@ -175,12 +175,12 @@ export default {
   background: #fff;
   box-sizing: border-box;
   .h-top {
-      height: 1.14rem;
+      height: 1.1rem;
       width: 100%;
       border-bottom: 0.5px solid #f2f2f2;
     .seach {
       width: 0.9rem;
-      line-height: 1.14rem;
+      line-height: 1.1rem;
       margin-left: 0.3rem;
       color: #26a2ff !important;
       font-size: 0.32rem;
