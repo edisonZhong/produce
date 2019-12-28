@@ -90,6 +90,13 @@
 .mint-cell {
   border-bottom: 0.5px solid #f2f2f2;
 }
+.mint-cell:last-child {
+  background-image: -webkit-linear-gradient(bottom, #fff, #fff 50%, transparent 50%);
+  background-image: linear-gradient(0deg, #fff, #fff 50%, transparent 50%);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
 .mint-cell {
   background-image: -webkit-linear-gradient(bottom, #f2f2f2, #f2f2f2 50%, transparent 50%);
   background-image: linear-gradient(0deg, #f2f2f2, #f2f2f2 50%, transparent 50%);
@@ -116,4 +123,9 @@
 
 input::-webkit-input-placeholder{
   color:#999;
+}
+.mint-search {
+  height: 100%;
+  /* height: 100vh; */
+  overflow: hidden;
 }
