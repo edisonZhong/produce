@@ -76,7 +76,7 @@ export default {
     // width: 49%;
     img{
         height: .4rem;
-        width: .41rem
+        width: .43rem
     }
   }
 }

@@ -33,26 +33,7 @@ textarea {border: 0;outline: none;resize: none;}
 		-webkit-overflow-scrolling: touch;
   } */
   
-  /* .class2::after{
-    width: 100%;
-   
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-bottom: 1px solid #fff;
-    transform: scaleY(0.5)
-  }
-  .class1::after{
-    width: 100%;
-   
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-bottom: 1px solid #fff;
-    transform: scaleY(0.5)
-  } */
+
 /* 
 .oneTop::after{
     width: 100%;

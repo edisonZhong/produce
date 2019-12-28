@@ -2,8 +2,10 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-           <mt-search v-model="value" placeholder="搜索" @keyup.native.enter="search(value)"></mt-search>
-           <p class="seach" @click="handleSeach">搜索</p>
+      <div class="h-top">
+          <mt-search @focus.native.capture="handleCommentFocus" v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
+          <p class="seach" @click="handleSeach">搜索</p>
+      </div>
     </div>
    <mescroll-vue id="main" ref="mescroll" :down='mescrollDown' :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 50px;width: 100%;">
@@ -56,10 +58,24 @@ export default {
         size: 50,
         total: 0
       },
-      dataList: [] // 列表数据
+      dataList: [], // 列表数据
+      placeholder:'请输入关键字'
     };
   },
+   watch: {
+    value: function (newval,oldval) {
+      if (this.value == "") {
+        this.placeholder='请输入关键字'
+        this.handleSeach()
+      }else{
+        this.placeholder=''
+      }
+    }
+  },
   methods: {
+  handleCommentFocus(){
+      this.placeholder=''
+    },
     search(){
       this.handleSeach()
     },
@@ -135,24 +151,15 @@ export default {
     border-bottom: 0.5px solid #f2f2f2;;
   }
 }
-.seach {
-  width: 0.9rem;
-  line-height: 1.2rem;
-  margin-left: 0.3rem;
-  color: #26a2ff !important;
-  font-size: 0.32rem;
-  text-align: center;
-  position: absolute;
-  top: 0;
-  right: .2rem;
-  background: #fff
-    
-}
 .input-seach {
   background: rgba(246, 248, 250, 1);
   height: 0.72rem;
   width: 100%;
   border-radius: 4px;
+}
+.mint-search {
+    width: 100%;
+    height: 1.04rem;
 }
 .header {
   height: 1.04rem;
@@ -162,10 +169,22 @@ export default {
   padding: .1rem;
   background: #fff;
   box-sizing: border-box;
-  img {
-    position: absolute;
-    top: 0.5rem;
-    padding: 0 0.3rem;
+  .h-top {
+      height: 1.14rem;
+      width: 100%;
+      border-bottom: 0.5px solid #f2f2f2;
+    .seach {
+      width: 0.9rem;
+      line-height: 1.14rem;
+      margin-left: 0.3rem;
+      color: #26a2ff !important;
+      font-size: 0.32rem;
+      text-align: center;
+      position: absolute;
+      top: 0;
+      right: .2rem;
+      background: #fff
+    }
   }
 }
 .mint-indicator-wrapper {

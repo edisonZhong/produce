@@ -3,10 +3,13 @@
   <div id="page">
     <div id="main">
       <div>
-          <mt-field label="姓名" placeholder="请填写" @input="persist" v-model="employeeName"></mt-field>
+          <mt-field label="姓名" :placeholder="placeholder" 
+          @focus.native.capture="handleCommentFocus" 
+          @blur.native.capture="phoneBlur" 
+          @input="persist" v-model="employeeName"></mt-field>
       </div>
       <div>
-          <mt-field label="客户工号" placeholder="请填写" @input="persist" v-model="customerEmployeeNo"></mt-field>
+          <mt-field label="客户工号"  @blur.native.capture="phoneBlur" :placeholder="placeholderFocus" @focus.native.capture="handleComment" @input="persist" v-model="customerEmployeeNo"></mt-field>
       </div>
         <div @click="handleService">
           <mt-field label="所属业务区" v-model="organizationName">
@@ -17,12 +20,16 @@
         <mt-field label="入职日期" disabled placeholder="请选择" v-model="entryAt"/>
       </div>
       <div @click="handleLaga">
-        <mt-field label="劳动合同牌照" :type="type" v-model="legalCompanyName">
+        <mt-cell title="劳动合同牌照"  class="ellipsis_2">
+          <div class="name-list">{{legalCompanyName}}</div>
           <img src="@/assets/img/right.png" height="12px" width="8px">
-        </mt-field>
+        </mt-cell>
       </div>
       <div @click="handleClient">
-        <mt-field :type="type" label="服务客户名称" id="img-imgs" v-model="customerName"><img src="@/assets/img/right.png" height="12px" width="8px"></mt-field>
+          <mt-cell title="服务客户名称"  class="ellipsis_2">
+            <div class="name-list">{{customerName}}</div>
+            <img src="@/assets/img/right.png" height="12px" width="8px">
+        </mt-cell>
       </div>
       <div @click="handleType">
            <mt-field
@@ -93,40 +100,46 @@ export default {
       dataListType: [],
       value1: "",//选择的日期
       imgF: require("@/assets/img/jiantou.png"),
-      type:'text',
+      placeholder:'请填写',
+      placeholderFocus:'请填写'
     };
   },
   created() {
     // console.log(this.legalCompanyName.length);
-    // this.count()
   },
-   
   methods: {
-    showPicker(e) {
-      e.preventDefault(); //阻止输入法的唤醒
+    //获取焦点
+    handleCommentFocus(){
+      this.placeholder=''
     },
+    handleComment(){
+      this.placeholderFocus=''
+    },
+    //失去焦点
+    phoneBlur(){
+      this.placeholder='请填写'
+      this.placeholderFocus='请填写'
+    },
+    
+    //存输入的姓名和客户工号
     persist() {
       localStorage.setItem("employeeName",JSON.stringify(this.employeeName)); //保存姓名
       localStorage.setItem("customerEmployeeNo", JSON.stringify(this.customerEmployeeNo)); //保存客户工号
     },
     //弹出日历选择
     openPicker(value1) {
-      // if(this.value1){
-      //       this.entryAt=this.value1
-      //   }else{
-      //       this.value1=new Date()
-      //   }
       this.value1=new Date()
       this.nowDate = value1;
       this.$refs.picker.open();
     },
+    //选择日期
     handleConfirm(value1) {
         localStorage.setItem("entryAt", JSON.stringify(this.$utils.date(value1))) //保存日期
       this.entryAt = this.$utils.date(value1);
     },
     //跳转到选择业务区页面
     handleService() {
-      this.$router.replace({
+      this.$router.push({
         path: "/SelectService"
       });
     },
@@ -229,6 +242,9 @@ export default {
 #img-imgs .mint-cell-value{
   flex:  0 0 82% !important
 }
+.name-list{
+  width: 4.2rem;padding: 0.1rem 0.1rem 0.1rem .2rem;line-height: 0.4rem;box-sizing: border-box;
+}
 #page {
   height: 100%;
   position: relative;
@@ -283,16 +299,4 @@ export default {
 .mint-cell-wrapper{
   border:.002rem solid #f2f2f2
 }
-// .mint-toast {
-//     position: fixed;
-//     max-width: 80%;
-//     border-radius: 5px;
-//     background: rgba(0, 0, 0, 0.7);
-//     color: #fff;
-//     box-sizing: border-box;
-//     text-align: center;
-//     z-index: 1000;
-//     -webkit-transition: opacity .3s linear;
-//     transition: opacity .3s linear;
-// }
 </style>

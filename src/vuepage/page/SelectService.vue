@@ -2,8 +2,10 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-        <mt-search v-model="value" placeholder="搜索" @keyup.native.enter="search(value)"></mt-search>
-      <p class="seach" @click="handleSeach">搜索</p>
+      <div class="h-top">
+        <mt-search @focus.native.capture="handleCommentFocus" v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
+        <p class="seach" @click="handleSeach">搜索</p>
+      </div>
     </div>
     <mescroll-vue
       id="main"
@@ -64,11 +66,25 @@ export default {
         size: 50,
         total: 0
       },
-      dataList: [] // 列表数据
+      dataList: [], // 列表数据
+      placeholder:'请输入关键字'
     };
   },
   created() {},
+  watch: {
+    value: function (newval,oldval) {
+      if (this.value == "") {
+        this.placeholder='请输入关键字'
+        this.handleSeach()
+      }else{
+        this.placeholder=''
+      }
+    }
+  },
   methods: {
+    handleCommentFocus(){
+      this.placeholder=''
+    },
     search(){
       this.handleSeach()
     },
@@ -115,11 +131,7 @@ export default {
       });
     },
     handleLink(id, organizationName) {
-      localStorage.setItem(
-        "organizationName",
-        JSON.stringify(organizationName)
-      );
-      debugger;
+      localStorage.setItem("organizationName",JSON.stringify(organizationName));
       localStorage.setItem("id", JSON.stringify(id));
       this.$router.push({
         path: "/AddEmployee",
@@ -135,22 +147,18 @@ export default {
 <style lang="less" scoped>
 #main {
   width: 100%;
-  // position: absolute;
-  // top: 1rem;
-  // left: 0;
-  // right: 0;
-  // bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0 0.3rem;
   box-sizing: border-box;
   position: absolute;
-    top: 1.04rem;
+  top: 1.04rem;
+  padding:0.1rem;
   ul {
     li {
       display: flex;
+      padding: 0 0.2rem;
       align-items: center;
-      width: 100%;
+      // width: 100%;
       font-size: 16px;
       height: 1rem;
       border-bottom: 0.5px solid #f2f2f2;
@@ -167,7 +175,7 @@ export default {
   top: 0;
   right: 0.2rem;
   background: #fff;
-  line-height: 1.2rem;
+  line-height: 1.14rem;
 }
 .mescroll {
   position: fixed;
@@ -185,72 +193,25 @@ export default {
   height: 1.04rem;
   width: 100%;
   position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  background: #fff;
   z-index: 10;
-  padding: 0.1rem;
   box-sizing: border-box;
+  padding: 0.1rem;
+  .h-top {
+      height: 1.14rem;
+      width: 100%;
+      border-bottom: 0.5px solid #f2f2f2;
   img {
     position: absolute;
     top: 0.5rem;
     padding: 0 0.3rem;
   }
+  }
 }
 .mint-indicator-wrapper {
   background: rgba(0, 0, 0, 0);
-}
-
-.loading-background,
-.mint-loadmore-top span {
-  -webkit-transition: 0.2s linear;
-  transition: 0.2s linear;
-}
-.mint-loadmore-top span {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.mint-loadmore-top span.is-rotate {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
-.page-loadmore .mint-spinner {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.page-loadmore-desc {
-  text-align: center;
-  color: #666;
-  padding-bottom: 5px;
-}
-
-.page-loadmore-desc:last-of-type,
-.page-loadmore-listitem {
-  border-bottom: 1px solid #eee;
-}
-
-.page-loadmore-listitem {
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-}
-.page-loadmore-listitem:first-child {
-  border-top: 1px solid #eee;
-}
-
-.page-loadmore-wrapper {
-  overflow: scroll;
-}
-
-.mint-loadmore-bottom span {
-  display: inline-block;
-  -webkit-transition: 0.2s linear;
-  transition: 0.2s linear;
-  vertical-align: middle;
-}
-
-.mint-loadmore-bottom span.is-rotate {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
 }
 </style>

@@ -2,14 +2,13 @@
 <template>
   <div style="position: relative;height:100%">
     <div class="header">
-           <mt-search v-model="value" placeholder="搜索" @keyup.native.enter="search(value)"></mt-search>
+      <div class="h-top">
+          <mt-search @focus.native.capture="handleCommentFocus" v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
            <p class="seach" @click="handleSeach">搜索</p>
+      </div>
     </div>
    <mescroll-vue id="main" ref="mescroll" :down='mescrollDown' :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 100%;width: 100%;">
-            <!-- <li class="label-list" v-for="(item,index) in dataList" :key="index"
-              @click="handleLink(item.companyNo,item.companyName)"
-            >{{item.companyName}}</li> -->
             <li class="label-list" v-for="(item,index) in dataList" :key="index" @click="handleLink(item.companyNo,item.companyName)">{{item.companyName}}</li>
         </ul>
     </mescroll-vue>
@@ -50,7 +49,7 @@ export default {
           },
           empty: {
           warpId: "main", 
-          icon: "./static/mescroll/mescroll-empty.png", 
+          // icon: "./static/mescroll/mescroll-empty.png", 
           tip: "暂无相关数据~" //提示
           },
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
@@ -63,7 +62,20 @@ export default {
       dataList: [] // 列表数据
     };
   },
+  watch: {
+    value: function (newval,oldval) {
+      if (this.value == "") {
+        this.placeholder='请输入关键字'
+        this.handleSeach()
+      }else{
+        this.placeholder=''
+      }
+    }
+  },
   methods: {
+    handleCommentFocus(){
+      this.placeholder=''
+    },
     search(){
       this.handleSeach()
     },
@@ -123,25 +135,23 @@ export default {
 <style lang="less" scoped>
 #main {
   width: 100%;
-  position: absolute;
-  top: 1.04rem;
-  left: 0;
-  right: 0;
-  bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 0 .3rem;
   box-sizing: border-box;
+  position: absolute;
+  top: 1.04rem;
+  padding:0.1rem;
   li {
     height: 0.88rem;
     line-height: 0.88rem;
-    font-size: 16px;
+    font-size: 15px;
+    padding-left: 0.15rem;
     border-bottom: 1px solid #f2f2f2;
   }
 }
 .seach {
   width: 0.9rem;
-  line-height: 1.2rem;
+  line-height: 1.14rem;
   margin-left: 0.3rem;
   color: #26a2ff !important;
   font-size: 0.32rem;
@@ -158,6 +168,7 @@ export default {
   width: 100%;
   border-radius: 4px;
 }
+
 .header {
   height: 1.04rem;
   width: 100%;
@@ -166,10 +177,15 @@ export default {
   padding: .1rem;
   background: #fff;
   box-sizing: border-box;
-  img {
-    position: absolute;
-    top: 0.5rem;
-    padding: 0 0.3rem;
+  .h-top {
+      height: 1.14rem;
+      width: 100%;
+      border-bottom: 0.5px solid #f2f2f2;
+      img {
+        position: absolute;
+        top: 0.5rem;
+        padding: 0 0.3rem;
+      }
   }
 }
 .mint-indicator-wrapper {
