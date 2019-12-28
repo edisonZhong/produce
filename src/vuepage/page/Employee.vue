@@ -4,7 +4,9 @@
     <!-- 员工信息 -->
     <div id="header">
       <div class="h-top">
-        <mt-search v-model="value" placeholder="输入关键字" @keyup.native.enter="search(value)"></mt-search>
+        <mt-search 
+        @focus.native.capture="handleCommentFocus" 
+        v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
         <p class="seach" @click="handleSeach">搜索</p>
       </div>
       <div class="h-bottom">
@@ -13,7 +15,6 @@
         <p class="data-list" style="width:30%;">客户工号</p>
         <p class="data-list" style="width:38%;">入职日期</p>
       </div>
-      <!-- <img :src="imgCut" alt /> -->
     </div>
 
     <mescroll-vue
@@ -34,12 +35,12 @@
     </mescroll-vue>
     <TabBar></TabBar>
     <div style="position: fixed;right: 0.3rem;bottom: 2rem;">
-      <transition name="mybox">
+      <!-- <transition name="mybox"> -->
         <div v-if="imgFlag">
           <span class="enter-img" @click="handlePushEnter">入职</span>
           <span class="live-img" @click="handleLive">离职</span>
         </div>
-      </transition>
+      <!-- </transition> -->
       <img style="width:1rem;" :src="flag?removeUrl:imgUrl" @click="handleImg" alt />
     </div>
   </div>
@@ -59,12 +60,12 @@ export default {
       class1: "class1",
       class2: "class2",
       mescroll: null, // mescroll实例对象
-      mescrollDown: {
+      mescrollDown: {//下拉刷新的配置
         callback: this.downCallBack,
         clearEmptyId: "main",
         isBoth: false,
         isBounce: true,
-        // inOffsetRate :1
+        inOffsetRate :1
       },
       mescrollUp: {
         // 上拉加载的配置.
@@ -81,8 +82,7 @@ export default {
           icon: "./static/mescroll/mescroll-empty.png",
           tip: "暂无相关数据~" //提示
         },
-        htmlLoading:
-          '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>'
+        htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>'
       },
       dataList: [],
       imgFlag: false,
@@ -93,28 +93,37 @@ export default {
       pages: {
         page: 1,
         size: 50
-      }
+      },
+      placeholder:'输入姓名或客户工号'
     };
   },
   created() {},
+  
   mounted() {
     history.pushState(null, null, document.URL);
     window.addEventListener('popstate', function () {
       history.pushState(null, null, document.URL);
     })
   },
-
+  // 监听input
+  watch: {
+    value: function (newval,oldval) {
+      if (this.value == "") {
+        this.placeholder='输入姓名或客户工号'
+        this.handleSeach()
+      }else{
+        this.placeholder=''
+      }
+    }
+  },
   methods: {
+    //清空input
+    handleCommentFocus(){
+      this.placeholder=''
+    },    
+    //搜索列表数据
     search() {
       this.handleSeach();
-    },
-    mescrollInit(mescroll) {
-      this.mescroll = mescroll;
-    },
-    downCallBack(mescroll) {
-      setTimeout(function() {
-        mescroll.endSuccess();
-      }, 1500);
     },
     handleSeach() {
       let searchList = [];
@@ -129,6 +138,16 @@ export default {
           this.dataList = this.searchList;
         }
       });
+    },
+     //下拉刷新上拉加载更多初始化
+    mescrollInit(mescroll) {
+      this.mescroll = mescroll;
+    },
+    //上拉的回调
+    downCallBack(mescroll) {
+      setTimeout(function() {
+        mescroll.endSuccess();
+      }, 1500);
     },
     getList(page, mescroll) {
       const that = this;
@@ -148,15 +167,18 @@ export default {
         }
       });
     },
+    //点击按钮入职/离职的显示和隐藏
     handleImg() {
       this.flag = !this.flag;
       this.imgFlag = !this.imgFlag;
     },
+    //跳转到入职页面
     handlePushEnter() {
       localStorage.removeItem("employeeName");
       localStorage.removeItem("customerEmployeeNo");
       this.$router.push({ path: "/addEmployee" });
     },
+    //跳转到离职页面
     handleLive() {
       this.$router.push({ path: "/leaveEmployee/id" });
     }
@@ -198,7 +220,6 @@ export default {
     padding: 0.1rem;
     padding-bottom: 0;
     box-sizing: border-box;
-    background: #fff;
     .img-cut {
       position: absolute;
       top: 2.04rem;
@@ -208,8 +229,9 @@ export default {
       height: 0.44rem;
     }
     .h-top {
-      height: 1.04rem;
+      height: 1.4rem;
       width: 100%;
+      border-bottom: 0.5px solid #f2f2f2;
       img {
         position: absolute;
         top: 0.5rem;
@@ -249,19 +271,19 @@ export default {
     bottom: 1rem;
     overflow-x: hidden;
     overflow-y: auto;
-    width: 100%;
+    // width: 100%;
     left: 0;
     right: 0;
     height:100%;
     margin-bottom: 1rem;
-    padding: 0.1rem;
+    padding: 0 0.1rem 0.1rem;
     box-sizing: border-box;
     ul {
       .class2 {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        width: 100%;
+        // width: 100%;
         height: 1rem;
         padding-left: 0.15rem;
         border-bottom: 0.5px solid #f2f2f2;
@@ -270,7 +292,7 @@ export default {
         display: flex;
         justify-content: space-around;
         align-items: center;
-        width: 100%;
+        // width: 100%;
         height: 1rem;
         padding-left: 0.15rem;
         color: #999;

@@ -42,7 +42,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             // "Authorization":localStorage.getItem('token')||'',
-            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZ3J1YW4yIiwiY3JlYXRlZCI6MTU3NzQ5NzQzOTI0NSwiZXhwIjo0MjM1MTc3NDk3NDM5fQ.a1VPqDseXrdj8OtjHc6A2FyAJGjriTwObqXav3-YyNwL2twe1HPSqyKA3NIEfjqw5CmGgQfaZMFUMqADcosi3A',
+            "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aGFuZ3J1YW4yIiwiY3JlYXRlZCI6MTU3NzUxNjYwMzk2MCwiZXhwIjo0MjM1MTc3NTE2NjAzfQ.3xkK-pLBl_RRMiP5-ZXBp8n7XcD_bPbb5Y62j2_7ICWzgVdmAklTzrF9tOOAfysOB2-wZOsQM1fN5HdohIKr2Q',
             "backend":'lhyg'
         }
         return config;
@@ -57,7 +57,9 @@ instance.interceptors.response.use(function (response) {
   if(response.data.code==401){
       console.log(response.data.code,'if401');
       localStorage.clear();
-      wxLogin(wxData);
+      setTimeout(()=>{
+        wxLogin(wxData);
+      },200)
       //账号密码登陆
       // router.replace({
       //     path: '/signin',

@@ -14,14 +14,14 @@
 
               <h2 class="title" style="display:flex;justify-content:center;align-items:center;" @click="selectDistrict">
                 <span>{{selectedOrganizationName||''}}</span>
-                <img style="width:20px;height:20px;" :src='arrowImg' alt="" />
+                <img style="width:20px;height:20px;position: absolute;right: 2.6rem;" :src='arrowImg' alt="" />
               </h2>
           </div>
           <div class="img">
               <img :src='imgUrl' alt=""/>
           </div>
-          <div id="main" @scroll="handleScroll" ref="content"  >
-              <SouthChart  @totalArea='totalArea'   :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
+          <div id="main"   ref="content"  >
+              <SouthChart  @totalArea='totalArea' :clickIndex="clickIndex"  :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
               <!-- {{item,'dddddd'}} -->
               <!-- <EastChart id='3'></EastChart>
               <CenterChart id='4'></CenterChart>
@@ -180,15 +180,24 @@ export default {
             for(let i=0;i<valueTypeList.length;i++){
               var a = i;
               positionType[a] = [];
-              valueTypeList[i].xDataList.map(item=>{
-                positionType[a].push(item.xData)
-              })
-
+              // valueTypeList[i].xDataList.map(item=>{
+              //   positionType[a].push(item.xData)
+              // })
               var b = i;
               percentList[b] = [];
-              valueTypeList[i].xDataList.map(item=> percentList[b].push(item.total))
+
+
+              var z;
+              for (z = valueTypeList[i].xDataList.length-1; z >= 0; z--) {
+                  // text += cars[i] + "<br>";
+                    positionType[a].push(valueTypeList[i].xDataList[z].xData)
+                    percentList[b].push(valueTypeList[i].xDataList[z].total)
+              }
+
+
+              // valueTypeList[i].xDataList.map(item=> percentList[b].push(item.total))
             }
-            // console.log(percentList,positionType,'upppppppp0-90');
+            console.log(percentList,positionType,'upppppppp0-90');
 
 
 
@@ -397,10 +406,10 @@ export default {
             this.getChartsData()
 
         },
-        handleScroll(el){
-            this.scrollTop = this.$refs.content.scrollTop
-            // console.log(this.$refs.content.scrollTop)
-        }
+        // handleScroll(el){
+        //     this.scrollTop = this.$refs.content.scrollTop
+        //     // console.log(this.$refs.content.scrollTop)
+        // }
     }
 }
 </script>
@@ -433,7 +442,7 @@ export default {
         }
         .header-bottom{
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             height: 1.5rem;
             width: 100%;
@@ -472,7 +481,7 @@ export default {
         // height: 100%;
         width: 100%;
         position: absolute;
-        top:2.14rem;
+        top:2.34rem;
         padding: 0 .3rem;
         box-sizing: border-box;
         overflow-x: hidden;
@@ -487,7 +496,7 @@ export default {
   position:absolute;
   left:0;
   right:0;
-  top:2.1rem;
+  top:2.3rem;
   bottom:0;
   background-color:rgba(0,0,0,.5);
 }
@@ -507,5 +516,13 @@ export default {
   color:#18314D;
   border-bottom:1px solid #DCDFE6;
   background:#fff;
+}
+/deep/ .mint-button--default{
+  box-shadow:unset!important;
+}
+.header-bottom{
+  padding-left:.3rem;
+  padding-right:.3rem;
+  box-sizing: border-box;
 }
 </style>

@@ -44,14 +44,6 @@ export default new Router({
       meta: {
         title:'入职信息登记',
       },
-      // children: [
-      //   {
-      //     path: '/SelectService',
-      //     name: SelectService,
-      //     component: () => import('@/vuepage/page/SelectService.vue'),
-      //     meta: { title: '选择所属业务区',}
-      //   },
-      // ]
     },
      {
       path: '/leaveEmployee/:id',
@@ -69,13 +61,6 @@ export default new Router({
       }
     },
     {
-      path: '/SelectService',
-      component: SelectService,
-      meta: {
-        title:'选择所属业务区',
-      }
-    },
-    {
       path: '/ClientType',
       component: ClientType,
       meta: {
@@ -89,6 +74,13 @@ export default new Router({
         title:'劳动合同牌照',
       }
     },
+      {
+        path: '/SelectService',
+        component: SelectService,
+        meta: {
+          title:'选择所属业务区',
+        }
+      },
      {
       path: '*',
       component: Index,
