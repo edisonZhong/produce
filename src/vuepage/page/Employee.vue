@@ -64,7 +64,7 @@ export default {
         clearEmptyId: "main",
         isBoth: false,
         isBounce: true,
-        inOffsetRate :1
+        // inOffsetRate :1
       },
       mescrollUp: {
         // 上拉加载的配置.
@@ -245,7 +245,7 @@ export default {
   #main {
     -webkit-overflow-scrolling:touch;
     position: absolute;
-    top: 2。04rem;
+    top: 2.04rem;
     bottom: 1rem;
     overflow-x: hidden;
     overflow-y: auto;
