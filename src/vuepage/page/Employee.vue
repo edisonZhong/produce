@@ -11,8 +11,8 @@
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list" style="width:1.06rem;">姓名</p>
-        <p class="data-list" style="width:1.42rem">客户工号</p>
+        <p class="data-list" style="width:1.46rem;margin-left: -.3rem;">姓名</p>
+        <p class="data-list" style="width:1.58rem">客户工号</p>
         <p class="data-list" style="width:2.5rem">入职日期</p>
       </div>
     </div>
@@ -27,8 +27,8 @@
       <ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list" style="width:1.06rem;">{{item.employeeName}}</p>
-          <p class="data-list" style="width:1.42rem">{{item.customerEmployeeNo}}</p>
+          <p class="data-list" style="width:1.46rem;margin-left: -.3rem;">{{item.employeeName}}</p>
+          <p class="data-list" style="width:1.58rem">{{item.customerEmployeeNo}}</p>
           <p class="data-list" style="width:35%;">{{item.entryAt}}</p>
         </li>
       </ul>
@@ -194,7 +194,7 @@ export default {
 }
 .number-list {
   text-align: center;
-  width: .72rem;
+  width: .62rem;
 }
 .data-list {
   text-align: center;
