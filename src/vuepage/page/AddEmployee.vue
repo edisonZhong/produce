@@ -3,7 +3,7 @@
   <div id="page">
     <div id="main">
       <div>
-          <mt-field label="姓名" :placeholder="placeholder" 
+          <mt-field class="inputs" label="姓名" :placeholder="placeholder" 
           @focus.native.capture="handleCommentFocus" 
           @blur.native.capture="phoneBlur" 
           @input="persist" v-model="employeeName"></mt-field>

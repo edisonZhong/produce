@@ -52,6 +52,7 @@
   word-break:break-world;
   font-size: 16px;
   box-sizing: border-box;
+  color: #333;
 }
 
 .mint-cell-text {
@@ -110,4 +111,9 @@
 .mescroll-empty .empty-icon {
   width: 45%;
   display: none;
+}
+
+
+input::-webkit-input-placeholder{
+  color:#999;
 }
