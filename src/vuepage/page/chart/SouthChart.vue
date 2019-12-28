@@ -306,7 +306,8 @@ export default {
             type: "value",
             // boundaryGap: [0.2, 0.2],
             max: Math.max(...this.boxBar.totalList[0]),
-            min: Math.min(...this.boxBar.totalList[0]),
+            // min: Math.min(...this.boxBar.totalList[0]),
+            min:0,
             // max:Math.max(...[12,12,1,2,12,12,1232,12,1,2,1,2,1,2,12,1,2,12,1,2,1,2,1,2,1,2,4,34,32,5342,32,1,12]),
             // min:Math.min(...[12,12,1,2,12,12,1232,12,1,2,1,2,1,2,12,1,2,12,1,2,1,2,1,2,1,2,4,34,32,5342,32,1,12]),
             axisLine:{
@@ -429,7 +430,8 @@ export default {
         {
           type: "value",
           max: Math.max(...this.boxIncrese.percentList[0]),
-          min: Math.min(...this.boxIncrese.percentList[0]),
+          // min: Math.min(...this.boxIncrese.percentList[0]),
+          min:0,
           // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
           // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
             axisTick:{
@@ -442,7 +444,8 @@ export default {
         {
           type: "value",
           max:Math.max(...this.boxIncrese.percentList[0]),
-          min: Math.min(...this.boxIncrese.percentList[0]),
+          // min: Math.min(...this.boxIncrese.percentList[0]),
+          min:0,
           // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
           // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
 
