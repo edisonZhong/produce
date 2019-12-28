@@ -119,6 +119,7 @@ export default {
         "organizationName",
         JSON.stringify(organizationName)
       );
+      debugger;
       localStorage.setItem("id", JSON.stringify(id));
       this.$router.push({
         path: "/AddEmployee",

@@ -245,7 +245,7 @@ export default {
   #main {
     -webkit-overflow-scrolling:touch;
     position: absolute;
-    top: 2rem;
+    top: 2。04rem;
     bottom: 1rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -307,31 +307,4 @@ export default {
   right: 1.3rem;
   bottom: -0.25rem;
 }
-/* 2倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-//   li::after {
-//     -webkit-transform: scaleY(0.5);
-//     transform: scaleY(0.5);
-//   }
-// }
-/* 3倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
-//   li::after {
-//     -webkit-transform: scaleY(0.33);
-//     transform: scaleY(0.33);
-//   }
-// }
-// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-//   .h-bottom::after {
-//     -webkit-transform: scaleY(0.5);
-//     transform: scaleY(0.5);
-//   }
-// }
-// /* 3倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
-//   .h-bottom::after {
-//     -webkit-transform: scaleY(0.33);
-//     transform: scaleY(0.33);
-//   }
-// }
 </style>

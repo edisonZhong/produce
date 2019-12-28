@@ -10,8 +10,8 @@
       </div>
         <div @click="handleService">
           <mt-field label="所属业务区" v-model="organizationName">
-              <img src="@/assets/img/right.png" height="12px" width="8px">
-            </mt-field>
+            <img src="@/assets/img/right.png" height="12px" width="8px">
+          </mt-field>
         </div>
       <div @click="openPicker">
         <mt-field label="入职日期" disabled placeholder="请选择" v-model="entryAt"/>
@@ -93,11 +93,14 @@ export default {
       dataListType: [],
       value1: "",//选择的日期
       imgF: require("@/assets/img/jiantou.png"),
-      type:'textarea',
+      type:'text',
     };
   },
   created() {
+    // console.log(this.legalCompanyName.length);
+    // this.count()
   },
+   
   methods: {
     showPicker(e) {
       e.preventDefault(); //阻止输入法的唤醒
