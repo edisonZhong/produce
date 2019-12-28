@@ -96,7 +96,7 @@
 
     #main {
       position: absolute;
-      top: 2.1rem;
+      top: 2.23rem;
       bottom: 1rem;
       overflow-x: hidden;
       overflow-y: auto;
