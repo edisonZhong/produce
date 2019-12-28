@@ -4,26 +4,26 @@
     <div id='main'>
       <router-link to="/choiceEmployee">
         <div class="jian">
-          <mt-field class="line" label="离职员工" :placeholder="employeeName" v-model="employeeName" disabled>
+          <mt-field class="line" label="离职员工" :value="employeeName" v-model="employeeName" disabled>
             <img src="@/assets/img/right.png" height="12px" width="8px">
           </mt-field>
         </div>
       </router-link>
-      <mt-field label="所属业务区" placeholder="系统自动带出" v-model="employeeArea" disabled/>
-      <mt-field label="客户工号" placeholder="系统自动带出" v-model="customerEmployeeNo" disabled/>
-      <mt-field label="入职日期" placeholder="系统自动带出" v-model="organizationalId" disabled/>
+      <mt-field label="所属业务区" placeholder="系统自动带出" :value="employeeName" v-model="employeeArea" disabled/>
+      <mt-field label="客户工号" placeholder="系统自动带出" :value="employeeName" v-model="customerEmployeeNo" disabled/>
+      <mt-field label="入职日期" placeholder="系统自动带出" :value="employeeName" v-model="organizationalId" disabled/>
       <div class="line" @click="openPicker(0)">
         <mt-field label="离职日期" placeholder="请选择" disabled v-model="entryAt"/>
       </div>
       <mt-field label="离职原因" placeholder="请填写" v-model="positionType"/>
       <div class="line" @click="openPicker(1)">
         <mt-field label="开始缴纳社保月份" placeholder="系统自动带出" disabled v-model="entryAt1">
-          <img src="@/assets/img/del.png" height="17px" width="17px" @click.stop @click="clearInput('entryAt1')">
+          <!--          <img src="@/assets/img/del.png" height="17px" width="17px" @click.stop @click="clearInput('entryAt1')">-->
         </mt-field>
       </div>
       <div class="line" @click="openPicker(2)">
         <mt-field label="最后缴纳社保月份" placeholder="请选择" v-model="entryAt2" disabled>
-          <img src="@/assets/img/del.png" height="17px" width="17px"  @click.stop @click="clearInput('entryAt2')">
+          <!--          <img src="@/assets/img/del.png" height="17px" width="17px"  @click.stop @click="clearInput('entryAt2')">-->
         </mt-field>
       </div>
       <div class="footer" v-show="hideshow">
@@ -31,15 +31,20 @@
         <mt-button class="bottom-c" type="primary" @click="handleSave(0)">保存并继续添加</mt-button>
       </div>
     </div>
-    <mt-datetime-picker
-      ref="picker"
-      type="date"
-      @confirm="handleConfirm"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      v-model="value">
-    </mt-datetime-picker>
+    <div class="mt-date-box">
+      <transition name="clear">
+<!--        <div class="mt-clear" v-if="clear">清空</div>-->
+      </transition>
+      <mt-datetime-picker
+        ref="picker"
+        type="date"
+        @confirm="handleConfirm"
+        year-format="{value} 年"
+        month-format="{value} 月"
+        date-format="{value} 日"
+        v-model="value">
+      </mt-datetime-picker>
+    </div>
   </div>
 </template>
 
@@ -76,21 +81,41 @@
         customerId: '',
         positionType: '',
         nowDate: '',
+        clear:false,
         docmHeight: document.documentElement.clientHeight,  //默认屏幕高度
         showHeight: document.documentElement.clientHeight,   //实时屏幕高度
-        hideshow:true,  //显示或者隐藏footer
+        hideshow: true,  //显示或者隐藏footer
       }
     },
     created() {
       this.getUserData();
+
     },
     mounted() {
+      const _this = this;
+      let clear =  document.createElement("div");
+      clear.innerText='清除日期';
+      clear.className='clear';
+      clear.style.cssText="margin-left:20px";
+      $(".mint-datetime-cancel")[0].style.display="flex";
       // window.onresize监听页面高度的变化
-      window.onresize = ()=>{
-        return(()=>{
+      $(".mint-datetime-cancel")[0].append(clear);
+      clear.addEventListener("click",()=>{
+        switch (_this.nowDate) {
+          case 1:
+            _this.entryAt1 = " ";
+            break;
+          case 2:
+            _this.entryAt2 = " ";
+            break;
+        }
+        $(".mint-datetime-cancel")[0].click();
+      },false);
+      window.onresize = () => {
+        return (() => {
           this.showHeight = document.body.clientHeight;
         })()
-      }
+      };
     },
     //监听
     watch: {
@@ -103,32 +128,30 @@
       }
     },
     methods: {
-      clearInput(input){
+      clearInput(input) {
         this[input] = " ";
       },
       openPicker(value) {
-        // if(this.value){
-        //       this.entryAt=this.value
-        //   }else{
-        //       this.value=new Date()
-        //   }
-        this.value = new Date()
+        this.value = new Date();
         this.nowDate = value;
         this.$refs.picker.open();
         switch (this.nowDate) {
           case 0:
-            ''
+            this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'block';
+            $(".clear")[0].style.display="none";
             break;
           case 1:
-            this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none'
+            this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none';
+            $(".clear")[0].style.display="block";
             break;
           case 2:
-            this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none'
+            this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none';
+            $(".clear")[0].style.display="block";
             break;
         }
-
       },
       handleConfirm(value) {
+        this.clear = false;
         switch (this.nowDate) {
           case 0:
             this.entryAt = this.$utils.date(value, '4');
@@ -140,8 +163,6 @@
             this.entryAt2 = this.$utils.date(value, '5');
             break;
         }
-
-        console.log(this.entryAt);
       },
       handleService() {
         this.$router.push({
@@ -215,8 +236,8 @@
           "employee_id": userid,
           "resignationAt": this.entryAt,
           "resignationReason": this.positionType,//所属业务id
-          "socialSecurityStartAt": (this.entryAt1===' ')?'':this.entryAt1,
-          "socialSecurityEndAt":  (this.entryAt2===' ')?'':this.entryAt2,
+          "socialSecurityStartAt": (this.entryAt1 === ' ') ? '' : this.entryAt1,
+          "socialSecurityEndAt": (this.entryAt2 === ' ') ? '' : this.entryAt2,
         }).then(e => {
           if (e.data.code === 200) {
             type ? (_this.$router.push('/Employee'), MessageBox({
@@ -236,11 +257,23 @@
 </script>
 
 <style lang="less" scoped>
-  html,body{
-    position:relative!important;
-    height:100% !important;
-    min-height:100% !important;
+
+  html, body {
+    position: relative !important;
+    height: 100% !important;
+    min-height: 100% !important;
   }
+
+  .mt-clear {
+    line-height: 40px;
+    font-size: 16px;
+    color: #26a2ff;
+    position: absolute;
+    z-index: 90000;
+    bottom: 0;
+    left: 2rem;
+  }
+
   a {
     color: black;
   }

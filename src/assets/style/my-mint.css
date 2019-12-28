@@ -17,17 +17,10 @@
   padding-right: .2rem !important;
 }
 
-.mint-search {
-  width: 100%;
-  height: 1.04rem
-}
-
 .mint-searchbar {
   height: 1.04rem;
 }
 .mint-searchbar-inner {
-  /* background: rgba(246, 248, 250, 1); */
-  /* .mint-searchbar-inner{ */
   background:rgba(246,248,250,1);;
   height: .56rem;
   border-radius:4px;
@@ -56,20 +49,10 @@
 }
 
 .mint-field-core {
-  /* width: 3rem; */
   word-break:break-world;
   font-size: 16px;
-  /* flex: 0 0 80%; */
-  /*padding-left: .1rem;*/
   box-sizing: border-box;
-  /* padding-right: 0rem;     */
-
-}
-
-.mint-field .mint-cell-value {
-  /* flex: 0 0 85%; */
-  /* width: 3rem; */
-  /* word-break:break-world */
+  color: #333;
 }
 
 .mint-cell-text {
@@ -83,7 +66,6 @@
 .mint-field .mint-cell-value:nth-last-child(3) {
   flex: 0 0 82%;
 }
-
 .mint-datetime-action:nth-last-child(1) {
   text-align: right;
   padding-right: .3rem;
@@ -98,32 +80,17 @@
 .mint-cell-wrapper {
   background-image: -webkit-linear-gradient(top, #fff, #fff 50%, transparent 50%);
   background-image: linear-gradient(180deg, #fff, #fff 50%, transparent 50%);
+  height: 1rem;
 }
-/* .inputs input::-webkit-input-placeholder{
-    color:#0076FF;
-} */
+
 #page{
   font-size: 16px;
-}
-.mint-cell{
-  border-bottom: 1px solid #dcdfe6;
-}
-.mint-cell-wrapper::after{
-  width: 100%;
-  /* height: 1px; */
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-bottom: 1px solid #f2f2f2;
-  transform: scaleY(0.5)
 }
 
 .mint-cell {
   border-bottom: 0.5px solid #f2f2f2;
 }
-
-.mint-cell:last-child {
+.mint-cell {
   background-image: -webkit-linear-gradient(bottom, #f2f2f2, #f2f2f2 50%, transparent 50%);
   background-image: linear-gradient(0deg, #f2f2f2, #f2f2f2 50%, transparent 50%);
   background-size: 100% 0px;
@@ -137,4 +104,16 @@
   text-align: center;
   visibility: hidden;
   display: none !important;
+}
+.mint-searchbar-core{
+  font-size:14px;
+}
+.mescroll-empty .empty-icon {
+  width: 45%;
+  display: none;
+}
+
+
+input::-webkit-input-placeholder{
+  color:#999;
 }
