@@ -104,7 +104,9 @@
   visibility: hidden;
   display: none !important;
 }
-
+.mint-searchbar-core{
+  font-size:14px;
+}
 .mescroll-empty .empty-icon {
   width: 45%;
   display: none;
