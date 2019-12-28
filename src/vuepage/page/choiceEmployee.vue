@@ -31,24 +31,25 @@
 
     #header {
       width: 100%;
-      height: 2.2rem;
-      background: #fff;
-      position: fixed;
-      top: 0;
-      bottom: 1rem;
-      left: 0;
-      right: 0;
-      display: flex;
-      background: #fff;
-      z-index: 10;
-      flex-direction: column;
-      font-size: 0.24rem;
-      /*padding: .1rem;*/
-      box-sizing: border-box;
+    height: 2.14rem;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    background: #fff;
+    z-index: 10;
+    flex-direction: column;
+    font-size: 0.24rem;
+    padding: 0.1rem;
+    padding-bottom: 0;
+    box-sizing: border-box;
 
       .img-cut {
         position: absolute;
-        top: 2.04rem;
+        top: 2.1rem;
         left: 0;
         right: 0;
         width: 100%;
@@ -57,10 +58,9 @@
 
       // box-shadow: .22rem .22rem .22rem rgba(0, 0, 0, .1);
       .h-top {
-        height: 1.04rem;
+        height: 1.1rem;
         width: 100%;
         border-bottom: 1px solid #f2f2f2;
-
         img {
           position: absolute;
           top: 0.5rem;
@@ -69,15 +69,14 @@
 
         .seach {
           width: 0.9rem;
-          line-height: 1.2rem;
-          margin-left: 0.3rem;
-          color: #eb9f4b;
-          font-size: 0.28rem;
-          text-align: center;
-          position: absolute;
-          top: 0;
-          right: 0.2rem;
-          font-size: 16px;
+        line-height: 1.2rem;
+        margin-left: 0.3rem;
+        color: #eb9f4b;
+        font-size: 0.32rem;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        right: 0.2rem;
         }
       }
 
@@ -86,7 +85,7 @@
         justify-content: space-around;
         align-items: center;
         width: 100%;
-        height: 2rem;
+        height: 1rem;
         // padding-left: 0.15rem;
         box-sizing: border-box;
         font-size: 14px;
