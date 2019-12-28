@@ -10,19 +10,19 @@
       </div>
         <div @click="handleService">
           <mt-field label="所属业务区" v-model="organizationName">
-              <img src="@/assets/img/right.png" height="12px" width="8px">
-            </mt-field>
+            <img src="@/assets/img/right.png" height="12px" width="8px">
+          </mt-field>
         </div>
       <div @click="openPicker">
         <mt-field label="入职日期" disabled placeholder="请选择" v-model="entryAt"/>
       </div>
       <div @click="handleLaga">
-        <mt-field type="textarea" rows="2" label="劳动合同牌照"  v-model="legalCompanyName">
+        <mt-field label="劳动合同牌照" :type="type" v-model="legalCompanyName">
           <img src="@/assets/img/right.png" height="12px" width="8px">
         </mt-field>
       </div>
       <div @click="handleClient">
-        <mt-field type="textarea" rows="2" label="服务客户名称" id="img-imgs" v-model="customerName"><img src="@/assets/img/right.png" height="12px" width="8px"></mt-field>
+        <mt-field :type="type" label="服务客户名称" id="img-imgs" v-model="customerName"><img src="@/assets/img/right.png" height="12px" width="8px"></mt-field>
       </div>
       <div @click="handleType">
            <mt-field
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+
 import { Toast } from "mint-ui";
 import { addData, selectCart, positionType } from "../../server/employee";
 export default {
@@ -91,11 +92,15 @@ export default {
       popupVisibleType: false, //岗位属性的显示和隐藏
       dataListType: [],
       value1: "",//选择的日期
-      imgF: require("@/assets/img/jiantou.png")
+      imgF: require("@/assets/img/jiantou.png"),
+      type:'text',
     };
   },
   created() {
+    // console.log(this.legalCompanyName.length);
+    // this.count()
   },
+   
   methods: {
     showPicker(e) {
       e.preventDefault(); //阻止输入法的唤醒
@@ -199,11 +204,10 @@ export default {
       }).then(e => {
         if (e.data.code == 200) {
           Toast({
-            message: '以保存成功',
+            message: '保存成功，请继续添加',
             position: 'middle',
-            duration: 3000
+            duration: 1000
           });
-          this.toastInstanse.close();
            localStorage.removeItem('employeeName')
             localStorage.removeItem('customerEmployeeNo')
           //继续填写清空表格数据

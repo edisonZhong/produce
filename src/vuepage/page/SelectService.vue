@@ -119,6 +119,7 @@ export default {
         "organizationName",
         JSON.stringify(organizationName)
       );
+      debugger;
       localStorage.setItem("id", JSON.stringify(id));
       this.$router.push({
         path: "/AddEmployee",
@@ -143,7 +144,8 @@ export default {
   overflow-y: auto;
   padding: 0 0.3rem;
   box-sizing: border-box;
-
+  position: absolute;
+    top: 1.04rem;
   ul {
     li {
       display: flex;

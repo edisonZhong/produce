@@ -9,9 +9,9 @@
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list" style="width:22%">姓名</p>
-        <p class="data-list">客户工号</p>
-        <p class="data-list">入职日期</p>
+        <p class="data-list" style="width:22%;margin-left: .3rem">姓名</p>
+        <p class="data-list" style="width:30%;">客户工号</p>
+        <p class="data-list" style="width:38%;">入职日期</p>
       </div>
       <!-- <img :src="imgCut" alt /> -->
     </div>
@@ -26,9 +26,9 @@
       <ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list" style="width:22%">{{item.employeeName}}</p>
-          <p class="data-list">{{item.customerEmployeeNo}}</p>
-          <p class="data-list">{{item.entryAt}}</p>
+          <p class="data-list" style="width:22%;margin-left: .3rem">{{item.employeeName}}</p>
+          <p class="data-list" style="width:30%;">{{item.customerEmployeeNo}}</p>
+          <p class="data-list" style="width:38%;">{{item.entryAt}}</p>
         </li>
       </ul>
     </mescroll-vue>
@@ -63,7 +63,8 @@ export default {
         callback: this.downCallBack,
         clearEmptyId: "main",
         isBoth: false,
-        isBounce: true
+        isBounce: true,
+        // inOffsetRate :1
       },
       mescrollUp: {
         // 上拉加载的配置.
@@ -96,7 +97,12 @@ export default {
     };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    history.pushState(null, null, document.URL);
+    window.addEventListener('popstate', function () {
+      history.pushState(null, null, document.URL);
+    })
+  },
 
   methods: {
     search() {
@@ -168,7 +174,7 @@ export default {
   width: 10%;
 }
 .data-list {
-  text-align: center;
+  text-align: left;
   width: 34%;
 }
 #page {
@@ -239,7 +245,7 @@ export default {
   #main {
     -webkit-overflow-scrolling:touch;
     position: absolute;
-    top: 2rem;
+    top: 2.04rem;
     bottom: 1rem;
     overflow-x: hidden;
     overflow-y: auto;
@@ -301,31 +307,4 @@ export default {
   right: 1.3rem;
   bottom: -0.25rem;
 }
-/* 2倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-//   li::after {
-//     -webkit-transform: scaleY(0.5);
-//     transform: scaleY(0.5);
-//   }
-// }
-/* 3倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
-//   li::after {
-//     -webkit-transform: scaleY(0.33);
-//     transform: scaleY(0.33);
-//   }
-// }
-// @media only screen and (-webkit-min-device-pixel-ratio: 2) {
-//   .h-bottom::after {
-//     -webkit-transform: scaleY(0.5);
-//     transform: scaleY(0.5);
-//   }
-// }
-// /* 3倍屏 */
-// @media only screen and (-webkit-min-device-pixel-ratio: 3) {
-//   .h-bottom::after {
-//     -webkit-transform: scaleY(0.33);
-//     transform: scaleY(0.33);
-//   }
-// }
 </style>

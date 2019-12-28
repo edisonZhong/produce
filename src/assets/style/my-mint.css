@@ -106,7 +106,7 @@
   font-size: 16px;
 }
 .mint-cell{
-  border-bottom: 1px solid #d9d9d9;
+  border-bottom: 1px solid #dcdfe6;
 }
 .mint-cell-wrapper::after{
   width: 100%;
@@ -119,3 +119,22 @@
   transform: scaleY(0.5)
 }
 
+.mint-cell {
+  border-bottom: 0.5px solid #f2f2f2;
+}
+
+.mint-cell:last-child {
+  background-image: -webkit-linear-gradient(bottom, #f2f2f2, #f2f2f2 50%, transparent 50%);
+  background-image: linear-gradient(0deg, #f2f2f2, #f2f2f2 50%, transparent 50%);
+  background-size: 100% 0px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+}
+
+.mescroll-upwarp {
+  min-height: 30px;
+  padding: 15px 0;
+  text-align: center;
+  visibility: hidden;
+  display: none !important;
+}

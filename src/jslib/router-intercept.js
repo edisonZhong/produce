@@ -11,7 +11,7 @@ router.beforeEach((to, from, next) => {
     console.log(to, '触发路由卫士_to');
 
     //修改标题
-    utils.changeTitle(to.meta.title)
+    utils.changeTitle(to.meta.title);
 
 
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
