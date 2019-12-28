@@ -43,7 +43,7 @@
       z-index: 10;
       flex-direction: column;
       font-size: 0.24rem;
-      padding: .1rem;
+      /*padding: .1rem;*/
       box-sizing: border-box;
 
       .img-cut {
@@ -90,7 +90,7 @@
         // padding-left: 0.15rem;
         box-sizing: border-box;
         font-size: 14px;
-        border-bottom: 1px solid #dcdfe6;
+        border-bottom: 1px solid #f2f2f2;
       }
     }
 
@@ -115,8 +115,7 @@
           align-items: center;
           width: 100%;
           height: 1rem;
-          border-bottom: 1px solid rgba(220, 223, 230, 1);
-
+          border-bottom: 0.5px solid #f2f2f2;
           a {
             display: flex;
             justify-content: space-around;

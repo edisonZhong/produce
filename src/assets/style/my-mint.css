@@ -108,6 +108,9 @@
 .mint-cell{
   border-bottom: 1px solid #dcdfe6;
 }
+.mint-searchbar-core{
+  font-size:14px;
+}
 .mint-cell-wrapper::after{
   width: 100%;
   /* height: 1px; */
