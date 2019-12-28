@@ -33,7 +33,7 @@
     </div>
     <div class="mt-date-box">
       <transition name="clear">
-        <div class="mt-clear" v-if="clear">清空</div>
+<!--        <div class="mt-clear" v-if="clear">清空</div>-->
       </transition>
       <mt-datetime-picker
         ref="picker"
@@ -42,7 +42,6 @@
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"
-        cancelText="清空日期"
         v-model="value">
       </mt-datetime-picker>
     </div>
@@ -94,8 +93,14 @@
     },
     mounted() {
       const _this = this;
+      let clear =  document.createElement("div");
+      clear.innerText='清除日期';
+      clear.className='clear';
+      clear.style.cssText="margin-left:20px";
+      $(".mint-datetime-cancel")[0].style.display="flex";
       // window.onresize监听页面高度的变化
-      $(".mint-datetime-cancel")[0].addEventListener("click",()=>{
+      $(".mint-datetime-cancel")[0].append(clear);
+      clear.addEventListener("click",()=>{
         switch (_this.nowDate) {
           case 1:
             _this.entryAt1 = " ";
@@ -104,6 +109,7 @@
             _this.entryAt2 = " ";
             break;
         }
+        $(".mint-datetime-cancel")[0].click();
       },false);
       window.onresize = () => {
         return (() => {
@@ -126,24 +132,21 @@
         this[input] = " ";
       },
       openPicker(value) {
-        // if(this.value){
-        //       this.entryAt=this.value
-        //   }else{
-        //       this.value=new Date()
-        //   }
-        this.clear = true;
         this.value = new Date();
         this.nowDate = value;
         this.$refs.picker.open();
         switch (this.nowDate) {
           case 0:
             this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'block';
+            $(".clear")[0].style.display="none";
             break;
           case 1:
             this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none';
+            $(".clear")[0].style.display="block";
             break;
           case 2:
             this.$refs.picker.$el.getElementsByClassName('picker-slot')[2].style.display = 'none';
+            $(".clear")[0].style.display="block";
             break;
         }
       },
@@ -254,17 +257,7 @@
 </script>
 
 <style lang="less" scoped>
-  .clear-fade-enter-active {
-    transition: all .3s ease;
-  }
-  .clear-fade-leave-active {
-    transition: all .3s;
-  }
-  .slide-fade-enter, .slide-fade-leave-to
-    /* .slide-fade-leave-active for below version 2.1.8 */ {
-    transform: translateX(10px);
-    opacity: 0;
-  }
+
   html, body {
     position: relative !important;
     height: 100% !important;
