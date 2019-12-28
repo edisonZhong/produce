@@ -66,7 +66,7 @@ export default {
         return{
             test:'',
             clickIndex:0,
-            btnList:['每日','每周','每月'],
+            btnList:['日','周','月'],
             imgUrl:require("@/assets/img/Oval.png"),
             title:'华南大区',
             title_box:[],

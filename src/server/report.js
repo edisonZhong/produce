@@ -114,3 +114,20 @@ export function getChartsData(obj){
 		})
 	})
 }
+
+// 根据选择的大区获取对应的图表数据(新数据)
+export function getNewChartsData(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/selectStatisticsDaily',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}

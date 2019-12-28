@@ -3,6 +3,8 @@ import {getToken} from "../../server/report";
 function checkLogin(wx) {
     if (!localStorage.getItem('token')) {
         let url = window.location.href;
+        console.log(url,'url');
+        // 微信code
         if (url.indexOf('code') >= 0) {
             var a = url.split("?")[1];
             var b = a.split('&')[0];
@@ -10,6 +12,14 @@ function checkLogin(wx) {
         } else {
             var aCode = '';
         }
+        // 手机号码
+        // if (url.indexOf('code') >= 0) {
+        //     var a = url.split("?")[1];
+        //     var b = a.split('&')[0];
+        //     var aCode = b.split('=')[1];
+        // } else {
+        //     var aCode = '';
+        // }
 
         if (aCode) {
             //获取token操作

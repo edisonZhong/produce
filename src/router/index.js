@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const Index =()=> import('@/vuepage/page/Index.vue')
+const IndexNew =()=> import('@/vuepage/page/IndexNew.vue')
 const Employee =()=> import('@/vuepage/page/Employee.vue')
 const AddEmployee=()=> import('@/vuepage/page/AddEmployee.vue')
 const SelectService=()=> import('@/vuepage/page/SelectService.vue')
@@ -25,6 +26,14 @@ export default new Router({
     {
       path: '/Index',
       component: Index,
+      meta: {
+        theIndex: "1",
+        title:'首页',
+      }
+    },
+    {
+      path: '/IndexNew',
+      component: IndexNew,
       meta: {
         theIndex: "1",
         title:'首页',
