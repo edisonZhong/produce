@@ -240,10 +240,10 @@
           "socialSecurityEndAt": (this.entryAt2 === ' ') ? '' : this.entryAt2,
         }).then(e => {
           if (e.data.code === 200) {
-            type ? (_this.$router.push('/Employee'), MessageBox({
+            type ? (_this.$router.replace('/Employee'), MessageBox({
               title: '提示',
               message: "离职信息登记完成",
-            })) : (_this.$router.push('/leaveEmployee/id'), _this.$router.go(0));
+            })) : (_this.$router.replace('/leaveEmployee/id'), _this.$router.go(0));
           } else {
             MessageBox({
               title: '提示',

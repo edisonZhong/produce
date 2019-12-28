@@ -4,8 +4,8 @@
     <!-- 员工信息 -->
     <div id="header">
       <div class="h-top">
-        <mt-search 
-        @focus.native.capture="handleCommentFocus" 
+        <mt-search
+        @focus.native.capture="handleCommentFocus"
         v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
         <p class="seach" @click="handleSeach">搜索</p>
       </div>
@@ -98,12 +98,12 @@ export default {
     };
   },
   created() {},
-  
+
   mounted() {
-    history.pushState(null, null, document.URL);
-    window.addEventListener('popstate', function () {
-      history.pushState(null, null, document.URL);
-    })
+    // history.pushState(null, null, document.URL);
+    // window.addEventListener('popstate', function () {
+    //   history.pushState(null, null, document.URL);
+    // })
   },
   // 监听input
   watch: {
@@ -120,7 +120,7 @@ export default {
     //清空input
     handleCommentFocus(){
       this.placeholder=''
-    },    
+    },
     //搜索列表数据
     search() {
       this.handleSeach();
