@@ -4,16 +4,16 @@
     <!-- 员工信息 -->
     <div id="header">
       <div class="h-top">
-        <mt-search 
-        @focus.native.capture="handleCommentFocus" 
+        <mt-search
+        @focus.native.capture="handleCommentFocus"
         v-model="value" :placeholder="placeholder" @keyup.native.enter="search(value)"></mt-search>
         <p class="seach" @click="handleSeach">搜索</p>
       </div>
       <div class="h-bottom">
         <p class="number-list">序号</p>
-        <p class="data-list" style="width:22%;margin-left: .3rem">姓名</p>
-        <p class="data-list" style="width:30%;">客户工号</p>
-        <p class="data-list" style="width:38%;">入职日期</p>
+        <p class="data-list" style="width:1.46rem;margin-left: -.3rem;">姓名</p>
+        <p class="data-list" style="width:1.58rem">客户工号</p>
+        <p class="data-list" style="width:2.5rem">入职日期</p>
       </div>
     </div>
 
@@ -27,9 +27,9 @@
       <ul style="height: 100%;width: 100%;">
         <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
           <p class="number-list">{{index+1}}</p>
-          <p class="data-list" style="width:22%;margin-left: .3rem">{{item.employeeName}}</p>
-          <p class="data-list" style="width:30%;">{{item.customerEmployeeNo}}</p>
-          <p class="data-list" style="width:38%;">{{item.entryAt}}</p>
+          <p class="data-list" style="width:1.46rem;margin-left: -.3rem;">{{item.employeeName}}</p>
+          <p class="data-list" style="width:1.58rem">{{item.customerEmployeeNo}}</p>
+          <p class="data-list" style="width:35%;">{{item.entryAt}}</p>
         </li>
       </ul>
     </mescroll-vue>
@@ -98,12 +98,12 @@ export default {
     };
   },
   created() {},
-  
+
   mounted() {
-    history.pushState(null, null, document.URL);
-    window.addEventListener('popstate', function () {
-      history.pushState(null, null, document.URL);
-    })
+    // history.pushState(null, null, document.URL);
+    // window.addEventListener('popstate', function () {
+    //   history.pushState(null, null, document.URL);
+    // })
   },
   // 监听input
   watch: {
@@ -120,7 +120,7 @@ export default {
     //清空input
     handleCommentFocus(){
       this.placeholder=''
-    },    
+    },
     //搜索列表数据
     search() {
       this.handleSeach();
@@ -194,11 +194,11 @@ export default {
 }
 .number-list {
   text-align: center;
-  width: 10%;
+  width: .62rem;
 }
 .data-list {
-  text-align: left;
-  width: 34%;
+  text-align: center;
+  // width: 34%;
 }
 #page {
   height: 100%;

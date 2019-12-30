@@ -3,7 +3,9 @@
     overflow: hidden;
     height: 100vh;
   }
-
+  .mescroll{
+    height: 84%!important;
+  }
   /*li::after{*/
   /*  width:0!important;*/
   /*  height: 0!important;*/
@@ -28,24 +30,26 @@
     height: 100%;
     position: relative;
     box-sizing: border-box;
-
+    .mint-search {
+      height: 100%;
+    }
     #header {
       width: 100%;
-    height: 2.14rem;
-    background: #fff;
-    position: fixed;
-    top: 0;
-    bottom: 1rem;
-    left: 0;
-    right: 0;
-    display: flex;
-    background: #fff;
-    z-index: 10;
-    flex-direction: column;
-    font-size: 0.24rem;
-    padding: 0.1rem;
-    padding-bottom: 0;
-    box-sizing: border-box;
+      height: 2.14rem;
+      background: #fff;
+      position: fixed;
+      top: 0;
+      bottom: 1rem;
+      left: 0;
+      right: 0;
+      display: flex;
+      background: #fff;
+      z-index: 10;
+      flex-direction: column;
+      font-size: 0.24rem;
+      padding: 0.1rem;
+      padding-bottom: 0;
+      box-sizing: border-box;
 
       .img-cut {
         position: absolute;
@@ -61,6 +65,7 @@
         height: 1.1rem;
         width: 100%;
         border-bottom: 1px solid #f2f2f2;
+
         img {
           position: absolute;
           top: 0.5rem;
@@ -69,14 +74,14 @@
 
         .seach {
           width: 0.9rem;
-        line-height: 1.2rem;
-        margin-left: 0.3rem;
-        color: #eb9f4b;
-        font-size: 0.32rem;
-        text-align: center;
-        position: absolute;
-        top: 0;
-        right: 0.2rem;
+          line-height: 1.2rem;
+          margin-left: 0.3rem;
+          color: #eb9f4b;
+          font-size: 0.32rem;
+          text-align: center;
+          position: absolute;
+          top: 0;
+          right: 0.2rem;
         }
       }
 
@@ -115,6 +120,7 @@
           width: 100%;
           height: 1rem;
           border-bottom: 0.5px solid #f2f2f2;
+
           a {
             display: flex;
             justify-content: space-around;
@@ -220,9 +226,10 @@
         }).then(e => {
           let {message, code, data: {list}} = e.data;
           if (code === 200) {
-            if (isSearch) {
+            if (!isSearch) {
               that.dataList = list;
             } else {
+
               that.dataList = [...that.dataList, ...list];
             }
           }
@@ -232,7 +239,7 @@
         });
       },
       search: function () {
-        this.getList(this.page, 'search');
+        this.getList(this.page, false);
       },
       handlePush() {
         this.$router.push({path: "/AddEmployee"});

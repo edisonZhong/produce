@@ -241,7 +241,10 @@ export default {
   flex:  0 0 82% !important
 }
 .name-list{
-  width: 4.2rem;padding: 0.1rem 0.1rem 0.1rem .2rem;line-height: 0.4rem;box-sizing: border-box;
+  width: 4.2rem;
+  padding: 0.1rem 0.1rem 0.1rem .2rem;
+  line-height: 0.4rem;
+  box-sizing: border-box;
 }
 #page {
   height: 100%;
