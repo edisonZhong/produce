@@ -291,7 +291,8 @@ export default {
           title:{
             subtext:'员工数最多地区:'+one+two+three,
             x:'center',
-            top:'5%'
+            // top:'5%'
+            top:12
           },
           legend: {
             // data: this.nameList
