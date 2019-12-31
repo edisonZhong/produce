@@ -100,7 +100,9 @@ export default {
       placeholder:'输入姓名或客户工号'
     };
   },
-  created() {},
+  created() {
+    console.log(this,'thiss');
+  },
 
   mounted() {
     // history.pushState(null, null, document.URL);
