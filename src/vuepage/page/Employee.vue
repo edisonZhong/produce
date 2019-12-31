@@ -116,6 +116,7 @@ export default {
   // 监听input
   watch: {
     value: function (newval,oldval) {
+      console.log(newval,'oldval');
       if (this.value == "") {
         this.placeholder='输入姓名或客户工号'
         this.handleSeach()
@@ -140,10 +141,10 @@ export default {
     search() {
       this.handleSeach();
     },
-    handleSeach() {
+    async handleSeach() {
       let searchList = [];
       const that = this;
-      listData({
+      await listData({
         page: this.pages.page,
         limit: this.pages.size,
         searchStr: this.value

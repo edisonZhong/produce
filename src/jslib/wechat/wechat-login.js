@@ -3,7 +3,7 @@ import {getToken} from "../../server/report";
 function checkLogin(wx) {
     if (!localStorage.getItem('token')) {
         let url = window.location.href;
-        console.log(url,'url');
+        // alert(url,'url');
         // 微信code
         if (url.indexOf('code') >= 0) {
             var a = url.split("?")[1];
@@ -35,6 +35,7 @@ function checkLogin(wx) {
                thePath = thePath.split("/")[1];
                let url = wx.redirectUrl + (thePath?thePath:'');
                // http://ywh5.fenganghr.com&response_type=code
+               console.log(url,'wxxxxxxx');
                document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
              }
           })
@@ -43,6 +44,8 @@ function checkLogin(wx) {
           let thePath = window.location.hash;
           thePath = thePath.split("/")[1];
           let url = wx.redirectUrl + (thePath?thePath:'');
+          console.log(url,'wxxxxxxx1');
+
           // http://ywh5.fenganghr.com&response_type=code
           document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
             //document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=${wx.redirectUrl}&response_type=code&scope=${wx.loginStyle}&state=${wx.param}&agentid=${wx.agentid}#wechat_redirect`;

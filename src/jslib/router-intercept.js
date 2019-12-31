@@ -13,20 +13,29 @@ router.beforeEach((to, from, next) => {
     //修改标题
     utils.changeTitle(to.meta.title);
 
+// http://ywh5.fenganghr.com/#/indexnew
+// http://ywh5.fenganghr.comindexnew
 
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
         console.log('微信浏览器')
+        // if (utils.getUrlParams('pathName')!=''){
+        //   router.replace({
+        //     path:utils.getUrlParams('pathName')
+        //   })
+        // }
         //检查是否授权登录
         wxLogin(wxData);
+        console.log(utils,'utils');
+
         //从微信分享进入时去除form参数
-        function getQueryString(name) {
-            var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-            var r = window.location.search.substr(1).match(reg);
-            if (r != null) {
-                return unescape(r[2]);
-            }
-            return null;
-        }
+        // function getQueryString(name) {
+        //     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        //     var r = window.location.search.substr(1).match(reg);
+        //     if (r != null) {
+        //         return unescape(r[2]);
+        //     }
+        //     return null;
+        // }
 
         //从分享进入时去除form参数
         // if (getQueryString("from") == "timeline") {
