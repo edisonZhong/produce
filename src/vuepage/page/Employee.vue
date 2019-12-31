@@ -33,8 +33,8 @@
         </li>
       </ul>
     </mescroll-vue>
-    <TabBar></TabBar>
-    <div style="position: fixed;right: 0.3rem;bottom: 2rem;z-index: 10;">
+    <TabBar v-show="hideshow"></TabBar>
+    <div style="position: fixed;right: 0.3rem;bottom: 2rem;z-index: 10;" v-show="hideshow">
       <!-- <transition name="mybox"> -->
         <div v-if="imgFlag">
           <span class="enter-img" @click="handlePushEnter">入职</span>
@@ -57,6 +57,9 @@ export default {
   components: { TabBar, MescrollVue },
   data() {
     return {
+      docmHeight: document.documentElement.clientHeight,  //默认屏幕高度
+      showHeight: document.documentElement.clientHeight,   //实时屏幕高度
+      hideshow: true,  //显示或者隐藏footer
       class1: "class1",
       class2: "class2",
       mescroll: null, // mescroll实例对象
@@ -106,6 +109,11 @@ export default {
     // window.addEventListener('popstate', function () {
     //   history.pushState(null, null, document.URL);
     // })
+    window.onresize = () => {
+      return (() => {
+        this.showHeight = document.body.clientHeight;
+      })()
+    };
   },
   // 监听input
   watch: {
@@ -116,6 +124,13 @@ export default {
         this.handleSeach()
       }else{
         this.placeholder=''
+      }
+    },
+    showHeight: function () {
+      if (this.docmHeight > this.showHeight) {
+        this.hideshow = false
+      } else {
+        this.hideshow = true
       }
     }
   },

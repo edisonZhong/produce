@@ -3,9 +3,9 @@
   <div id="page">
     <div id="main">
       <div>
-          <mt-field class="inputs" label="姓名" :placeholder="placeholder" 
-          @focus.native.capture="handleCommentFocus" 
-          @blur.native.capture="phoneBlur" 
+          <mt-field class="inputs" label="姓名" :placeholder="placeholder"
+          @focus.native.capture="handleCommentFocus"
+          @blur.native.capture="phoneBlur"
           @input="persist" v-model="employeeName"></mt-field>
       </div>
       <div>
@@ -118,7 +118,7 @@ export default {
       this.placeholder='请填写'
       this.placeholderFocus='请填写'
     },
-    
+
     //存输入的姓名和客户工号
     persist() {
       localStorage.setItem("employeeName",JSON.stringify(this.employeeName)); //保存姓名
@@ -237,6 +237,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .name-list{
+    text-align: right!important;
+  }
+  .name-list{
+    color:black!important;
+  }
 #img-imgs .mint-cell-value{
   flex:  0 0 82% !important
 }
