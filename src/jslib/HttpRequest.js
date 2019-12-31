@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV === 'development') {
 //测试
     upBaseUrl = 'http://preywapi.fenganghr.com/';
-    // upBaseUrl  =  'http://192.168.0.16:9095/';
+    // upBaseUrl  =  'http://192.168.43.173:9095/';
     // upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
@@ -42,7 +42,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3NzU3MTIxNDIyLCJleHAiOjQyMzUxNzc3NTcxMjF9.0sPFj_C9CCqwVP8esNdlb28EhHsgEXe0o5cdE0Wa0YPYEAKryUoEhlNUA1Hu_nw9kRXyZX2HyeJQZUSZBHjYRQ',
+            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3NzgwMDI2OTA0LCJleHAiOjQyMzUxNzc3ODAwMjZ9.PyayMJhIx8e6Kzz1b8HHgh0DiKxw15vAzCN5RWIY6NR-qURCff3U-OUbfSKGi8UgwnwqydjtV7TMsaisLiyBYw',
             "backend":'front'
         }
         return config;
@@ -59,8 +59,11 @@ instance.interceptors.response.use(function (response) {
       setTimeout(()=>{
 
         let thePath = window.location.hash;
+
         thePath = thePath.split("/")[1];
         let url = wxData.redirectUrl + (thePath?thePath:'');
+        console.log(window.location,'rerul');
+        localStorage.setItem('href',window.location.href)
         window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
       },200)
       //账号密码登陆

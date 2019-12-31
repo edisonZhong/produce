@@ -15,8 +15,11 @@ router.beforeEach((to, from, next) => {
 
     if (ua.match(/MicroMessenger/i) == "micromessenger") {
         console.log(utils.getUrlParams('pathName'),'&'+utils.getUrlParams('time'),'微信浏览器1')
+        // if(utils.getUrlParams('time')){
+        //   localStorage.setItem('info_time',utils.getUrlParams('time'));
+        // }
         if (utils.getUrlParams('pathName')){
-          localStorage.setItem('info_time',utils.getUrlParams('time'));
+          localStorage.setItem('test','llll');
           console.log(utils.getUrlParams('pathName'),'&'+utils.getUrlParams('time'),'微信浏览器2')
           if(to.fullPath=='/IndexNew'){
             next();
@@ -24,6 +27,8 @@ router.beforeEach((to, from, next) => {
             next(`/IndexNew`)
           }
         }else{
+          console.log(utils.getUrlParams('pathName'),'&'+utils.getUrlParams('time'),'微信浏览器3')
+
           //检查是否授权登录
           wxLogin(wxData).then(()=>{
             next();

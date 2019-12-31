@@ -6,8 +6,8 @@
 
 
               <h2 class="title newtitle"  >
-                <span @click='selectDate'>业务外包进展{{selectedName}}报</span>
-                <img :src="tangle" alt="">
+                <span >业务外包进展日报</span>
+                <!-- <img :src="tangle" alt=""> -->
 
                 <span class="detail">{{detailDate||''}}</span>
 
@@ -86,7 +86,7 @@ import CenterChart from '../page/chart/CenterChart'
 import NorthChart from '../page/chart/NorthChart'
 import TabBar from './TabBar.vue'
 
-import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData,getDetailDate} from '../../server/report'
+import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData,getDetailDate,getNewChartsData} from '../../server/report'
 
 
 export default {
@@ -174,9 +174,9 @@ export default {
       getItem(v){
         console.log(v,'v');
       },
-      selectDate(){
-        this.sheetVisible=true;
-      },
+      // selectDate(){
+      //   this.sheetVisible=true;
+      // },
       getDetailDate(e){
         // console.log(e,'d');
         // return ;
@@ -210,23 +210,31 @@ export default {
       },
       getChartsData(){
         this.$Indicator.open();
-        getChartsData({
-          dateType:this.dataType,
+        console.log(localStorage.getItem('href'),'123321');
+        var a = localStorage.getItem('href');
+        let time = a.split('&')[1].split('=')[1];
+        let phone = a.split('&')[2].split('=')[1].split('#')[0];
+        // return
+        getNewChartsData({
+          // statisticsDate:this.$utils.date(Number(time),1),
+          statisticsDate:'2019-12-30',
           organizationNo:this.organizationNo,
-          organizationType:this.selectedOrganizationName=='君润人力'?1:2
+          employeePhone:phone
         }).then((res)=>{
           console.log(res,'ress');
+          // return ;
           // 员工总数
+          let data = JSON.parse(res.data.data.statisticsData);
           // console.log();
-          this.getData(res.data.data.totalMap)
+          this.getData(data.totalMap)
           // 岗位属性员工数占比统计图
-          this.getLine(res.data.data.positionMap)
+          this.getLine(data.positionMap)
           // 入职
-          this.getLineDay(res.data.data.entryMap)
+          this.getLineDay(data.entryMap)
           // 辞职
-          this.getLineLive(res.data.data.resignationMap)
+          this.getLineLive(data.resignationMap)
           // 员工数增长情况
-          this.getGrowth(res.data.data.upMap);
+          this.getGrowth(data.upMap);
 
           this.$Indicator.close();
         })
@@ -485,6 +493,7 @@ export default {
     height: 100%;
     position: relative;
     box-sizing: border-box;
+    background: #f2f2f2;
     #header{
         height: 2.14rem;
         width: 100%;
@@ -634,7 +643,7 @@ export default {
   display:flex;
   justify-content:space-between;
   margin-bottom:.3rem;
-  padding-top:.3rem;
+  padding-top:.1rem;
   .card{
     box-shadow: 0px 0px 10px #eee;
     position:relative;

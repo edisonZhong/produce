@@ -4,6 +4,7 @@ function checkLogin(wx) {
   return new Promise((resolve, reject) => {
     if (!localStorage.getItem('token')) {
         let url = window.location.href;
+
         console.log(url,'url');
         // 微信code
         if (url.indexOf('code') >= 0) {
