@@ -131,3 +131,20 @@ export function getNewChartsData(obj){
 		})
 	})
 }
+
+// 根据选择的日，周，月切换数字(新数据)
+export function getDetailDate(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/selectDateByDWM',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}

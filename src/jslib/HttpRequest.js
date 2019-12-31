@@ -42,7 +42,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3Njk5NTQ2Mjg4LCJleHAiOjQyMzUxNzc2OTk1NDZ9.27qQJ2LpJFTe7JjLUGmQvMNjMltxtI3G91Qy5kSZ5PSJSou-lPHP6pHE1Bf0M1Gq5FY2SspNMpxcE-2g0oqG9w',
+            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3NzU3MTIxNDIyLCJleHAiOjQyMzUxNzc3NTcxMjF9.0sPFj_C9CCqwVP8esNdlb28EhHsgEXe0o5cdE0Wa0YPYEAKryUoEhlNUA1Hu_nw9kRXyZX2HyeJQZUSZBHjYRQ',
             "backend":'front'
         }
         return config;
@@ -50,7 +50,6 @@ instance.interceptors.request.use(
     error => {
         return Promise.reject(error);
     }
-// http://ywh5.fenganghr.com?pathName=indexnew&gettime=12
 );
 instance.interceptors.response.use(function (response) {
   // console.log(response,'response0000');
@@ -58,17 +57,11 @@ instance.interceptors.response.use(function (response) {
       console.log(response.data.code,wxData,'if401');
       localStorage.clear();
       setTimeout(()=>{
-        // window.location.reload();
-        // wxLogin(wxData);
 
         let thePath = window.location.hash;
         thePath = thePath.split("/")[1];
         let url = wxData.redirectUrl + (thePath?thePath:'');
-        // http://ywh5.fenganghr.com&response_type=code
-        console.log(url,'wxxxxxxx');
         window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
-        // router.go(0)
-
       },200)
       //账号密码登陆
       // router.replace({

@@ -5,9 +5,12 @@
           <div id='header'>
 
 
-              <h2 class="title newtitle"  @click="selectDistrict">
-                <span>业务外包进展日报</span>
-                <span>12月26日</span>
+              <h2 class="title newtitle"  >
+                <span @click='selectDate'>业务外包进展{{selectedName}}报</span>
+                <img :src="tangle" alt="">
+
+                <span class="detail">{{detailDate||''}}</span>
+
               </h2>
               <div class="" style="overflow:hidden;">
                 <div class="header-bottom" style="overflow-x: auto;">
@@ -57,16 +60,22 @@
           </div>
         <!-- </div> -->
         <p>到底啦~~~~</p>
-        <TabBar></TabBar>
+        <!-- <TabBar></TabBar> -->
 
-        <div class="" v-if="sheetVisible">
+        <!-- <div class="" v-if="sheetVisible">
           <div class="shadow" @click="sheetVisible=false;"></div>
           <div class="districtList">
             <div class="" v-for="(item,index) in districtBox" :key='index' @click="selectName(item.organizationName,item.organizationNo)">
               {{item.organizationName}}
             </div>
           </div>
-        </div>
+        </div> -->
+
+        <mt-actionsheet
+          :actions="actions"
+          @click='getItem'
+          v-model="sheetVisible">
+        </mt-actionsheet>
     </div>
 </template>
 
@@ -77,7 +86,7 @@ import CenterChart from '../page/chart/CenterChart'
 import NorthChart from '../page/chart/NorthChart'
 import TabBar from './TabBar.vue'
 
-import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData} from '../../server/report'
+import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData,getDetailDate} from '../../server/report'
 
 
 export default {
@@ -87,7 +96,8 @@ export default {
         TabBar,
         EastChart,
         CenterChart,
-        NorthChart
+        NorthChart,
+        sheetVisible:false,
     },
 
     data(){
@@ -96,6 +106,7 @@ export default {
             clickIndex:0,
             btnList:['君润人力','华南大区','华北大区','华东大区','中西大区','中西大d区'],
             imgUrl:require("@/assets/img/Oval.png"),
+            tangle:require("@/assets/img/tangle.png"),
             title:'华南大区',
             title_box:[],
 
@@ -133,7 +144,10 @@ export default {
             imgUrlTwo:require("@/assets/img/blue.png"),
             imgUrlThree:require("@/assets/img/red.png"),
 
-
+            detailDate:'',
+            actions:[{name:'日',value:'D',method:this.getDetailDate},{name:'周',value:'W',method:this.getDetailDate},{name:'月',value:'M',method:this.getDetailDate}],
+            sheetVisible:false,
+            selectedName:'日',
         }
     },
     mounted(){
@@ -149,12 +163,30 @@ export default {
       // await this.getLineDay()
       // // 离职
       // await this.getLineLive()
-
+      console.log(this,'routers');
       // 获取区列表
        this.getDistrictList();
+       //获取日
+       this.getDetailDate();
     },
 
     methods:{
+      getItem(v){
+        console.log(v,'v');
+      },
+      selectDate(){
+        this.sheetVisible=true;
+      },
+      getDetailDate(e){
+        // console.log(e,'d');
+        // return ;
+        this.selectedName = e?e.name:'日';
+        this.dataType = e?e.value:'D';
+        getDetailDate({dateType:this.dataType}).then((res)=>{
+          console.log(res,'res9');
+          this.detailDate = res.data.data;
+        })
+      },
       selectName(name,no){
         this.selectedOrganizationName = name;
         this.organizationNo = no;
@@ -162,7 +194,7 @@ export default {
         this.sheetVisible = false;
       },
       selectDistrict(){
-        this.sheetVisible = true;
+        // this.sheetVisible = true;
       },
       getDistrictList(){
         getDistrictList().then((res)=>{
@@ -536,7 +568,7 @@ export default {
         box-sizing: border-box;
         overflow-x: hidden;
         overflow-y: auto;
-        bottom: .98rem;
+        /* bottom: .98rem; */
         // background: #fff
     }
 }
@@ -583,6 +615,14 @@ export default {
   padding-right:.3rem;
   box-sizing: border-box;
   position:unset!important;
+  img{
+    width: .23rem;
+    position: absolute;
+    left: 3rem;
+  }
+  .detail{
+    font-size:.24rem;
+  }
 }
 .classred{
 

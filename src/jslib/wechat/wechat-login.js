@@ -1,9 +1,10 @@
 import {getToken} from "../../server/report";
 
 function checkLogin(wx) {
+  return new Promise((resolve, reject) => {
     if (!localStorage.getItem('token')) {
         let url = window.location.href;
-        // alert(url,'url');
+        console.log(url,'url');
         // 微信code
         if (url.indexOf('code') >= 0) {
             var a = url.split("?")[1];
@@ -24,13 +25,16 @@ function checkLogin(wx) {
         if (aCode) {
             //获取token操作
           console.log(aCode,'code');
+          // return false
           // return
           getToken({
             code:aCode
           }).then(e=>{
              if(e.data.code==200){
                window.localStorage.setItem('token',e.data.data.token)
+               resolve()
              }else{
+               resolve()
                let thePath = window.location.hash;
                thePath = thePath.split("/")[1];
                let url = wx.redirectUrl + (thePath?thePath:'');
@@ -41,6 +45,9 @@ function checkLogin(wx) {
           })
 
         } else {
+
+          resolve()
+
           let thePath = window.location.hash;
           thePath = thePath.split("/")[1];
           let url = wx.redirectUrl + (thePath?thePath:'');
@@ -50,6 +57,9 @@ function checkLogin(wx) {
           document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
             //document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=${wx.redirectUrl}&response_type=code&scope=${wx.loginStyle}&state=${wx.param}&agentid=${wx.agentid}#wechat_redirect`;
         }
+    }else{
+      resolve();
     }
+  })
 }
 export default checkLogin
