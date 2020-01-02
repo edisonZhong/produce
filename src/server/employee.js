@@ -134,7 +134,22 @@ export function getEmployeeById(obj) {
       })
   })
 }
-
+// 获取数据字典
+export function getByNo(obj) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `employeeDetail/getByNo`,
+      method: 'POST',
+      data: obj
+    })
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
+}
 // 移动端录入离职员工信息
 export function addDepartureEmployee(obj) {
   return new Promise((resolve, reject) => {
