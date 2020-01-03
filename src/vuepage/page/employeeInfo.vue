@@ -22,40 +22,49 @@
       font-family: PingFangSC-Semibold, PingFang SC;
       font-weight: 550;
       color: rgba(153, 153, 153, 1);
-
+    }
+    .ellipsis_2{overflow: hidden;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;}
+    .name-list {
+      width: 4.2rem;
+      padding: 0.1rem 0.1rem 0.1rem .2rem;
+      line-height: 0.4rem;
+      box-sizing: border-box;
+      color:black;
     }
   }
 </style>
 <template>
   <div class="emInfo-box">
     <div class="emInfo-item">
-      <div class="emInfo-item-title">个人信息基本合同</div>
+      <div class="emInfo-item-title">个人基本信息</div>
       <div class="emInfo-item-con">
-        <mt-field label="姓名" placeholder="暂无数据" :value="userInfo['employeeName']" disabled/>
-        <mt-field label="工号" placeholder="暂无数据" :value="userInfo['customerEmployeeNo']" disabled/>
-        <mt-field label="所属业务区" placeholder="暂无数据" :value="userInfo['organizationName']" disabled/>
-        <mt-field label="移动电话" placeholder="暂无数据" :value="userInfo['employeePhone']" disabled/>
-        <mt-field label="性别" placeholder="暂无数据" :value="userInfo['sex']" disabled/>
-        <mt-field label="出生日期" placeholder="暂无数据" :value="userInfo['birthAt']" disabled/>
-        <mt-field label="证件类型" placeholder="暂无数据" :value="userInfo['certificateType']" disabled/>
+        <mt-field label="姓名" placeholder="" :value="userInfo['employeeName']" disabled/>
+        <mt-field label="工号" placeholder="" :value="userInfo['customerEmployeeNo']" disabled/>
+        <mt-field label="所属业务区" placeholder="" :value="userInfo['organizationName']" disabled/>
+        <mt-field label="移动电话" placeholder="" :value="userInfo['employeePhone']" disabled/>
+        <mt-field label="性别" placeholder="" :value="userInfo['sex']" disabled/>
+        <mt-field label="出生日期" placeholder="" :value="userInfo['birthAt']" disabled/>
+        <mt-field label="证件类型" placeholder="" :value="userInfo['certificateType']" disabled/>
       </div>
     </div>
     <div class="emInfo-item">
-      <div class="emInfo-item-title">合同信息</div>
+      <div class="emInfo-item-title" v-if="userInfo['employeeContractList'].length">合同信息</div>
       <div class="emInfo-item-con" v-for="item in userInfo['employeeContractList']">
-        <mt-field label="劳动合同牌照" placeholder="暂无数据" :value="item['legalCompanyName']" disabled/>
-        <mt-field label="期限类型" placeholder="暂无数据" :value="item['contractTermType']" disabled/>
-        <mt-field label="合同开始日期" placeholder="暂无数据" :value="item['contractStartAt']" disabled/>
-        <mt-field label="合同结束日期" placeholder="暂无数据" :value="item['contractEndAt']" disabled/>
-        <mt-field label="签订形式" placeholder="暂无数据" :value="item['contractSignType']" disabled/>
+        <mt-cell title="劳动合同牌照" class="ellipsis_2">
+          <div class="name-list">{{item['legalCompanyName']}}</div>
+        </mt-cell>
+        <mt-field label="期限类型" placeholder="" :value="item['contractTermType']" disabled/>
+        <mt-field label="合同开始日期" placeholder="" :value="item['contractStartAt']" disabled/>
+        <mt-field label="合同结束日期" placeholder="" :value="item['contractEndAt']" disabled/>
+        <mt-field label="签订形式" placeholder="" :value="item['contractSignType']" disabled/>
       </div>
       <div class="emInfo-item-title">服务客户信息</div>
       <div class="emInfo-item-con">
-        <mt-field label="服务客户名称" placeholder="暂无数据" :value="userInfo['customerName']" disabled/>
-        <mt-field label="客户工号" placeholder="暂无数据" :value="userInfo['customerEmployeeNo']" disabled/>
-        <mt-field label="职位" placeholder="暂无数据" :value="userInfo['positionType']" disabled/>
-        <mt-field label="服务开始时间" placeholder="暂无数据" :value="userInfo['customerStartAt']" disabled/>
-        <mt-field label="工作地点" placeholder="暂无数据" :value="userInfo['customerWorkAddress']" disabled/>
+        <mt-field label="服务客户名称" placeholder="" :value="userInfo['customerName']" disabled/>
+        <mt-field label="客户工号" placeholder="" :value="userInfo['customerEmployeeNo']" disabled/>
+        <mt-field label="职位" placeholder="" :value="userInfo['positionType']" disabled/>
+        <mt-field label="服务开始时间" placeholder="" :value="userInfo['customerStartAt']" disabled/>
+        <mt-field label="工作地点" placeholder="" :value="userInfo['customerWorkAddress']" disabled/>
       </div>
     </div>
     <div class="emInfo-item">
