@@ -140,7 +140,6 @@ export default {
       this.placeholder=''
     },
     goInfo(id){
-      return;
       this.$router.push(`/employeeInfo/${id}`);
     },
     //搜索列表数据
