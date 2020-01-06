@@ -14,6 +14,15 @@ export default{
 		else
 			return null;
 	},
+	// 转成百分比
+	turnInToPercent(arr){
+
+		let new_arr = [];
+		for(let i=0;i<arr.length;i++){
+			new_arr.push(arr[i]+'%')
+		}
+		return new_arr
+	},
 	//删除cookie
 	 removeCookie(name){
 		var d = new Date("2000-02-02");
@@ -34,7 +43,7 @@ export default{
   },
 	//字段的验证，支持是否为空、手机、邮箱的判断
     testVal(value, type) {
-        var value = $.trim(value); 
+        var value = $.trim(value);
         //非空验证
         if ('require' === type) {
             return !!value;
@@ -113,12 +122,3 @@ export default{
 		}
 	  },
 }
-
-
-
-
-
-
-
-
-

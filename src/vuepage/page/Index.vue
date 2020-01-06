@@ -12,19 +12,17 @@
                   size="normal">{{item}}</mt-button>
               </div> -->
               <h2 class="title newtitle"  >
-                <span @click='selectDate'>业务外包进展日报</span>
+                <span @click='selectDate'>业务外包进展{{selectedName}}报</span>
                 <img :src="tangle" alt="">
-
                 <span class="detail">{{detailDate||''}}</span>
-
               </h2>
               <!-- <h2 class="title" style="display:flex;justify-content:center;align-items:center;" @click="selectDistrict">
                 <span>{{selectedOrganizationName||''}}</span>
                 <img style="width:20px;height:20px;position: absolute;right: 2.6rem;" :src='arrowImg' alt="" />
               </h2> -->
 
-              <div class="" style="overflow:hidden;margin-top:.25rem;">
-                <div class="header-bottom" style="overflow-x: auto;">
+              <div class="" style="margin-top:.25rem;">
+                <div class="header-bottom" >
                     <div class="bottom-click"
                     v-for="(item,index) in districtBox"
                     v-on:click="addClass(index,item.organizationNo,item.organizationName)"
@@ -41,46 +39,32 @@
             <div class="threeCard">
               <div class="card">
                 <img :src="imgUrlOne" alt="">
-                <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                  <p style="color:#EB9F4B;font-size:.4rem;">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</p>
+                <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if='boxBar.titlesBar'>
+                  <p style="color:#EB9F4B;font-size:.4rem;" >{{boxBar.titlesBar[0]?boxBar.titlesBar[0][1]:0}}</p>
                   <p style="color:#18314D;font-size:.2rem;">员工总数</p>
                 </div>
               </div>
               <div class="card">
                 <img :src="imgUrlTwo" alt="">
-                <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                  <p style="color:#EB9F4B;font-size:.4rem;">{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}</p>
-                  <p style="color:#18314D;font-size:.2rem;">昨日新增</p>
+                <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if='boxLideDay.titleInfo'>
+                  <p style="color:#2E90E1;font-size:.4rem;">{{boxBar.titlesBar[0]?boxBar.titlesBar[0][2]:0}}</p>
+                  <p style="color:#18314D;font-size:.2rem;">{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}新增</p>
                 </div>
               </div>
               <div class="card">
                 <img :src="imgUrlThree" alt="">
-                <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                  <p style="color:#DA3131;font-size:.4rem;">{{this.boxLideLive.valueInfo?this.boxLideLive.valueInfo[0][1]:'0'}}</p>
-                  <p style="color:#18314D;font-size:.2rem;">昨日离职</p>
+                <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if="boxLideLive.valueInfo">
+                  <p style="color:#DA3131;font-size:.4rem;">{{boxBar.titlesBar[0]?boxBar.titlesBar[0][3]:0}}</p>
+                  <p style="color:#18314D;font-size:.2rem;">{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职</p>
                 </div>
               </div>
             </div>
 
-              <SouthChart  @totalArea='totalArea' :clickIndex="clickIndex"  :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
-              <!-- {{item,'dddddd'}} -->
-              <!-- <EastChart id='3'></EastChart>
-              <CenterChart id='4'></CenterChart>
-              <NorthChart id='5'></NorthChart> -->
+              <SouthChart  @totalArea='totalArea' :selectedName="selectedName" :clickIndex="clickIndex"  :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
           </div>
         <!-- </div> -->
-        <p>到底啦~~~~</p>
+        <!-- <p>到底啦~~~~</p> -->
         <TabBar></TabBar>
-
-        <!-- <div class="" v-if="sheetVisible">
-          <div class="shadow" @click="sheetVisible=false;"></div>
-          <div class="districtList">
-            <div class="" v-for="(item,index) in districtBox" :key='index' @click="selectName(item.organizationName,item.organizationNo)">
-              {{item.organizationName}}
-            </div>
-          </div>
-        </div> -->
-
 
         <mt-actionsheet
           :actions="actions"
@@ -97,8 +81,10 @@ import CenterChart from '../page/chart/CenterChart'
 import NorthChart from '../page/chart/NorthChart'
 import TabBar from './TabBar.vue'
 
-import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData,getDetailDate} from '../../server/report'
+import {getToken,reportData,reportLine,reportEnter,getDistrictList,getChartsData,getDetailDate,setRecord} from '../../server/report'
 
+// 检测手机型号
+var MobileDetect = require('mobile-detect');
 
 export default {
     name:'index',
@@ -164,7 +150,7 @@ export default {
     mounted(){
 
     },
-     created(){
+     mounted(){
       // 员工总数
       // await this.getData()
       // // this.init()
@@ -178,9 +164,49 @@ export default {
 
       // 获取区列表
       this.getDistrictList();
+
+      //记录查看记录
+      if(!sessionStorage.getItem("ifRecord")){
+        sessionStorage.setItem("ifRecord",'recorded');
+        this.setRecord();
+      }
     },
 
     methods:{
+      getPhoneType(){
+        Array.prototype.contains = function(needle) {
+      		for (i in this) {
+      			if (this[i].indexOf(needle) > 0)
+      				return i;
+      		}
+      		return -1;
+      	}
+
+      	var device_type = navigator.userAgent;//获取userAgent信息
+      	document.write(device_type);//打印到页面
+      	var md = new MobileDetect(device_type);//初始化mobile-detect
+      	var os = md.os();//获取系统
+      	var model = "";
+      	if (os == "iOS") {//ios系统的处理
+      		os = md.os() + md.version("iPhone");
+      		model = md.mobile();
+      	} else if (os == "AndroidOS") {//Android系统的处理
+      		os = md.os() + md.version("Android");
+      		var sss = device_type.split(";");
+      		var i = sss.contains("Build/");
+      		if (i > -1) {
+      			model = sss[i].substring(0, sss[i].indexOf("Build/"));
+      		}
+      	}
+      	// alert(os + "---" + model);
+        return model+'-'+os
+      },
+      setRecord(){
+        let type = this.getPhoneType()
+        setRecord({phoneModels:type}).then(res=>{
+          console.log(res,'手机型号');
+        })
+      },
       selectDate(){
         this.sheetVisible=true;
       },
@@ -190,7 +216,7 @@ export default {
         this.selectedName = e?e.name:'日';
         this.dataType = e?e.value:'D';
         getDetailDate({dateType:this.dataType}).then((res)=>{
-          console.log(res,'res9');
+          // console.log(res,'res9');
           this.detailDate = res.data.data;
 
           this.getChartsData();
@@ -207,7 +233,7 @@ export default {
       },
       getDistrictList(){
         getDistrictList().then((res)=>{
-          console.log(res,'d');
+          // console.log(res,'d');
           this.districtBox = res.data.data;
           this.selectedOrganizationName = res.data.data[0].organizationName;
           this.organizationNo = res.data.data[0].organizationNo;
@@ -224,7 +250,7 @@ export default {
           organizationNo:this.organizationNo,
           organizationType:this.selectedOrganizationName=='君润人力'?1:2
         }).then((res)=>{
-          console.log(res,'ress');
+          // console.log(res,'ress');
           // 员工总数
           // console.log();
           this.getData(res.data.data.totalMap)
@@ -241,12 +267,12 @@ export default {
         })
       },
       getGrowth(data){
-            console.log(data,'data123');
+            // console.log(data,'data123');
             var valueTypeList = [];
             for (var key in data) {
               valueTypeList.push(data[key][0])
             }
-            console.log(valueTypeList,'data123321');
+            // console.log(valueTypeList,'data123321');
 
             var positionType = [];
             var percentList = [];
@@ -270,7 +296,7 @@ export default {
 
               // valueTypeList[i].xDataList.map(item=> percentList[b].push(item.total))
             }
-            console.log(percentList,positionType,'upppppppp0-90');
+            // console.log(percentList,positionType,'upppppppp0-90');
 
 
 
@@ -278,16 +304,12 @@ export default {
               name:positionType,
               value:percentList
             }
-            console.log(this.allBox,'upppppppp0-');
+            // console.log(this.allBox,'upppppppp0-');
 
         //   }
         // })
       },
       getLineLive(data){
-        // reportEnter({
-        //   dateType:this.dataType
-        // }).then(e=>{
-        //   if(e.data.code==200){
             this.liveList=data
             var valueLiveList = [];
             var valueTmp = [];
@@ -295,7 +317,7 @@ export default {
                 valueTmp.push(key)
                 valueLiveList.push(this.liveList[key])
             }
-            console.log(valueLiveList.length,'离职离职离职离职离职离职离职离职');
+            // console.log(valueLiveList.length,'离职离职离职离职离职离职离职离职');
             var positionLive = [];
             var percentListLive = [];
             var valueInfo = [];
@@ -322,7 +344,7 @@ export default {
               valueInfo:valueInfo
             }
 
-            console.log(this.boxLideLive,'lizhilizhilizhilizhilizhilizhilizhi');
+            // console.log(this.boxLideLive,'lizhilizhilizhilizhilizhilizhilizhi');
         //   }
         // })
       },
@@ -370,7 +392,7 @@ export default {
               titleInfo:titleInfo
             }
 
-            console.log(this.boxLideDay,'入职入职入职入职入职入职入职入职入职入职');
+            console.log(this.boxLideDay.titleInfo,'入职入职入职入职入职入职入职入职入职入职');
 
           // }
         // })
@@ -380,6 +402,7 @@ export default {
         //   console.log(e,'zhanbi');
         //   if(e.data.code==200){
             this.dataNameType=data
+            console.log(data,'0-0-0-0-0-0-0-0-0-0-0123123123');
             var valueTypeList = [];
             for (var key in this.dataNameType) {
               valueTypeList.push(this.dataNameType[key])
@@ -387,6 +410,7 @@ export default {
 
             var positionType = [];
             var percentList = [];
+            var total = [];
             for(let i=0;i<valueTypeList.length;i++){
               var a = i;
               positionType[a] = [];
@@ -395,14 +419,19 @@ export default {
               var b = i;
               percentList[b] = [];
               valueTypeList[i].map(item=> percentList[b].push(item.totalPercentage))
+
+              var c = i;
+              total[c] = [];
+              valueTypeList[i].map(item=> total[c].push(item.total))
             }
 
-            console.log(positionType,percentList,'listtttt');
+            // console.log(positionType,percentList,'listtttt');
 
 
             this.boxIncrese = {
               positionType:positionType,
-              percentList:percentList
+              percentList:percentList,
+              total:total
             }
         //   }
         // })
@@ -413,7 +442,7 @@ export default {
           // }).then(e=>{
           //   console.log(e,'员工总数');
             // if(e.data.code==200){
-              console.log(data,'dataaaa');
+              // console.log(data,'dataaaa');
               this.dataNameBar=data;
               var valueListBar = [];
               this.titleBar = [];
@@ -422,7 +451,7 @@ export default {
                   this.titleBar.push(key)
                   valueListBar.push(this.dataNameBar[key])
               }
-              console.log(valueListBar,this.titleBar,'valueListBarrrrrrr');
+              // console.log(valueListBar,this.titleBar,'valueListBarrrrrrr');
               // 遍历出title值
               // this.totalArea(this.titleBar);
 
@@ -436,7 +465,7 @@ export default {
                 // 图表y轴
                 var a = i;
                 nameListBar[a]=[];
-                console.log(valueListBar[i],'iiiiiiiiiiii]]]]]]]]');
+                // console.log(valueListBar[i],'iiiiiiiiiiii]]]]]]]]');
                 valueListBar[i].map(item => nameListBar[a].push(item.organizationName))
 
 
@@ -452,7 +481,7 @@ export default {
                 totalList:totalListBar,
                 titlesBar:this.titlesBar
               }
-              console.log(this.boxBar,'testing');
+              console.log(this.boxBar.titlesBar,'testing');
 
             // }
           // })
@@ -463,7 +492,7 @@ export default {
             arr.push(e[i].split('-')[0]);
           }
           this.title_box = arr;
-          console.log(this.title_box.length,this.title_box,'length');
+          // console.log(this.title_box.length,this.title_box,'length');
 
 
         },
@@ -487,7 +516,9 @@ export default {
             // }else if (index==2) {
             //   this.dataType = 'M'
             // }
+            console.log(index,'index');
             this.organizationName = name;
+            this.selectedOrganizationName = name;
             this.organizationNo = no;
             this.clickIndex=index;
             this.getChartsData()
@@ -530,11 +561,13 @@ export default {
         }
         .header-bottom{
           /* height: 1.5rem; */
+          display: flex;
+          justify-content: space-between;
           width: 100%;
           /* overflow-x: auto; */
           white-space: nowrap;/*文本不会换行，文本会在在同一行上继续*/
-          overflow-y:auto;
-          width: 7.2rem;
+          /* overflow-y:auto; */
+          /* width: 7.2rem; */
         }
         .bottom-click{
           /* float:left; */
@@ -585,6 +618,7 @@ export default {
         overflow-x: hidden;
         overflow-y: auto;
         bottom: .98rem;
+        background:#f2f2f2;
         // background: #fff
     }
 }

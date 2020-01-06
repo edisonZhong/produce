@@ -12,8 +12,8 @@
                 <span class="detail">{{detailDate||''}}</span>
 
               </h2>
-              <div class="" style="overflow:hidden;">
-                <div class="header-bottom" style="overflow-x: auto;">
+              <div class="" style="margin-top:.25rem;">
+                <div class="header-bottom" >
                     <div class="bottom-click"
                     v-for="(item,index) in districtBox"
                     v-on:click="addClass(index,item.organizationNo,item.organizationName)"
@@ -28,26 +28,26 @@
           <!-- <div class="img"> -->
               <!-- <img :src='imgUrl' alt=""/> -->
           <!-- </div> -->
-          <div id="main"   ref="content"  >
-              <div class="threeCard">
+          <div id="main"   ref="content" v-if="if_data" >
+              <div class="threeCard" >
                 <div class="card">
                   <img :src="imgUrlOne" alt="">
-                  <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                    <p style="color:#EB9F4B;font-size:.4rem;">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</p>
+                  <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if='boxBar.titlesBar'>
+                    <p style="color:#EB9F4B;font-size:.4rem;">{{boxBar.titlesBar[0]?boxBar.titlesBar[0][1]:0}}</p>
                     <p style="color:#18314D;font-size:.2rem;">员工总数</p>
                   </div>
                 </div>
                 <div class="card">
                   <img :src="imgUrlTwo" alt="">
-                  <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                    <p style="color:#EB9F4B;font-size:.4rem;">{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}</p>
+                  <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if="boxLideDay.titleInfo">
+                    <p style="color:#2E90E1;font-size:.4rem;">{{boxBar.titlesBar[0]?boxBar.titlesBar[0][2]:0}}</p>
                     <p style="color:#18314D;font-size:.2rem;">昨日新增</p>
                   </div>
                 </div>
                 <div class="card">
                   <img :src="imgUrlThree" alt="">
-                  <div class="" style="position:absolute;top:.24rem;left:.3rem;">
-                    <p style="color:#DA3131;font-size:.4rem;">{{this.boxLideLive.valueInfo?this.boxLideLive.valueInfo[0][1]:'0'}}</p>
+                  <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if="boxLideLive.valueInfo">
+                    <p style="color:#DA3131;font-size:.4rem;">{{boxBar.titlesBar[0]?boxBar.titlesBar[0][3]:0}}</p>
                     <p style="color:#18314D;font-size:.2rem;">昨日离职</p>
                   </div>
                 </div>
@@ -59,7 +59,7 @@
               <NorthChart id='5'></NorthChart> -->
           </div>
         <!-- </div> -->
-        <p>到底啦~~~~</p>
+        <!-- <p>到底啦~~~~</p> -->
         <!-- <TabBar></TabBar> -->
 
         <!-- <div class="" v-if="sheetVisible">
@@ -148,6 +148,8 @@ export default {
             actions:[{name:'日',value:'D',method:this.getDetailDate},{name:'周',value:'W',method:this.getDetailDate},{name:'月',value:'M',method:this.getDetailDate}],
             sheetVisible:false,
             selectedName:'日',
+
+            if_data:true,//是否显示图表
         }
     },
     mounted(){
@@ -168,6 +170,8 @@ export default {
        this.getDistrictList();
        //获取日
        this.getDetailDate();
+
+       this.$utils.changeTitle('详情');
     },
 
     methods:{
@@ -214,27 +218,34 @@ export default {
         var a = localStorage.getItem('href');
         let time = a.split('&')[1].split('=')[1];
         let phone = a.split('&')[2].split('=')[1].split('#')[0];
+        console.log(this.$utils.date((Number(time)-24*60*60*1000),1),'0-0-0-0-00--0');
         // return
         getNewChartsData({
-          // statisticsDate:this.$utils.date(Number(time),1),
-          statisticsDate:'2019-12-30',
+          statisticsDate:this.$utils.date((Number(time)-24*60*60*1000),1),
+          // statisticsDate:'2019-12-30',
           organizationNo:this.organizationNo,
           employeePhone:phone
         }).then((res)=>{
           console.log(res,'ress');
           // return ;
-          // 员工总数
-          let data = JSON.parse(res.data.data.statisticsData);
-          // console.log();
-          this.getData(data.totalMap)
-          // 岗位属性员工数占比统计图
-          this.getLine(data.positionMap)
-          // 入职
-          this.getLineDay(data.entryMap)
-          // 辞职
-          this.getLineLive(data.resignationMap)
-          // 员工数增长情况
-          this.getGrowth(data.upMap);
+          if(res.data.data){
+            // 员工总数
+            let data = JSON.parse(res.data.data.statisticsData);
+            // console.log();
+            this.getData(data.totalMap)
+            // 岗位属性员工数占比统计图
+            this.getLine(data.positionMap)
+            // 入职
+            this.getLineDay(data.entryMap)
+            // 辞职
+            this.getLineLive(data.resignationMap)
+            // 员工数增长情况
+            this.getGrowth(data.upMap);
+          }else{
+            this.if_data = false;
+            this.$Toast('暂无数据');
+          }
+
 
           this.$Indicator.close();
         })
@@ -386,6 +397,7 @@ export default {
 
             var positionType = [];
             var percentList = [];
+            var total = [];
             for(let i=0;i<valueTypeList.length;i++){
               var a = i;
               positionType[a] = [];
@@ -394,6 +406,10 @@ export default {
               var b = i;
               percentList[b] = [];
               valueTypeList[i].map(item=> percentList[b].push(item.totalPercentage))
+
+              var c = i;
+              total[c] = [];
+              valueTypeList[i].map(item=> total[c].push(item.total))
             }
 
             console.log(positionType,percentList,'listtttt');
@@ -401,7 +417,8 @@ export default {
 
             this.boxIncrese = {
               positionType:positionType,
-              percentList:percentList
+              percentList:percentList,
+              total:total
             }
         //   }
         // })
@@ -514,19 +531,16 @@ export default {
             height: 0.64rem;
             color: #fff;
             font-size: .32rem;
-            margin-top:.4rem;
-            margin-bottom:.1rem;
         }
         .header-bottom{
-            /* display: flex; */
-            /* justify-content: space-between; */
-            /* align-items: center; */
-            height: 1.5rem;
-            width: 100%;
-            /* overflow-x: auto; */
-            white-space: nowrap;/*文本不会换行，文本会在在同一行上继续*/
-            overflow-y:auto;
-            width: 7.2rem;
+          /* height: 1.5rem; */
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          /* overflow-x: auto; */
+          white-space: nowrap;/*文本不会换行，文本会在在同一行上继续*/
+          /* overflow-y:auto; */
+          /* width: 7.2rem; */
         }
         .bottom-click{
           /* float:left; */
@@ -547,12 +561,11 @@ export default {
           margin-right:.12rem;
         }
         .classred{
-          width:1.28rem;
-          height:.64rem;
-          font-size:.24rem;
+            /* width: 2.1rem;
+            height: .72rem; */
             background: rgba(255,255,255,1);
             border:1px solid rgba(255,255,255,0.2);
-            border-radius: .2rem;
+            /* border-radius: .2rem; */
             color:rgba(67,120,190,1);
             /* font-size: 14px */
         }
@@ -561,7 +574,7 @@ export default {
         width: 100%;
         height: 1.5rem;
         position: absolute;
-        top:2rem;
+        top:2.12rem;
         left: 0;
         right:0;
         img{
@@ -572,12 +585,13 @@ export default {
         // height: 100%;
         width: 100%;
         position: absolute;
-        top:2.1rem;
+        top:2.34rem;
         padding: 0 .3rem;
         box-sizing: border-box;
         overflow-x: hidden;
         overflow-y: auto;
-        /* bottom: .98rem; */
+        bottom: .98rem;
+        background:#f2f2f2;
         // background: #fff
     }
 }
@@ -624,6 +638,7 @@ export default {
   padding-right:.3rem;
   box-sizing: border-box;
   position:unset!important;
+  margin-top:.25rem;
   img{
     width: .23rem;
     position: absolute;
@@ -632,12 +647,6 @@ export default {
   .detail{
     font-size:.24rem;
   }
-}
-.classred{
-
-}
-/deep/ .mint-button--normal{
-  padding:0 6px;
 }
 .threeCard{
   display:flex;

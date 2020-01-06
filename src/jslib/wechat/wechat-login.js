@@ -2,6 +2,7 @@ import {getToken} from "../../server/report";
 
 function checkLogin(wx) {
   return new Promise((resolve, reject) => {
+
     if (!localStorage.getItem('token')) {
         let url = window.location.href;
 
@@ -31,6 +32,7 @@ function checkLogin(wx) {
           getToken({
             code:aCode
           }).then(e=>{
+            console.log(e,'gettoken-');
              if(e.data.code==200){
                window.localStorage.setItem('token',e.data.data.token)
                resolve()
@@ -41,7 +43,7 @@ function checkLogin(wx) {
                let url = wx.redirectUrl + (thePath?thePath:'');
                // http://ywh5.fenganghr.com&response_type=code
                console.log(url,'wxxxxxxx');
-               document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
+               document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=${wx.agentid}&state=STATE#wechat_redirect`;
              }
           })
 
@@ -55,10 +57,11 @@ function checkLogin(wx) {
           console.log(url,'wxxxxxxx1');
 
           // http://ywh5.fenganghr.com&response_type=code
-          document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
+          document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wx.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=${wx.agentid}&state=STATE#wechat_redirect`;
             //document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=${wx.redirectUrl}&response_type=code&scope=${wx.loginStyle}&state=${wx.param}&agentid=${wx.agentid}#wechat_redirect`;
         }
     }else{
+      console.log('has token test test');
       resolve();
     }
   })

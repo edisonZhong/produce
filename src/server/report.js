@@ -148,3 +148,20 @@ export function getDetailDate(obj){
 		})
 	})
 }
+
+// 记录登录用户查看记录
+export function setRecord(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/logs/addMobileLoginLog',
+			method: 'post',
+			data:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}

@@ -5,16 +5,18 @@ import {ToastPlugin } from 'vux'
 import Vue from 'vue'
 import wxLogin from './wechat/wechat-login'
 import wxData from './wechat/wechat-param'
+import {Toast} from 'mint-ui';
+Vue.prototype.$Toast = Toast;
 
-
-Vue.prototype.$vux = ToastPlugin;
+// Vue.prototype.$vux = ToastPlugin;
 
 
 let upBaseUrl = '';
 if (process.env.NODE_ENV === 'production') {
 //线上
-    // upBaseUrl = 'http://wbapi.fenganghr.com/';
+    // upBaseUrl = 'https://ywapi.junrunrenli.com/';
     upBaseUrl = 'http://preywapi.fenganghr.com/';
+
 
 }
 if (process.env.NODE_ENV === 'development') {
@@ -42,7 +44,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3NzgwMDI2OTA0LCJleHAiOjQyMzUxNzc3ODAwMjZ9.PyayMJhIx8e6Kzz1b8HHgh0DiKxw15vAzCN5RWIY6NR-qURCff3U-OUbfSKGi8UgwnwqydjtV7TMsaisLiyBYw',
+            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3OTcxNDc4Mzc2LCJleHAiOjQyMzUxNzc5NzE0Nzh9.yoBtJtph-bKnNy2n6aVRSKE6BIxdLiAMRRM5hiMoy5W6Cx8d2l4sZZC1hO1OxYrGy-MHpHzjc26K6wtjfTrQkQ',
             "backend":'front'
         }
         return config;
@@ -52,33 +54,20 @@ instance.interceptors.request.use(
     }
 );
 instance.interceptors.response.use(function (response) {
-  // console.log(response,'response0000');
+  console.log(response,'response0000');
   if(response.data.code==401){
-      console.log(response.data.code,wxData,'if401');
       localStorage.clear();
       setTimeout(()=>{
-
         let thePath = window.location.hash;
-
         thePath = thePath.split("/")[1];
         let url = wxData.redirectUrl + (thePath?thePath:'');
         console.log(window.location,'rerul');
         localStorage.setItem('href',window.location.href)
-        window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
+        window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=${wxData.agentid}&state=STATE#wechat_redirect`;
       },200)
-      //账号密码登陆
-      // router.replace({
-      //     path: '/signin',
-      //     query: {redirect: router.currentRoute.fullPath}
-      // })
-      //微信的授权登陆
-      // document.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=ww88ca933444ce3492&redirect_uri=http://ywh5.fenganghr.com&response_type=code&scope=snsapi_privateinfo&agentid=1000004&state=STATE#wechat_redirect`;
-  }else if (response.data.code==404){
-      console.log(error.response.message)
-      Vue.$vux.toast.show({
-          text: error.response.message,
-          type:'text'
-      })
+    }else if (response.data.code==404){
+      console.log(response,'response00009')
+      Toast('您暂无权限访问，请联系管理员开通');
       return Promise.reject(error.response.message)
 
   }else{

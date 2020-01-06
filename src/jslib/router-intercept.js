@@ -19,7 +19,9 @@ router.beforeEach((to, from, next) => {
         //   localStorage.setItem('info_time',utils.getUrlParams('time'));
         // }
         if (utils.getUrlParams('pathName')){
-          localStorage.setItem('test','llll');
+          console.log(window.location,'rerull');
+          localStorage.setItem('href',window.location.href)
+          // localStorage.setItem('test','llll');
           console.log(utils.getUrlParams('pathName'),'&'+utils.getUrlParams('time'),'微信浏览器2')
           if(to.fullPath=='/IndexNew'){
             next();

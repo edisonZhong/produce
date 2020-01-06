@@ -4,11 +4,11 @@
     <!-- <div class='businessArea'>{{title}}</div> -->
 
     <div>
-      <div id="content" v-if="chart_example_box">
-          <h2>员工总数 <span class="number">{{this.boxBar.titlesBar?this.boxBar.titlesBar[0][1]:''}}</span></span>人</h2>
+      <div id="content" v-if="chart_example_box&&boxBar.titlesBar">
+          <h2>员工总数 <span class="number">{{boxBar.titlesBar[0][1] || 0}}</span></span>人</h2>
           <div  id="chart_example" class="chart"></div>
       </div>
-      <div id="content" v-if="chart_growth_box">
+      <div id="content" v-if="chart_growth_box" style="display:none;">
           <h2>员工数增长情况</h2>
           <div  id="chart_growth" class="chart"></div>
       </div>
@@ -17,12 +17,12 @@
           <div id="persendChart" class="chart"></div>
       </div>
       <div id="content" v-if="dataChart_box">
-        <h2>{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}新增员工<span class="number">{{this.boxLideDay.titleInfo?this.boxLideDay.titleInfo[0][1]:'0'}}</span>人</h2>
+        <h2>{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}新增员工<span class="number" v-if="boxLideDay.titleInfo">{{boxLideDay.titleInfo[0][1] || 0}}</span>人</h2>
           <div id="dataChart" class="chart"></div>
       </div>
      <div id="content" v-if='dataChartLive_box'>
-          <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}离职员工 <span class="number">{{this.boxLideLive.valueInfo[0][1]}}</span> 人</h2>
-          <h2 v-else>{{clickIndex==0?'昨日':clickIndex==1?'上周':'上月'}}离职员工 <span class="number">0</span> 人</h2>
+          <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职员工 <span class="number">{{this.boxLideLive.valueInfo[0][1]}}</span> 人</h2>
+          <h2 v-else>{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职员工 <span class="number">0</span> 人</h2>
           <div id="dataChartLive" class="chart"></div>
       </div>
     </div>
@@ -45,6 +45,7 @@ export default {
     'boxLideLive',
     'allBox',
     'clickIndex',
+    'selectedName',
   ],
 
   data() {
@@ -279,10 +280,16 @@ export default {
     //柱状图汇总
     loadEchart() {
         let that = this;
+        console.log(this.boxBar.nameList[0],'dddd0000------=');
+        var one = this.boxBar.nameList[0][this.boxBar.nameList[0].length-1]?this.boxBar.nameList[0][this.boxBar.nameList[0].length-1]+',':'';
+        var two = this.boxBar.nameList[0][this.boxBar.nameList[0].length-2]?this.boxBar.nameList[0][this.boxBar.nameList[0].length-2]+',':'';
+        var three = this.boxBar.nameList[0][this.boxBar.nameList[0].length-3]?this.boxBar.nameList[0][this.boxBar.nameList[0].length-3]:'';
 
-        var one = this.boxBar.nameList[0][0]?this.boxBar.nameList[0][0]+',':'';
-        var two = this.boxBar.nameList[0][1]?this.boxBar.nameList[0][1]+',':'';
-        var three = this.boxBar.nameList[0][2]?this.boxBar.nameList[0][2]:'';
+        // var one = this.boxBar.nameList[0][this.boxBar.nameList[0].length-1]+',';
+        // var two = this.boxBar.nameList[0][this.boxBar.nameList[0].length-2]+',';
+        // var three = this.boxBar.nameList[0][this.boxBar.nameList[0].length-3];
+
+
 
         echarts.init(document.getElementById("chart_example")).setOption({
           tooltip: {
@@ -391,10 +398,11 @@ export default {
 
     //员工占比
     percentEchart() {
-      console.log(this.boxIncrese,'boxIncresesssss')
+      console.log(this.boxIncrese,this.$utils.turnInToPercent(this.boxIncrese.percentList[0]),'boxIncresesssss')
         echarts.init(document.getElementById("persendChart")).setOption({
         tooltip: {
-          trigger: "axis"
+          trigger: "axis",
+          formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}%',
         },
         legend: {
           data:['员工数', '占比'],
@@ -430,7 +438,7 @@ export default {
       yAxis: [
         {
           type: "value",
-          max: Math.max(...this.boxIncrese.percentList[0]),
+          max: Math.max(...this.boxIncrese.total[0]),
           // min: Math.min(...this.boxIncrese.percentList[0]),
           min:0,
           // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
@@ -450,9 +458,6 @@ export default {
           // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
           // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
 
-          splitLine: {
-              show: false
-          },
           axisLabel: {
               formatter: '{value}%'
           },
@@ -469,7 +474,7 @@ export default {
           name: '员工数',
           type: 'bar',
           // barWidth:18,
-          data: this.boxIncrese.percentList[0],
+          data: this.boxIncrese.total[0],
           // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
             normal:{
@@ -491,7 +496,11 @@ export default {
           symbol:'none', //这句就是去掉点的
           // smooth:true, //折线平滑
           color:'#eb9f4b',
-          data: this.boxIncrese.percentList[0],
+          yAxisIndex:1,
+          // tooltip:{
+          //   formatter: '{c%}'
+          // },
+          data:this.boxIncrese.percentList[0],
           // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
           itemStyle:{
            normal:{
@@ -563,9 +572,16 @@ export default {
     },
      dataChart() {
           var that = this;
-          var one  = this.boxLideDay.positionDay[0][0]?this.boxLideDay.positionDay[0][0]+',':'';
-          var two  = this.boxLideDay.positionDay[0][1]?this.boxLideDay.positionDay[0][1]+',':'';
-          var three  = this.boxLideDay.positionDay[0][2]?this.boxLideDay.positionDay[0][2]:'';
+          var one  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-1]?this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-1]+',':'';
+          var two  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-2]?this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-2]+',':'';
+          var three  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-3]?this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-3]:'';
+
+          console.log(this.boxLideDay.positionDay[0],'0-0-0-0-0-0-00-');
+          // return
+
+          // var one  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-1]+',';
+          // var two  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-2]+',';
+          // var three  = this.boxLideDay.positionDay[0][this.boxLideDay.positionDay[0].length-3];
 
           echarts.init(document.getElementById("dataChart")).setOption({
               title:{
@@ -637,9 +653,14 @@ export default {
         this.init('dataChart',this.boxLideDay.percentListDay[0].length);
     },
     dataChartLive() {
-        var one = this.boxLideLive.positionLive[0][0]?this.boxLideLive.positionLive[0][0]+',':'';
-        var two = this.boxLideLive.positionLive[0][1]?this.boxLideLive.positionLive[0][1]+',':'';
-        var three = this.boxLideLive.positionLive[0][2]?this.boxLideLive.positionLive[0][2]:'';
+        // var one = this.boxLideLive.positionLive[0][0]?this.boxLideLive.positionLive[0][0]+',':'';
+        // var two = this.boxLideLive.positionLive[0][1]?this.boxLideLive.positionLive[0][1]+',':'';
+        // var three = this.boxLideLive.positionLive[0][2]?this.boxLideLive.positionLive[0][2]:'';
+        console.log(this.boxLideLive.positionLive[0],'0-=');
+
+        var one = this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-1]?this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-1]+',':'';
+        var two = this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-2]?this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-2]+',':'';
+        var three = this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-3]?this.boxLideLive.positionLive[0][this.boxLideLive.positionLive[0].length-3]:'';
 
         var that = this;
         echarts.init(document.getElementById("dataChartLive")).setOption({
