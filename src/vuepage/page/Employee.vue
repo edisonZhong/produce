@@ -23,9 +23,10 @@
       ref="mescroll"
       :up="mescrollUp"
       @init="mescrollInit"
+      :autoShowLoading=true
     >
       <ul style="height: 100%;width: 100%;">
-        <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" :key="index">
+        <li v-for="(item,index) in dataList" :class="[item.status==2?class1:class2]" @click="goInfo(item.id)" :key="index">
           <p class="number-list">{{index+1}}</p>
           <p class="data-list" style="width:1.46rem;margin-left: -.3rem;">{{item.employeeName}}</p>
           <p class="data-list" style="width:1.58rem">{{item.customerEmployeeNo}}</p>
@@ -103,7 +104,6 @@ export default {
   created() {
     console.log(this,'thiss');
   },
-
   mounted() {
     // history.pushState(null, null, document.URL);
     // window.addEventListener('popstate', function () {
@@ -139,6 +139,9 @@ export default {
     handleCommentFocus(){
       this.placeholder=''
     },
+    goInfo(id){
+      this.$router.push(`/employeeInfo/${id}`);
+    },
     //搜索列表数据
     search() {
       this.handleSeach();
@@ -152,8 +155,8 @@ export default {
         searchStr: this.value
       }).then(e => {
         if (e.data.code == 200) {
-          this.searchList = e.data.data.list;
-          this.dataList = this.searchList;
+          that.searchList = e.data.data.list;
+          that.dataList = that.searchList;
         }
       });
     },

@@ -10,6 +10,7 @@ const ClientType=()=> import('@/vuepage/page/ClientType.vue')
 const leaveEmployee=()=> import('@/vuepage/page/leaveEmployee.vue')
 const choiceEmployee=()=> import('@/vuepage/page/choiceEmployee.vue')
 const LagalList=()=> import('@/vuepage/page/LagalList.vue')
+const employeeInfo=()=> import('@/vuepage/page/employeeInfo.vue')
 Vue.use(Router)
 
 
@@ -81,6 +82,13 @@ export default new Router({
       component: LagalList,
       meta: {
         title:'劳动合同牌照',
+      }
+    },
+    {
+      path: '/employeeInfo/:id',
+      component: employeeInfo,
+      meta: {
+        title:'员工信息',
       }
     },
       {

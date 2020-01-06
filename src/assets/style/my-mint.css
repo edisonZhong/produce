@@ -110,7 +110,6 @@
   padding: 15px 0;
   text-align: center;
   visibility: hidden;
-  display: none !important;
 }
 .mint-searchbar-core{
   font-size:14px;

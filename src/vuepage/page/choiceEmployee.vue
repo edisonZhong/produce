@@ -4,7 +4,7 @@
     height: 100vh;
   }
   .mescroll{
-    height: 84%!important;
+    height: 90%!important;
   }
   /*li::after{*/
   /*  width:0!important;*/
@@ -111,7 +111,8 @@
       padding: 0 0.1rem 0.1rem;
       box-sizing: border-box;
       font-size: 16px;
-
+      height: auto;
+      padding-bottom: 1rem;
       ul {
         li {
           display: flex;
@@ -185,18 +186,22 @@
         count: "0",
         loading: true,
         imgUrl: require("@/assets/img/Group.png"),
+
         page: {
           num: 1,
-          size: 20,
+          size: 30,
         },
         mescroll: null, // mescroll实例对象
         mescrollUp: { // 上拉加载的配置.
           callback: this.getList,
+          // htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
+          auto: true,
+          // use:false,
           htmlNodata: '<p class="upwarp-nodata">暂无数据</p>',
           noMoreSize: 5,
           page: {
             num: 0,
-            size: 20,
+            size: 30,
             total: 0
           },
           empty: {
@@ -204,7 +209,7 @@
             icon: "./static/mescroll/mescroll-empty.png",
             tip: "暂无相关数据~" //提示
           },
-          htmlLoading: '<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
+
         },
         imgCut: require("@/assets/img/cutOff.png")
       };
@@ -226,10 +231,9 @@
         }).then(e => {
           let {message, code, data: {list}} = e.data;
           if (code === 200) {
-            if (!isSearch) {
+            if (!isSearch||page.num===1) {
               that.dataList = list;
             } else {
-
               that.dataList = [...that.dataList, ...list];
             }
           }
