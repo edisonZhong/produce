@@ -186,10 +186,10 @@ export default {
         // return ;
         this.selectedName = e?e.name:'日';
         this.dataType = e?e.value:'D';
-        getDetailDate({dateType:this.dataType}).then((res)=>{
-          console.log(res,'res9');
-          this.detailDate = res.data.data;
-        })
+        // getDetailDate({dateType:this.dataType}).then((res)=>{
+        //   console.log(res,'res9');
+        //   this.detailDate = res.data.data;
+        // })
       },
       selectName(name,no){
         this.selectedOrganizationName = name;
@@ -219,6 +219,7 @@ export default {
         let time = a.split('&')[1].split('=')[1];
         let phone = a.split('&')[2].split('=')[1].split('#')[0];
         console.log(this.$utils.date((Number(time)-24*60*60*1000),1),'0-0-0-0-00--0');
+        this.detailDate = this.$utils.date((Number(time)-24*60*60*1000),1);
         // return
         getNewChartsData({
           statisticsDate:this.$utils.date((Number(time)-24*60*60*1000),1),
@@ -398,6 +399,7 @@ export default {
             var positionType = [];
             var percentList = [];
             var total = [];
+            var pieData = [];
             for(let i=0;i<valueTypeList.length;i++){
               var a = i;
               positionType[a] = [];
@@ -410,6 +412,10 @@ export default {
               var c = i;
               total[c] = [];
               valueTypeList[i].map(item=> total[c].push(item.total))
+
+              var d =i;
+              pieData[d] = [];
+              valueTypeList[i].map(item=> pieData[d].push({value:item.total,name:item.positionType}))
             }
 
             console.log(positionType,percentList,'listtttt');
@@ -418,7 +424,8 @@ export default {
             this.boxIncrese = {
               positionType:positionType,
               percentList:percentList,
-              total:total
+              total:total,
+              pieData:pieData
             }
         //   }
         // })

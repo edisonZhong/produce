@@ -39,6 +39,11 @@
       color: black;
     }
   }
+  /deep/.mint-cell-wrapper{
+    min-height:1rem!important;
+    height:unset!important;
+  }
+
 </style>
 <template>
   <div class="emInfo-box">
@@ -55,23 +60,23 @@
         <mt-field label="证件号码" placeholder="" :value="userInfo['certificateNumber']" disabled/>
         <mt-field label="婚姻状况" placeholder="" :value="userInfo['maritalStatus']" disabled/>
         <mt-field label="最高学历" placeholder="" :value="userInfo['educationBackground']" disabled/>
-        <mt-field label="名族" placeholder="" :value="userInfo['national']" disabled/>
+        <mt-field label="民族" placeholder="" :value="userInfo['national']" disabled/>
       </div>
     </div>
     <div class="emInfo-item">
       <div class="emInfo-item-title">员工状态</div>
       <div class="emInfo-item-con">
-        <mt-field label="员工状态" placeholder="" :value="userInfo['status']" disabled/>
-        <mt-field label="入职日期" placeholder="" :value="userInfo['entryAt']" disabled/>
-        <mt-field label="离职日期" placeholder="" :value="userInfo['resignationAt']" disabled/>
-        <mt-field label="结束缴纳社保月份" placeholder="" :value="userInfo['socialSecurityEndAt']" disabled/>
+        <mt-field label="员工状态" placeholder="" :value="userInfo['status']==0?'试用期':userInfo['status']==1?'正式':'离职'" disabled/>
+        <mt-field label="入职日期" placeholder="" :value="this.$utils.date(userInfo['entryAt'],1)" disabled/>
+        <mt-field label="离职日期" placeholder="" :value="userInfo['resignationAt']?this.$utils.date(userInfo['resignationAt'],1):''" disabled/>
+        <mt-field label="结束缴纳社保月份" placeholder="" :value="userInfo['socialSecurityEndAt']?this.$utils.date(userInfo['socialSecurityEndAt'],1):''" disabled/>
 <!--        <mt-cell title="离职原因" class="ellipsis_2">-->
 <!--          <div class="name-list">{{item['legalCompanyName']}}</div>-->
 <!--        </mt-cell>-->
       </div>
     </div>
     <div class="emInfo-item">
-      <div class="emInfo-item-title" v-if="userInfo['employeeContractList'].length">合同信息</div>
+      <div class="emInfo-item-title" v-if="userInfo['employeeContractList']">合同信息</div>
       <div class="emInfo-item-con" v-for="item in userInfo['employeeContractList']">
         <mt-cell title="劳动合同牌照" class="ellipsis_2">
           <div class="name-list ellipsis_2">{{item['legalCompanyName']}}</div>
@@ -85,10 +90,14 @@
       <div class="emInfo-item-con">
         <mt-field label="服务客户名称" placeholder="" :value="userInfo['customerName']" disabled/>
         <mt-field label="客户工号" placeholder="" :value="userInfo['customerEmployeeNo']" disabled/>
-        <mt-field label="职位" placeholder="" :value="userInfo['positionType']" disabled/>
+        <mt-field label="职位" placeholder="" :value="userInfo['customerEmployeePosition']" disabled/>
+        <mt-field label="岗位属性" placeholder="" :value="userInfo['positionType']" disabled/>
         <mt-field label="服务开始时间" placeholder="" :value="userInfo['customerStartAt']" disabled/>
         <mt-field label="工作地点" placeholder="" :value="userInfo['customerWorkAddress']" disabled/>
-        <mt-field label="所属客户组织" placeholder="" :value="userInfo['customerOrganization']" disabled/>
+        <!-- <mt-field label="所属客户组织" placeholder="" :value="userInfo['customerOrganization']" disabled/> -->
+        <mt-cell title="所属客户组织">
+          <div class="name-list">{{userInfo['customerOrganization']}}</div>
+        </mt-cell>
       </div>
     </div>
     <div class="emInfo-item">
@@ -143,8 +152,8 @@
         await getEmployeeById(userId).then(res => {
           let {data, data: {employeeContractList}} = res.data;
           ContractList = employeeContractList;
-          data.birthAt = utils.date(data.birthAt, 4);
-          data.customerStartAt = utils.date(data.customerStartAt, 4);
+          data.birthAt = data.birthAt?utils.date(data.birthAt, 4):'';
+          data.customerStartAt = data.customerStartAt?utils.date(data.customerStartAt, 4):'';
           if(0 === ContractList.length){
             dictionary = [{
               'certificateType': data.certificateType || '',
@@ -182,8 +191,8 @@
             getByNo(dictionary).then(res => {
               const {data: result} = res.data;
               dictionary = result;
-              ContractList[index].contractEndAt = utils.date(item.contractEndAt, 4);
-              ContractList[index].contractStartAt = utils.date(item.contractStartAt, 4);
+              ContractList[index].contractEndAt = item.contractEndAt?utils.date(item.contractEndAt, 4):'';
+              ContractList[index].contractStartAt = item.contractStartAt?utils.date(item.contractStartAt, 4):'';
               data.certificateType = dictionary[0].certificateType;
               data.sex = dictionary[0].sex;
               data.positionType = dictionary[0].positionType;
@@ -224,4 +233,3 @@
     }, //如果页面有keep-alive缓存功能，这个函数会触发
   }
 </script>
-

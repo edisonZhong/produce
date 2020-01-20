@@ -214,7 +214,7 @@ export default {
       if(domNode=='chart_growth'){
         this.autoHeight =(barLength/2)*5 + 30; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
       }else if(domNode=='persendChart'){
-        this.autoHeight =barLength * 35 + 200; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
+        this.autoHeight =barLength * 35 + 150; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
       }else{
         this.autoHeight =barLength * 35 + 50; // counst.length为柱状图的条数，即数据长度。35为我给每个柱状图的高度，50为柱状图x轴内容的高度(大概的)。
       }
@@ -401,116 +401,112 @@ export default {
       console.log(this.boxIncrese,this.$utils.turnInToPercent(this.boxIncrese.percentList[0]),'boxIncresesssss')
         echarts.init(document.getElementById("persendChart")).setOption({
         tooltip: {
-          trigger: "axis",
-          formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}%',
+          trigger: "item",
+          // formatter: '{b0}<br />{a0}:{c0}<br />{a1}:{c1}%',
+          formatter:'{b} : {c} ({d}%)'
         },
+        color:['#EB9F4B', '#2E90E1','#DA3131'],
         legend: {
-          data:['员工数', '占比'],
-          itemWidth:15,
-          itemHeight:15,
-          top:'8%'
-          // textStyle:{
-          //   fontSize:10
-          // }
+                 orient: 'horizontal',
+                 // left: 'left',
+                 data: ['一线', '二线', '三线'],
+                 selectedMode:false,
+          // data:['员工数', '占比'],
+          // itemWidth:15,
+          // itemHeight:15,
+                  top:'9%'
         },
-
-      xAxis: [
-        {
-          type: 'category',
-          data:this.boxIncrese.positionType[0],
-          // data:['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21',
-          // '22','23','24','25','26','27','28','29','31','31'],
-          axisLine:{
-            show:false
-          },
-          axisTick:{
-              show:false
-          },
-        },
-      ],
-      grid: {
-        left: '3%',
-        right: '4%',
-        top:'23%',
-        bottom: '8%',
-        containLabel: true
-      },
-      yAxis: [
-        {
-          type: "value",
-          max: Math.max(...this.boxIncrese.total[0]),
-          // min: Math.min(...this.boxIncrese.percentList[0]),
-          min:0,
-          // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
-          // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
-            axisTick:{
-              show:false
-            },
-            axisLine:{
-              show:false
+        series: [
+            {
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '65%'],
+                minAngle:8,
+                label:{
+                    formatter:'{c}',
+                },
+                data: this.boxIncrese.pieData[0],
+                itemStyle:{
+                  borderWidth:5,
+                  borderColor:'#fff'
+                }
             }
-        },
-        {
-          type: "value",
-          max:Math.max(...this.boxIncrese.percentList[0]),
-          // min: Math.min(...this.boxIncrese.percentList[0]),
-          min:0,
-          // max:Math.max(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
-          // min:Math.min(...[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]),
-
-          axisLabel: {
-              formatter: '{value}%'
-          },
-          axisTick:{
-              show:false
-          },
-          axisLine:{
-            show:false
-          }
-        },
-      ],
-      series: [
-        {
-          name: '员工数',
-          type: 'bar',
-          // barWidth:18,
-          data: this.boxIncrese.total[0],
-          // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
-          itemStyle:{
-            normal:{
-               // color: function (params) {
-               //     var colorList = [
-               //       '#4378BE','#4378BE', '#4378BE', '#4378BE', '#4378BE',
-               //       '#4378BE', '#4378BE', '#4378BE','#ff7e50', '#ff7e50',
-               //       '#4378BE'
-               //     ];
-               //     return colorList[params.dataIndex]
-               // }
-               color:'#4378BE'
-             }
-         }
-        },
-        {
-          name: '占比',
-          type: 'line',
-          symbol:'none', //这句就是去掉点的
-          // smooth:true, //折线平滑
-          color:'#eb9f4b',
-          yAxisIndex:1,
-          // tooltip:{
-          //   formatter: '{c%}'
-          // },
-          data:this.boxIncrese.percentList[0],
-          // data:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
-          itemStyle:{
-           normal:{
-             lineStyle:{
-                color:'#eb9f4b'
-             }
-           }
-         }
-        },
-      ]
+        ]
+      //
+      //   xAxis: [
+      //     {
+      //       type: 'category',
+      //       data:this.boxIncrese.positionType[0],
+      //       axisLine:{
+      //         show:false
+      //       },
+      //       axisTick:{
+      //           show:false
+      //       },
+      //     },
+      //   ],
+      // grid: {
+      //   left: '3%',
+      //   right: '4%',
+      //   top:'23%',
+      //   bottom: '8%',
+      //   containLabel: true
+      // },
+      // yAxis: [
+      //   {
+      //     type: "value",
+      //     max: Math.max(...this.boxIncrese.total[0]),
+      //     min:0,
+      //     axisTick:{
+      //         show:false
+      //       },
+      //       axisLine:{
+      //         show:false
+      //       }
+      //   },
+      //   {
+      //     type: "value",
+      //     max:Math.max(...this.boxIncrese.percentList[0]),
+      //     min:0,
+      //     axisLabel: {
+      //         formatter: '{value}%'
+      //     },
+      //     axisTick:{
+      //         show:false
+      //     },
+      //     axisLine:{
+      //       show:false
+      //     }
+      //   },
+      // ],
+      // series: [
+      //   {
+      //     name: '员工数',
+      //     type: 'bar',
+      //     data: this.boxIncrese.total[0],
+      //     itemStyle:{
+      //       normal:{
+      //          color:'#4378BE'
+      //        }
+      //    }
+      //   },
+      //   {
+      //     name: '占比',
+      //     type: 'line',
+      //     symbol:'none', //这句就是去掉点的
+      //     // smooth:true, //折线平滑
+      //     color:'#eb9f4b',
+      //     yAxisIndex:1,
+      //     data:this.boxIncrese.percentList[0],
+      //     itemStyle:{
+      //      normal:{
+      //        lineStyle:{
+      //           color:'#eb9f4b'
+      //        }
+      //      }
+      //    }
+      //   },
+      // ]
       })
       this.init('persendChart',this.boxIncrese.percentList[0].length);
     },

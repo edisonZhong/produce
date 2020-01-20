@@ -165,3 +165,20 @@ export function setRecord(obj){
 		})
 	})
 }
+
+// 获取当前登录用户的手机号&日期
+export function getUserPhoneAndDate(obj){
+	return new Promise((resolve,reject)=>{
+		axios({
+			url:'/exportReport/getPhoneAndDate',
+			method: 'get',
+			params:obj
+		})
+		.then((response)=>{
+            resolve(response)
+		})
+		.catch((error)=>{
+			console.log(error)
+		})
+	})
+}

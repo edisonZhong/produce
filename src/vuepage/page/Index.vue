@@ -411,6 +411,8 @@ export default {
             var positionType = [];
             var percentList = [];
             var total = [];
+            var pieData = [];
+
             for(let i=0;i<valueTypeList.length;i++){
               var a = i;
               positionType[a] = [];
@@ -423,6 +425,10 @@ export default {
               var c = i;
               total[c] = [];
               valueTypeList[i].map(item=> total[c].push(item.total))
+
+              var d =i;
+              pieData[d] = [];
+              valueTypeList[i].map(item=> pieData[d].push({value:item.total,name:item.positionType}))
             }
 
             // console.log(positionType,percentList,'listtttt');
@@ -431,7 +437,8 @@ export default {
             this.boxIncrese = {
               positionType:positionType,
               percentList:percentList,
-              total:total
+              total:total,
+              pieData:pieData
             }
         //   }
         // })

@@ -21,9 +21,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    upBaseUrl = 'http://preywapi.fenganghr.com/';
-    // upBaseUrl  =  'http://192.168.43.173:9095/';
-    // upBaseUrl = 'http://wbapi.fenganghr.com/';
+    // upBaseUrl = 'http://preywapi.fenganghr.com/';
+    // upBaseUrl  =  'http://192.168.1.108:9099/';
+    upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -44,7 +44,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc3OTcxNDc4Mzc2LCJleHAiOjQyMzUxNzc5NzE0Nzh9.yoBtJtph-bKnNy2n6aVRSKE6BIxdLiAMRRM5hiMoy5W6Cx8d2l4sZZC1hO1OxYrGy-MHpHzjc26K6wtjfTrQkQ',
+            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc5NDIwODk3NDk5LCJleHAiOjQyMzUxNzk0MjA4OTd9.6pYrGjsD5x6x32lscBxTILAJQL_tGbnRa0TyI0tRWiXkmRXgkeGYWMQFU3757K5zY3398X4U4cqu3pm9PkVtNg',
             "backend":'front'
         }
         return config;
@@ -67,13 +67,13 @@ instance.interceptors.response.use(function (response) {
       },200)
     }else if (response.data.code==404){
       console.log(response,'response00009')
-      Toast('您暂无权限访问，请联系管理员开通');
+      Toast(response.data.message);
       return Promise.reject(error.response.message)
 
-  }else{
-    return response
+    }else{
+      return response
 
-  }
+    }
 }, function (error) {
     // Do something with response error
     console.log(error,'000000000000009')

@@ -38,7 +38,7 @@ export function addData(obj) {
 export function selectService(obj) {
   return new Promise((resolve, reject) => {
     axios({
-      url: 'organizationalTree/pagingQueryOrganizationl',
+      url: 'organizationalTree/pagingQueryOrganiationlMobile',
       method: 'post',
       data: obj
     })
@@ -72,7 +72,7 @@ export function selectCart(obj) {
 export function selectType(obj) {
   return new Promise((resolve, reject) => {
     axios({
-      url: '/customer/paging',
+      url: '/customer/mobilePaging',
       method: 'post',
       data: obj
     })
