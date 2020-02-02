@@ -21,7 +21,7 @@ export default new Router({
       component:Index,
       meta:{
         theIndex: "1",
-        title:'首页'
+        title:'用户抗疫'
       }
     },
     {
@@ -29,7 +29,7 @@ export default new Router({
       component: Index,
       meta: {
         theIndex: "1",
-        title:'首页',
+        title:'用户抗疫',
       }
     },
     {
@@ -37,7 +37,7 @@ export default new Router({
       component: IndexNew,
       meta: {
         theIndex: "1",
-        title:'首页',
+        title:'用户抗疫',
       }
     },
     {
@@ -104,7 +104,7 @@ export default new Router({
       redirect:'/Index',
       meta: {
         theIndex: "1",
-        title:'首页'
+        title:'用户抗疫'
       }
     }
   ]

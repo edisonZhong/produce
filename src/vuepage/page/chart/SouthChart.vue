@@ -4,27 +4,27 @@
     <!-- <div class='businessArea'>{{title}}</div> -->
 
     <div>
-      <div id="content" v-if="chart_example_box&&boxBar.titlesBar">
+      <!-- <div id="content" v-if="chart_example_box&&boxBar.titlesBar">
           <h2>员工总数 <span class="number">{{boxBar.titlesBar[0][1] || 0}}</span></span>人</h2>
           <div  id="chart_example" class="chart"></div>
-      </div>
-      <div id="content" v-if="chart_growth_box" style="display:none;">
-          <h2>员工数增长情况</h2>
+      </div> -->
+      <div id="content" v-if="chart_growth_box" >
+          <h2>变化趋势</h2>
           <div  id="chart_growth" class="chart"></div>
       </div>
-      <div id="content" v-if="persendChart_box">
+      <!-- <div id="content" v-if="persendChart_box">
           <h2>一二三线员工数及占比</h2>
           <div id="persendChart" class="chart"></div>
       </div>
       <div id="content" v-if="dataChart_box">
         <h2>{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}新增员工<span class="number" v-if="boxLideDay.titleInfo">{{boxLideDay.titleInfo[0][1] || 0}}</span>人</h2>
           <div id="dataChart" class="chart"></div>
-      </div>
-     <div id="content" v-if='dataChartLive_box'>
+      </div> -->
+     <!-- <div id="content" v-if='dataChartLive_box'>
           <h2 v-if="this.boxLideLive.valueInfo&&this.boxLideLive.valueInfo[0][1]">{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职员工 <span class="number">{{this.boxLideLive.valueInfo[0][1]}}</span> 人</h2>
           <h2 v-else>{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职员工 <span class="number">0</span> 人</h2>
           <div id="dataChartLive" class="chart"></div>
-      </div>
+      </div> -->
     </div>
 
 
@@ -120,6 +120,10 @@ export default {
     // this.$nextTick(()=> {
     // })
     // this.init();
+
+    setTimeout(()=>{
+      this.employeeGrowth()
+    },500)
   },
   watch:{
     boxBar(val,old){
@@ -510,16 +514,20 @@ export default {
       })
       this.init('persendChart',this.boxIncrese.percentList[0].length);
     },
-    // 员工数增长情况
+    // 疫情变化趋势
     employeeGrowth() {
         echarts.init(document.getElementById("chart_growth")).setOption({
         tooltip: {
           trigger: "axis"
         },
+        legend: {
+          data: ['发烧咳嗽', '其他症状']
+        },
       xAxis: [
         {
           type: 'category',
-          data:this.allBox.name[0],
+          // data:this.allBox.name[0],
+          data:['1.31','2.01','2.02','2.03','2.04','2.05','2.06','2.07','2.08','2.09','2.10','2.11'],
           axisLine:{
             show:false
           },
@@ -529,8 +537,8 @@ export default {
         },
       ],
       grid: {
-        left: '6%',
-        right: '6%',
+        left: '1%',
+        right: '1%',
         // bottom: '15%',
         top:'11%',
         bottom:'8%',
@@ -541,8 +549,8 @@ export default {
           type: "value",
           inverse: false,
           minInterval: 1,
-          max: Math.max(...this.allBox.value[0]),
-          min: Math.min(...this.allBox.value[0]),
+          max: Math.max(...[12,123,23,34,5,34,234,23,3,56,34,7]),
+          min: Math.min(...[12,123,23,34,5,34,234,23,3,56,34,7]),
             axisTick:{
               show:false
             },
@@ -553,18 +561,31 @@ export default {
       ],
       series: [
         {
-          name: '员工数',
-          type: 'bar',
-          data: this.allBox.value[0],
+          name: '发烧咳嗽',
+          type: 'line',
+          // data: this.allBox.value[0],
+          data:[12,123,23,34,5,34,234,23,3,56,34,7],
           itemStyle:{
             normal:{
                color:"#eb9f4b"
              }
          }
+       },
+       {
+         name: '其他症状',
+         type: 'line',
+         // data: this.allBox.value[0],
+         data:[1,12,22,12,51,4,78,23,30,5,37,9],
+         itemStyle:{
+           normal:{
+              color:"#eb9f4b"
+            }
         }
+       }
       ]
       })
-      this.init('chart_growth',this.allBox.value[0].length);
+      // this.init('chart_growth',this.allBox.value[0].length);
+         this.init('chart_growth',12);
     },
      dataChart() {
           var that = this;
@@ -748,20 +769,21 @@ export default {
   margin: 0 auto;
 }
 #content {
+  margin-top:.5rem;
   width: 100%;
   background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 2px 0.4rem 0px rgba(6, 19, 37, 0.1);
-  border-radius: 0.2rem;
-  margin-bottom: 0.3rem;
+  /* box-shadow: 0px 2px 0.4rem 0px rgba(6, 19, 37, 0.1); */
+  /* border-radius: 0.2rem;
+  margin-bottom: 0.3rem; */
   h2{
       padding: 0;
       font-size:.32rem;
-      color:rgba(24,49,77,1);
-      text-align: center;
-      font-weight: 550;
+      /* color:rgba(24,49,77,1); */
+      text-align: left;
+      /* font-weight: 550; */
       // padding-top: .4rem;
-      height:.6rem;
-      line-height: 1rem
+      /* height:.6rem; */
+      /* line-height: 1rem */
   }
 }
 .businessArea{

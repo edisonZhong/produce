@@ -1,42 +1,36 @@
 <!--统计图 华南大区-->
 <template>
     <div id="page">
-        <!-- <div v-for="(item ,index_) in title_box" :key='index_'> -->
-          <div id='header'>
-              <!-- <div class="header-bottom">
-                  <mt-button class="bottom-click"
-                  v-for="(item,index) in btnList"
-                  v-on:click="addClass(index)"
-                  :key='index'
-                  v-bind:class="{ classred:index==clickIndex}"
-                  size="normal">{{item}}</mt-button>
-              </div> -->
-              <h2 class="title newtitle"  >
-                <span @click='selectDate'>业务外包进展{{selectedName}}报</span>
-                <img :src="tangle" alt="">
-                <span class="detail">{{detailDate||''}}</span>
-              </h2>
-              <!-- <h2 class="title" style="display:flex;justify-content:center;align-items:center;" @click="selectDistrict">
-                <span>{{selectedOrganizationName||''}}</span>
-                <img style="width:20px;height:20px;position: absolute;right: 2.6rem;" :src='arrowImg' alt="" />
-              </h2> -->
-
-              <div class="" style="margin-top:.25rem;">
-                <div class="header-bottom" >
-                    <div class="bottom-click"
-                    v-for="(item,index) in districtBox"
-                    v-on:click="addClass(index,item.organizationNo,item.organizationName)"
-                    :key='index'
-                    v-bind:class="{ classred:index==clickIndex}"
-                    size="normal">{{item.organizationName}}</div>
-                </div>
-              </div>
-          </div>
-          <!-- <div class="img">
-              <img :src='imgUrl' alt=""/>
-          </div> -->
+         <p class='title'>君润人力</p>
+         <div class="sub_title">
+           <div class="sub_">
+             <p>截至2020年1月31日</p>
+             <p class="sub_tab">
+               <span>数据说明</span>
+               <img @click='showContent' :src="question" alt="">
+             </p>
+           </div>
+           <div class="sub__">
+             <div >
+               <p class="one">5000</p>
+               <p>健康</p>
+             </div>
+             <div >
+               <p class="two">5000</p>
+               <p>发烧咳嗽</p>
+             </div>
+             <div >
+               <p class="three">5000</p>
+               <p>其他症状</p>
+             </div>
+             <div >
+               <p class="four">5000</p>
+               <p>未打卡</p>
+             </div>
+           </div>
+         </div>
           <div id="main"   ref="content"  >
-            <div class="threeCard">
+            <!-- <div class="threeCard">
               <div class="card">
                 <img :src="imgUrlOne" alt="">
                 <div class="" style="position:absolute;top:.24rem;left:.3rem;" v-if='boxBar.titlesBar'>
@@ -58,19 +52,64 @@
                   <p style="color:#18314D;font-size:.2rem;">{{selectedName=='日'?'昨日':selectedName=='周'?'上周':'上月'}}离职</p>
                 </div>
               </div>
-            </div>
+            </div> -->
 
               <SouthChart  @totalArea='totalArea' :selectedName="selectedName" :clickIndex="clickIndex"  :boxBar="boxBar" :boxIncrese='boxIncrese' :boxLideDay='boxLideDay' :boxLideLive='boxLideLive' :allBox='allBox'></SouthChart>
           </div>
+
+          <div class="healthData">
+            <div class="healthTitle">
+              <p>员工健康数据</p>
+              <p class='checkDetail'>查看详情</p>
+            </div>
+            <div class="healthContent">
+              <div class="hc">
+                <p>地区</p>
+                <p>发烧咳嗽</p>
+                <p>其他症状</p>
+                <p>未打卡</p>
+              </div>
+              <div @click='dotClick' class="hc highLight">
+                <p>华南大区</p>
+                <p>10</p>
+                <p>10</p>
+                <p>10 <b></b>  </p>
+              </div>
+              <div v-if="ifContent" class="hcContent">
+                <p>深圳</p>
+                <p>10</p>
+                <p>10</p>
+                <p>10</p>
+              </div>
+              <div v-if="ifContent" class="hcContent">
+                <p>深圳</p>
+                <p>10</p>
+                <p>10</p>
+                <p>10</p>
+              </div>
+            </div>
+          </div>
+
         <!-- </div> -->
         <!-- <p>到底啦~~~~</p> -->
-        <TabBar></TabBar>
+        <!-- <TabBar></TabBar> -->
 
-        <mt-actionsheet
+        <!-- <mt-actionsheet
           :actions="actions"
           v-model="sheetVisible">
-        </mt-actionsheet>
+        </mt-actionsheet> -->
+        <div class="shadow" v-if="shadowContent">
+          <div class="frame">
+            <img @click='closeFrame' :src="delImg" alt="">
+            <p>数据说明</p>
+            <div class="">
+              1.员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康
+              1.员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康
+              1.员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康员工健康
 
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -141,130 +180,41 @@ export default {
             actions:[{name:'日',value:'D',method:this.getDetailDate},{name:'周',value:'W',method:this.getDetailDate},{name:'月',value:'M',method:this.getDetailDate}],
             sheetVisible:false,
 
-            imgUrlOne:require("@/assets/img/orange.png"),
-            imgUrlTwo:require("@/assets/img/blue.png"),
-            imgUrlThree:require("@/assets/img/red.png"),
+            // imgUrlOne:require("@/assets/img/orange.png"),
+            question:require("@/assets/img/question.png"),
+            delImg:require("@/assets/img/del.png"),
+            // imgUrlThree:require("@/assets/img/red.png"),
 
+            ifContent:true,
+            shadowContent:false,
         }
     },
-    mounted(){
 
-    },
      mounted(){
-      // 员工总数
-      // await this.getData()
-      // // this.init()
-      // // 占比
-      // await this.getLine()
-      // // 入职
-      // await this.getLineDay()
-      // // 离职
-      // await this.getLineLive()
-      this.getDetailDate();
 
-      // 获取区列表
-      this.getDistrictList();
-
-      //记录查看记录
-      if(!sessionStorage.getItem("ifRecord")){
-        sessionStorage.setItem("ifRecord",'recorded');
-        this.setRecord();
-      }
+      // // 获取区列表
+      // this.getDistrictList();
+      //
+      // //记录查看记录
+      // if(!sessionStorage.getItem("ifRecord")){
+      //   sessionStorage.setItem("ifRecord",'recorded');
+      //   this.setRecord();
+      // }
     },
 
     methods:{
-      getPhoneType(){
-        Array.prototype.contains = function(needle) {
-      		for (i in this) {
-      			if (this[i].indexOf(needle) > 0)
-      				return i;
-      		}
-      		return -1;
-      	}
-
-      	var device_type = navigator.userAgent;//获取userAgent信息
-      	document.write(device_type);//打印到页面
-      	var md = new MobileDetect(device_type);//初始化mobile-detect
-      	var os = md.os();//获取系统
-      	var model = "";
-      	if (os == "iOS") {//ios系统的处理
-      		os = md.os() + md.version("iPhone");
-      		model = md.mobile();
-      	} else if (os == "AndroidOS") {//Android系统的处理
-      		os = md.os() + md.version("Android");
-      		var sss = device_type.split(";");
-      		var i = sss.contains("Build/");
-      		if (i > -1) {
-      			model = sss[i].substring(0, sss[i].indexOf("Build/"));
-      		}
-      	}
-      	// alert(os + "---" + model);
-        return model+'-'+os
+      closeFrame(){
+        this.shadowContent = false;
       },
-      setRecord(){
-        let type = this.getPhoneType()
-        setRecord({phoneModels:type}).then(res=>{
-          console.log(res,'手机型号');
-        })
+      showContent(){
+        this.shadowContent = true;
       },
-      selectDate(){
-        this.sheetVisible=true;
-      },
-      getDetailDate(e){
-        // console.log(e,'d');
-        // return ;
-        this.selectedName = e?e.name:'日';
-        this.dataType = e?e.value:'D';
-        getDetailDate({dateType:this.dataType}).then((res)=>{
-          // console.log(res,'res9');
-          this.detailDate = res.data.data;
-
-          this.getChartsData();
-        })
-      },
-      selectName(name,no){
-        this.selectedOrganizationName = name;
-        this.organizationNo = no;
-        this.getChartsData();
-        this.sheetVisible = false;
-      },
-      selectDistrict(){
-        this.sheetVisible = true;
-      },
-      getDistrictList(){
-        getDistrictList().then((res)=>{
-          // console.log(res,'d');
-          this.districtBox = res.data.data;
-          this.selectedOrganizationName = res.data.data[0].organizationName;
-          this.organizationNo = res.data.data[0].organizationNo;
-
-          // 获取默认的图表数据
-          this.getChartsData()
-
-        })
-      },
-      getChartsData(){
-        this.$Indicator.open();
-        getChartsData({
-          dateType:this.dataType,
-          organizationNo:this.organizationNo,
-          organizationType:this.selectedOrganizationName=='君润人力'?1:2
-        }).then((res)=>{
-          // console.log(res,'ress');
-          // 员工总数
-          // console.log();
-          this.getData(res.data.data.totalMap)
-          // 岗位属性员工数占比统计图
-          this.getLine(res.data.data.positionMap)
-          // 入职
-          this.getLineDay(res.data.data.entryMap)
-          // 辞职
-          this.getLineLive(res.data.data.resignationMap)
-          // 员工数增长情况
-          this.getGrowth(res.data.data.upMap);
-
-          this.$Indicator.close();
-        })
+      dotClick(){
+        if(this.ifContent){
+          this.ifContent = false;
+        }else{
+          this.ifContent = true;
+        }
       },
       getGrowth(data){
             // console.log(data,'data123');
@@ -541,103 +491,149 @@ export default {
 
 <style lang="less" scoped>
 #page{
+    padding-top:.3rem;
     height: 100%;
     position: relative;
     box-sizing: border-box;
-    background: #f2f2f2;
-    #header{
-        height: 2.14rem;
-        width: 100%;
-        background:rgba(67,120,190,1);
-        position: absolute;
-        top:0;
-        bottom:.98rem;
-        left: 0;
-        right:0;
-        display: flex;
-        flex-direction: column;
-        .title{
-            position: absolute;
-            width: 100%;
-            line-height: 0.64rem;
-            text-align: center;
-            top: 1.5rem;
-            height: 0.64rem;
-            color: #fff;
-            font-size: .32rem;
+    background: #fff;
+    /* padding-left:.3rem;
+    padding-right:.3rem; */
+    .title{
+      width:1.3rem;
+      border-bottom:5px solid #EB9F4B;
+      margin-left:auto;
+      margin-right:auto;
+      /* margin-top:.3rem; */
+      margin-bottom:.3rem;
+      font-size:.3rem;
+    }
+    .sub_title{
+      .sub_{
+        display:flex;
+        justify-content:space-between;
+        .sub_tab{
+          font-size:#f2f2f2;
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          img{
+            width:.4rem;
+            /* height:.4rem; */
+          }
         }
-        .header-bottom{
-          /* height: 1.5rem; */
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          /* overflow-x: auto; */
-          white-space: nowrap;/*文本不会换行，文本会在在同一行上继续*/
-          /* overflow-y:auto; */
-          /* width: 7.2rem; */
+
+      }
+      .sub__{
+        display:flex;
+        justify-content:space-between;
+        text-align:center;
+        div{
+          p:first-child{
+            /* font-size:.25rem; */
+            font-weight:bold;
+          }
+          p:nth-child(2){
+
+          }
         }
-        .bottom-click{
-          /* float:left; */
-          display:inline-block;
-          width:1.28rem;
-          height:.64rem;
-          line-height:.64rem;
-          /* display:inline-block; */
-          font-size:.24rem;
-          background:rgba(255,255,255,0.2);
-          border:1px solid rgba(255,255,255,0.2);
-          border-radius: .2rem;
+        .one{
+          color:green;
+        }
+        .two{
+          color:red;
+        }
+        .three{
+          color:#EB9F4B;
+        }
+        .four{
+          color:gray;
+        }
+      }
+    }
+    .healthData{
+      .healthTitle{
+        display:flex;
+        justify-content:space-between;
+      }
+      .healthContent{
+        .hc{
+          display:flex;
+          justify-content:space-between;
           text-align:center;
-          color:rgba(255,255,255,1);
-          /* font-size: 14px */
+          height: 1rem;
+          line-height: 1rem;
+          p{
+            flex:1;
+          }
+          p:first-child{
+            text-align:left!important;
+          }
         }
-        .bottom-click:not(:last-child){
-          margin-right:.12rem;
+        .highLight{
+          background:#f2f2f2;
+          padding-left: .3rem;
+          padding-right: .3rem;
+          position:relative;
+          b{
+            /* width:1rem;
+            height:1rem; */
+            border:.1rem solid transparent;
+            border-top:.1rem solid #000;
+            position:absolute;
+            top: .42rem;
+            right: 0.35rem;
+          }
         }
-        .classred{
-            /* width: 2.1rem;
-            height: .72rem; */
-            background: rgba(255,255,255,1);
-            border:1px solid rgba(255,255,255,0.2);
-            /* border-radius: .2rem; */
-            color:rgba(67,120,190,1);
-            /* font-size: 14px */
+        .hc:first-child{
+          padding-left:.3rem;
+          padding-right:.3rem;
         }
-    }
-    .img{
-        width: 100%;
-        height: 1.5rem;
-        position: absolute;
-        top:2.12rem;
-        left: 0;
-        right:0;
-        img{
-            width: 100%;
+        .hcContent{
+          display:flex;
+          justify-content:space-between;
+          text-align:center;
+          height: 1rem;
+          line-height: 1rem;
+          padding-left:.3rem;
+          padding-right:.3rem;
+          p{
+            flex:1;
+          }
+          p:first-child{
+            text-align:left!important;
+          }
         }
-    }
-    #main{
-        // height: 100%;
-        width: 100%;
-        position: absolute;
-        top:2.34rem;
-        padding: 0 .3rem;
-        box-sizing: border-box;
-        overflow-x: hidden;
-        overflow-y: auto;
-        bottom: .98rem;
-        background:#f2f2f2;
-        // background: #fff
+      }
     }
 }
 .shadow{
   width:100%;
   height:100%;
-  position:absolute;
+  position:fixed;
   left:0;
   right:0;
-  top:2.3rem;
+  top:0;
   bottom:0;
-  background-color:rgba(0,0,0,.5);
+  background-color:rgba(0,0,0,.7);
+  .frame{
+    position:fixed;
+    left:0;
+    right:0;
+    top:3rem;
+    /* bottom:0; */
+    index:100;
+    width:6rem;
+    height:auto;
+    background:#fff;
+    margin:auto;
+    box-sizing:border-box;
+    padding:.3rem;
+    img{
+      position: absolute;
+      right: 0;
+      top: -1rem;
+    }
+  }
 }
 .districtList{
   max-height:3.8rem;
@@ -698,4 +694,12 @@ export default {
 
 
 }
+.sub_title,#main,.healthTitle{
+  padding-left:.3rem;
+  padding-right:.3rem;
+}
+.checkDetail{
+  color:#EB9F4B;
+}
+
 </style>

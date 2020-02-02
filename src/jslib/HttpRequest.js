@@ -14,16 +14,16 @@ Vue.prototype.$Toast = Toast;
 let upBaseUrl = '';
 if (process.env.NODE_ENV === 'production') {
 //线上
-    // upBaseUrl = 'https://ywapi.junrunrenli.com/';
-    upBaseUrl = 'http://preywapi.fenganghr.com/';
+    upBaseUrl = 'https://ywapi.junrunrenli.com/';
+    // upBaseUrl = 'http://preywapi.fenganghr.com/';
 
 
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    // upBaseUrl = 'http://preywapi.fenganghr.com/';
-    // upBaseUrl  =  'http://192.168.1.108:9099/';
-    upBaseUrl = 'http://wbapi.fenganghr.com/';
+    upBaseUrl = 'http://preywapi.fenganghr.com/';
+    // upBaseUrl  =  'http://192.168.1.108:9095/';
+    // upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -44,7 +44,7 @@ instance.interceptors.request.use(
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
             "Authorization":localStorage.getItem('token')||'',
-            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc5NDIwODk3NDk5LCJleHAiOjQyMzUxNzk0MjA4OTd9.6pYrGjsD5x6x32lscBxTILAJQL_tGbnRa0TyI0tRWiXkmRXgkeGYWMQFU3757K5zY3398X4U4cqu3pm9PkVtNg',
+            // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc5NjExOTg1MjcwLCJleHAiOjQyMzUxNzk2MTE5ODV9.faXJdPdNHHGVz4IxwVrRSk61RZEsHQryF3E5txWo2RKQh6zwdPoN6IDTsyS6WoZ-MAyFairWrJjXiTmpTvrzUA',
             "backend":'front'
         }
         return config;
@@ -54,26 +54,27 @@ instance.interceptors.request.use(
     }
 );
 instance.interceptors.response.use(function (response) {
+  return response
   console.log(response,'response0000');
-  if(response.data.code==401){
-      localStorage.clear();
-      setTimeout(()=>{
-        let thePath = window.location.hash;
-        thePath = thePath.split("/")[1];
-        let url = wxData.redirectUrl + (thePath?thePath:'');
-        console.log(window.location,'rerul');
-        localStorage.setItem('href',window.location.href)
-        window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=${wxData.agentid}&state=STATE#wechat_redirect`;
-      },200)
-    }else if (response.data.code==404){
-      console.log(response,'response00009')
-      Toast(response.data.message);
-      return Promise.reject(error.response.message)
-
-    }else{
-      return response
-
-    }
+  // if(response.data.code==401){
+  //     localStorage.clear();
+  //     setTimeout(()=>{
+  //       let thePath = window.location.hash;
+  //       thePath = thePath.split("/")[1];
+  //       let url = wxData.redirectUrl + (thePath?thePath:'');
+  //       console.log(window.location,'rerul');
+  //       localStorage.setItem('href',window.location.href)
+  //       window.location.href= `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wxData.appId}&redirect_uri=${url}&response_type=code&scope=snsapi_privateinfo&agentid=${wxData.agentid}&state=STATE#wechat_redirect`;
+  //     },200)
+  //   }else if (response.data.code==404){
+  //     console.log(response,'response00009')
+  //     Toast(response.data.message);
+  //     return Promise.reject(error.response.message)
+  //
+  //   }else{
+  //     return response
+  //
+  //   }
 }, function (error) {
     // Do something with response error
     console.log(error,'000000000000009')

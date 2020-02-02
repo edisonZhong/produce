@@ -27,9 +27,9 @@ export default {
   @import '~vux/src/styles/reset.less';
 
 #app{
-  height: 100%;
-  min-height: 100%;
-  position: relative;
+  /* height: 100%; */
+  /* min-height: 100%; */
+  /* position: relative; */
 }
   .h-top{
     .seach{

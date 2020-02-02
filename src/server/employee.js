@@ -34,6 +34,23 @@ export function addData(obj) {
   })
 }
 
+//修改入职信息
+export function fixInfo(obj) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: 'employeeDetail/updateEmployeeSimpleDate',
+      method: 'post',
+      data: obj
+    })
+      .then((response) => {
+        resolve(response)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  })
+}
+
 //选择所属业务区
 export function selectService(obj) {
   return new Promise((resolve, reject) => {

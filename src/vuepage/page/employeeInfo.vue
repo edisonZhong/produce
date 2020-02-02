@@ -43,7 +43,25 @@
     min-height:1rem!important;
     height:unset!important;
   }
-
+  .emInfo-box{
+    position:relative;
+  }
+  .fix_btn{
+    width:1rem;
+    height:1rem;
+    border-radius:50%;
+    background:#eb9f4b !important;
+    position:fixed;
+    bottom:2rem;
+    right:.5rem;
+    text-align:center;
+    img{
+      width:.5rem;
+      vertical-align:middle;
+      margin-left: .25rem;
+      margin-top: .25rem;
+    }
+  }
 </style>
 <template>
   <div class="emInfo-box">
@@ -66,7 +84,7 @@
     <div class="emInfo-item">
       <div class="emInfo-item-title">员工状态</div>
       <div class="emInfo-item-con">
-        <mt-field label="员工状态" placeholder="" :value="userInfo['status']==0?'试用期':userInfo['status']==1?'正式':'离职'" disabled/>
+        <mt-field label="员工状态" placeholder="" :value="userInfo['status']==0?'试用期':userInfo['status']==1?'在职':'离职'" disabled/>
         <mt-field label="入职日期" placeholder="" :value="this.$utils.date(userInfo['entryAt'],1)" disabled/>
         <mt-field label="离职日期" placeholder="" :value="userInfo['resignationAt']?this.$utils.date(userInfo['resignationAt'],1):''" disabled/>
         <mt-field label="结束缴纳社保月份" placeholder="" :value="userInfo['socialSecurityEndAt']?this.$utils.date(userInfo['socialSecurityEndAt'],1):''" disabled/>
@@ -121,6 +139,10 @@
     <div class="emInfo-item">
       <div class="emInfo-item-title">没有更多啦~</div>
     </div>
+
+    <div class="fix_btn" @click='toAdd'>
+      <img :src="imgurl" alt="">
+    </div>
   </div>
 </template>
 <script>
@@ -135,6 +157,8 @@
       //这里存放数据
       return {
         userInfo: {},
+        imgurl:require("@/assets/img/fix.png"),
+        positionType_:''//岗位属性值
       }
     },
     //监听属性 类似于data概念
@@ -143,6 +167,35 @@
     watch: {},
     //方法集合
     methods: {
+      toAdd(){
+        this.userInfo.positionType_ = this.positionType_;
+
+        console.log(this.userInfo,'this.positionType_');
+        // return
+        localStorage.setItem('info',JSON.stringify(this.userInfo));
+        localStorage.setItem('from_where',"fix");
+        localStorage.setItem('from_id',this.$route.params.id);
+
+
+        // 清空一些无用数据
+        // 岗位属性
+        localStorage.removeItem('new_positionTypeName');
+        localStorage.removeItem('new_positionType');
+        // 服务客户名称
+        localStorage.removeItem('customerName');
+        localStorage.removeItem('customerId');
+        // 劳动合同牌照
+        localStorage.removeItem('companyName');
+        localStorage.removeItem('companyId');
+        // localStorage.removeItem('companyNo');
+        // 所属业务区
+        localStorage.removeItem('organizationName');
+        localStorage.removeItem('id');
+
+
+
+        this.$router.push({path:'/AddEmployee'})
+      },
       //初始化数据获取员工信息
       init: async function () {
         Indicator.open();
@@ -151,6 +204,7 @@
         let ContractList, dictionary;
         await getEmployeeById(userId).then(res => {
           let {data, data: {employeeContractList}} = res.data;
+          console.log(data,'data321123---');
           ContractList = employeeContractList;
           data.birthAt = data.birthAt?utils.date(data.birthAt, 4):'';
           data.customerStartAt = data.customerStartAt?utils.date(data.customerStartAt, 4):'';
@@ -166,6 +220,12 @@
             JSON.stringify(dictionary);
             getByNo(dictionary).then(res => {
               const {data: result} = res.data;
+              // console.log(dictionary,'907967566');
+
+              // 岗位属性接口传值
+              this.positionType_ = dictionary[0].positionType;
+              console.log(dictionary,'[]')
+
               dictionary = result;
               data.certificateType = dictionary[0].certificateType;
               data.sex = dictionary[0].sex;
@@ -176,6 +236,7 @@
               data.employeeContractList = ContractList;
             });
           }
+          console.log(data,'dictionaryyys');
           ContractList.map((item, index) => {
             dictionary = [{
               'certificateType': data.certificateType,
@@ -188,6 +249,9 @@
               'educationBackground':data.educationBackground,
             }];
             JSON.stringify(dictionary);
+            console.log(dictionary[0],'test9080909090-');
+            // 岗位属性接口传值
+            this.positionType_ = dictionary[0].positionType;
             getByNo(dictionary).then(res => {
               const {data: result} = res.data;
               dictionary = result;
@@ -205,6 +269,7 @@
             });
           });
           _this.userInfo = data;
+          console.log(data,'dataa');
         });
 
         Indicator.close();

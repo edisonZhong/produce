@@ -40,9 +40,12 @@
           <img src="@/assets/img/right.png" height="12px" width="8px">
         </mt-field>
       </div>
-      <div class="footer">
+      <div class="footer" v-if="type!='fix'">
         <mt-button class="bottom-save" @click="handleSave">保存</mt-button>
         <mt-button class="bottom-c" @click="handleSaveContinue" type="primary">保存并继续添加</mt-button>
+      </div>
+      <div class="footer" v-if="type=='fix'">
+        <mt-button class="bottom-save new_button" @click="comfirmChange">保存</mt-button>
       </div>
     </div>
     <!-- 日历框 -->
@@ -78,7 +81,7 @@
 <script>
 
   import {Toast} from "mint-ui";
-  import {addData, selectCart, positionType} from "../../server/employee";
+  import {addData, selectCart, positionType,fixInfo} from "../../server/employee";
 
   export default {
     name: "addEmployee",
@@ -93,9 +96,9 @@
         entryAt: JSON.parse(localStorage.getItem('entryAt')), //显示的日期
         customerId: JSON.parse(localStorage.getItem('customerId')), //所选客户id
         customerName: JSON.parse(localStorage.getItem('customerName')), //所选客户名称
-        positionType: JSON.parse(localStorage.getItem('positionType')), //岗位属性id
-        positionTypeName: JSON.parse(localStorage.getItem('positionTypeName')), //岗位属性名称
-        legalCompanyId: JSON.parse(localStorage.getItem('companyNo')), //劳动合同牌照id
+        positionType: JSON.parse(localStorage.getItem('new_positionType')), //岗位属性id
+        positionTypeName: JSON.parse(localStorage.getItem('new_positionTypeName')), //岗位属性名称
+        legalCompanyId: JSON.parse(localStorage.getItem('companyId')), //劳动合同牌照id
         legalCompanyName: JSON.parse(localStorage.getItem('companyName')), //劳动合同牌照名称
         popupVisible: false, //劳动合同牌照的显示和隐藏
         dataList: [],
@@ -104,10 +107,53 @@
         value1: "",//选择的日期
         imgF: require("@/assets/img/jiantou.png"),
         placeholder: '请填写',
-        placeholderFocus: '请填写'
+        placeholderFocus: '请填写',
+        contractId:'',
+        type:'',
+        box:{}
       };
     },
     created() {
+      // 如果是从修改页面过来，且本地有携带修改前员工数据
+      // console.log(this.$route,'d');
+      if(localStorage.getItem('info')&&localStorage.getItem('from_where')){
+        this.$utils.changeTitle('员工信息编辑');
+
+        this.type = localStorage.getItem('from_where');
+        console.log(JSON.parse(localStorage.getItem('info')),'fin');
+        let val = JSON.parse(localStorage.getItem('info'));
+        this.box = val;
+        // 页面显示
+        this.employeeName = val.employeeName;//员工姓名
+        this.customerEmployeeNo = val.customerEmployeeNo;//客户工号
+        this.entryAt = this.$utils.date(val.entryAt,1);//入职日期
+        // 岗位属性
+        this.positionType = localStorage.getItem('new_positionType')?JSON.parse(localStorage.getItem('new_positionType')):val.positionType_;//岗位属性id
+        this.positionTypeName = localStorage.getItem('new_positionTypeName')?JSON.parse(localStorage.getItem('new_positionTypeName')):val.positionType;//岗位属性名称
+        // 服务客户名称
+        this.customerName = localStorage.getItem('customerName')?JSON.parse(localStorage.getItem('customerName')):val.customerName;//服务客户名称
+        this.customerId = localStorage.getItem('customerId')?JSON.parse(localStorage.getItem('customerId')):val.customerId;
+        // 劳动合同牌照
+        this.legalCompanyName = localStorage.getItem('companyName')?JSON.parse(localStorage.getItem('companyName')):val.employeeContractList.length?val.employeeContractList[0].legalCompanyName:'';
+        this.legalCompanyId = localStorage.getItem('companyId')?JSON.parse(localStorage.getItem('companyId')):val.employeeContractList.length?val.employeeContractList[0].legalCompanyId:'';
+        this.contractId = val.employeeContractList.length?val.employeeContractList[0].id:0;
+        // 所属业务区
+        this.organizationName = localStorage.getItem('organizationName')?JSON.parse(localStorage.getItem('organizationName')):val.organizationName//所属业务区
+        this.organizationalId = localStorage.getItem('id')?JSON.parse(localStorage.getItem('id')):val.organizationalId;
+
+        // localStorage.setItem('new_positionType',val.positionType_)
+        // console.log(JSON.parse(localStorage.getItem('companyName')),'nameeee---');
+        // if(JSON.parse(localStorage.getItem('companyName'))){//去子页面选择参数
+        //   this.legalCompanyName = JSON.parse(localStorage.getItem('companyName'));
+        //   this.legalCompanyId =  JSON.parse(localStorage.getItem('companyId'));
+        // }else{//获取父页面携带参数
+        //   this.legalCompanyName =val.employeeContractList.length?val.employeeContractList[0].legalCompanyName:'';//劳动合同牌照
+        //   this.legalCompanyId = val.employeeContractList.length?val.employeeContractList[0].legalCompanyId:0;
+        // }
+
+
+        // (userInfo['entryAt'],1)
+      }
     },
     methods: {
       //获取焦点
@@ -166,6 +212,7 @@
         }).then(e => {
           if (e.data.code == 200) {
             this.dataListType = e.data.data;
+            console.log(this.dataListType,'dataListTypeeeee');
           }
         });
       },
@@ -174,10 +221,66 @@
         this.popupVisibleType = false;
         // this.positionType=no
         // this.positionTypeName=name
-        localStorage.setItem("positionTypeName", JSON.stringify(name))//岗位属性名称
-        localStorage.setItem("positionType", JSON.stringify(no))//岗位属性id
-        this.positionType = JSON.parse(localStorage.getItem('positionType'));
-        this.positionTypeName = JSON.parse(localStorage.getItem('positionTypeName'));
+        // localStorage.setItem("positionTypeName", JSON.stringify(name))//岗位属性名称
+        // localStorage.setItem("positionType", JSON.stringify(no))//岗位属性id
+        // this.positionType = JSON.parse(localStorage.getItem('positionType'));
+        // this.positionTypeName = JSON.parse(localStorage.getItem('positionTypeName'));
+        this.positionTypeName = name;
+        this.positionType = no;
+
+        localStorage.setItem('new_positionType',JSON.stringify(this.positionType))
+        localStorage.setItem('new_positionTypeName',JSON.stringify(this.positionTypeName))
+
+      },
+      comfirmChange(){
+        console.log(this.positionType,'32145');
+        // return
+        fixInfo({
+          employeeName: this.employeeName,
+          customerEmployeeNo: this.customerEmployeeNo,
+          organizationalId: this.organizationalId ? this.organizationalId : "", //所属业务id
+          entryAt: this.entryAt, //选择时间
+          customerId: this.customerId ? this.customerId : "", //客户id,
+          positionType: this.positionType, //"岗位属性id
+          legalCompanyId: this.legalCompanyId, //劳动合同牌照Id
+          contractId:this.contractId,
+          id:localStorage.getItem('from_id')
+          // legalCompanyId:JSON.parse(localStorage.getItem('companyId'))//劳动合同牌照Id
+
+        }).then(e => {
+          if (e.data.code == 200) {
+            // 保存成功清除，保存的无用缓存
+            // 岗位属性
+            localStorage.removeItem('new_positionTypeName');
+            localStorage.removeItem('new_positionType');
+            // 服务客户名称
+            localStorage.removeItem('customerName');
+            localStorage.removeItem('customerId');
+            // 劳动合同牌照
+            localStorage.removeItem('companyName');
+            // localStorage.removeItem('companyNo');
+            localStorage.removeItem('companyId');
+            // 所属业务区
+            localStorage.removeItem('organizationName');
+            localStorage.removeItem('id');
+
+
+
+
+            this.$router.push({
+              path: "/Employee"
+            });
+            this.$messagebox({
+              message: "保存成功",
+              showCancelButton: true
+            });
+          } else if (e.data.code != 200) {
+            this.$messagebox({
+              message: e.data.message,
+              showCancelButton: true
+            });
+          }
+        });
       },
       //点击保存
       handleSave() {
@@ -189,6 +292,8 @@
           customerId: this.customerId ? this.customerId : "", //客户id,
           positionType: this.positionType, //"岗位属性id
           legalCompanyId: this.legalCompanyId //劳动合同牌照Id
+          // legalCompanyId:JSON.parse(localStorage.getItem('companyId'))//劳动合同牌照Id
+
         }).then(e => {
           if (e.data.code == 200) {
             this.$router.push({
@@ -319,5 +424,10 @@
 
   .mint-cell-wrapper {
     border: .002rem solid #f2f2f2
+  }
+  .footer .new_button{
+    width: 100%!important;
+    margin-left: 1rem!important;
+    margin-right: 1rem!important;
   }
 </style>

@@ -196,6 +196,9 @@ export default {
     },
     //跳转到入职页面
     handlePushEnter() {
+      localStorage.removeItem("from_where");
+      localStorage.removeItem("from_id");
+
       localStorage.removeItem("employeeName");
       localStorage.removeItem("customerEmployeeNo");
       this.$router.push({ path: "/AddEmployee" });

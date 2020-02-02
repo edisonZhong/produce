@@ -9,7 +9,7 @@
     </div>
    <mescroll-vue id="main" ref="mescroll" :down='mescrollDown' :up="mescrollUp" @init="mescrollInit">
         <ul style="height: 100%;width: 100%;">
-            <li class="label-list" v-for="(item,index) in dataList" :key="index" @click="handleLink(item.companyNo,item.companyName)">{{item.companyName}}</li>
+            <li class="label-list" v-for="(item,index) in dataList" :key="index" @click="handleLink(item.companyNo,item.companyName,item.id)">{{item.companyName}}</li>
         </ul>
     </mescroll-vue>
   </div>
@@ -33,23 +33,23 @@ export default {
        mescrollDown:{ // 下拉加载的配置.
         callback:this.downCallBack,
         clearEmptyId:"main",
-						isBoth: false, 
+						isBoth: false,
             isBounce: true,
-             
+
          },
       mescrollUp: { // 上拉加载的配置.
           click: true,
           callback: this.getList,
           htmlNodata: '<p class="upwarp-nodata">  </p>',
-          noMoreSize: 5, 
+          noMoreSize: 5,
           page: {
             num: 0,
             size: 50,
             total: 0
           },
           empty: {
-          warpId: "main", 
-          // icon: "./static/mescroll/mescroll-empty.png", 
+          warpId: "main",
+          // icon: "./static/mescroll/mescroll-empty.png",
           tip: "暂无相关数据~" //提示
           },
         htmlLoading:'<p class="upwarp-progress mescroll-rotate"></p><p class="upwarp-tip">加载中..</p>',
@@ -77,7 +77,7 @@ export default {
       this.placeholder=''
     },
     mescrollInit (mescroll) {
-      this.mescroll = mescroll  
+      this.mescroll = mescroll
     },
     downCallBack(mescroll){
           setTimeout(function(){
@@ -119,10 +119,11 @@ export default {
         }
       });
     },
-    handleLink(companyNo,companyName){
+    handleLink(companyNo,companyName,id){
       this.$router.push({
         path:'/AddEmployee',
       })
+      localStorage.setItem("companyId", JSON.stringify(id))
       localStorage.setItem("companyNo", JSON.stringify(companyNo))
       localStorage.setItem("companyName", JSON.stringify(companyName))
     }
@@ -158,7 +159,7 @@ export default {
   top: 0;
   right: .2rem;
   background: #fff
-    
+
 }
 .input-seach {
   background: rgba(246, 248, 250, 1);
