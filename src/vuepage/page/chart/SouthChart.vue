@@ -46,6 +46,10 @@ export default {
     'allBox',
     'clickIndex',
     'selectedName',
+    //2.2州
+    'xData',
+    'yData1',
+    'yData2'
   ],
 
   data() {
@@ -386,7 +390,6 @@ export default {
       });
       this.init('chart_example',this.boxBar.totalList[0].length);
     },
-
     colorBox(data){
       var colorList = [];
       for(let i=0;i<data.length;i++){
@@ -398,8 +401,6 @@ export default {
       }
       return colorList
     },
-
-
     //员工占比
     percentEchart() {
       console.log(this.boxIncrese,this.$utils.turnInToPercent(this.boxIncrese.percentList[0]),'boxIncresesssss')
@@ -527,7 +528,7 @@ export default {
         {
           type: 'category',
           // data:this.allBox.name[0],
-          data:['1.31','2.01','2.02','2.03','2.04','2.05','2.06','2.07','2.08','2.09','2.10','2.11'],
+          data:this.xData,
           axisLine:{
             show:false
           },
@@ -564,10 +565,13 @@ export default {
           name: '发烧咳嗽',
           type: 'line',
           // data: this.allBox.value[0],
-          data:[12,123,23,34,5,34,234,23,3,56,34,7],
+          data:this.yData1,
           itemStyle:{
             normal:{
-               color:"#eb9f4b"
+               color:"red",
+               lineStyle: {
+                color: "red" //折线的颜色
+              }
              }
          }
        },
@@ -575,7 +579,7 @@ export default {
          name: '其他症状',
          type: 'line',
          // data: this.allBox.value[0],
-         data:[1,12,22,12,51,4,78,23,30,5,37,9],
+         data:this.yData2,
          itemStyle:{
            normal:{
               color:"#eb9f4b"
@@ -669,7 +673,7 @@ export default {
           });
         this.init('dataChart',this.boxLideDay.percentListDay[0].length);
     },
-    dataChartLive() {
+     dataChartLive() {
         // var one = this.boxLideLive.positionLive[0][0]?this.boxLideLive.positionLive[0][0]+',':'';
         // var two = this.boxLideLive.positionLive[0][1]?this.boxLideLive.positionLive[0][1]+',':'';
         // var three = this.boxLideLive.positionLive[0][2]?this.boxLideLive.positionLive[0][2]:'';

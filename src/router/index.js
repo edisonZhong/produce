@@ -11,6 +11,7 @@ const leaveEmployee=()=> import('@/vuepage/page/leaveEmployee.vue')
 const choiceEmployee=()=> import('@/vuepage/page/choiceEmployee.vue')
 const LagalList=()=> import('@/vuepage/page/LagalList.vue')
 const employeeInfo=()=> import('@/vuepage/page/employeeInfo.vue')
+const nohealthList=()=> import('@/vuepage/page/nohealthList')
 Vue.use(Router)
 
 
@@ -21,7 +22,7 @@ export default new Router({
       component:Index,
       meta:{
         theIndex: "1",
-        title:'用户抗疫'
+        title:'同心抗疫'
       }
     },
     {
@@ -29,15 +30,26 @@ export default new Router({
       component: Index,
       meta: {
         theIndex: "1",
-        title:'用户抗疫',
+        title:'同心抗疫',
       }
     },
+    {
+      path: '/nohealthList',
+      component: nohealthList,
+      meta: {
+        theIndex: "1",
+        title:'同心抗疫',
+      }
+    },
+
+
+
     {
       path: '/IndexNew',
       component: IndexNew,
       meta: {
         theIndex: "1",
-        title:'用户抗疫',
+        title:'同心抗疫',
       }
     },
     {

@@ -21,9 +21,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 if (process.env.NODE_ENV === 'development') {
 //测试
-    upBaseUrl = 'http://preywapi.fenganghr.com/';
+    //upBaseUrl = 'http://preywapi.fenganghr.com/';
     // upBaseUrl  =  'http://192.168.1.108:9095/';
-    // upBaseUrl = 'http://wbapi.fenganghr.com/';
+     upBaseUrl = 'http://wbapi.fenganghr.com/';
 
 }
 const instance = axios.create({
@@ -43,7 +43,7 @@ instance.interceptors.request.use(
     config => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token
         config.headers = {
-            "Authorization":localStorage.getItem('token')||'',
+             //"Authorization":localStorage.getItem('token')||'',
             // "Authorization":'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6aG9uZ3poaXBpbmciLCJjcmVhdGVkIjoxNTc5NjExOTg1MjcwLCJleHAiOjQyMzUxNzk2MTE5ODV9.faXJdPdNHHGVz4IxwVrRSk61RZEsHQryF3E5txWo2RKQh6zwdPoN6IDTsyS6WoZ-MAyFairWrJjXiTmpTvrzUA',
             "backend":'front'
         }
