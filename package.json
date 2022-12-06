@@ -16,7 +16,7 @@
     "mescroll.js": "^1.4.1",
     "mint-ui": "^2.2.13",
     "mobile-detect": "^1.4.4",
-    "qs": "^6.5.2",
+    "qs": "^6.9.7",
     "vconsole": "^3.3.4",
     "vue": "^2.4.2",
     "vue-awesome-swiper": "^2.6.5",
